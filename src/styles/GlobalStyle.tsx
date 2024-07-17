@@ -1,10 +1,9 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-
-@font-face {
+  @font-face {
     font-family: 'Noto Sans';
-    src: url('../assets/fonts/NotoSansKR-Regular.otf') format('otf');
+    src: url('./assets/NotoSansKR-Regular.otf') format('otf');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -19,7 +18,6 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     min-width: 20rem;
     max-width: 80rem;
-    margin: 0 auto;
     display: flex;
     justify-content: center;
   }
