@@ -1,9 +1,13 @@
-import React from 'react'
+import styled from "styled-components";
 
-function Text() {
-  return (
-    <div>Text</div>
-  )
-}
+const NotoSans14px = styled.text`
+  color: #000;
+  text-align: center;
+  font-family: "Noto Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+`;
 
-export default Text
+export default NotoSans14px;
