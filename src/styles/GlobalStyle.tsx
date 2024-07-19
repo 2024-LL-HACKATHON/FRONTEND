@@ -8,6 +8,13 @@ const GlobalStyle = createGlobalStyle`
     font-style: normal;
     font-display: swap;
   }
+  @font-face {
+    font-family: 'Gmarket Sans';
+    src: url('./assets/GmarketSans-Medium.otf') format('otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
   * {
     margin: 0;
     padding: 0;
