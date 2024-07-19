@@ -18,8 +18,8 @@ const Header = ({ isLoggedIn }: HeaderProps) => {
           <StyledLink to="/">로그아웃</StyledLink>
         ) : (
           <>
-            <StyledLink to="/">로그인</StyledLink>
-            <StyledLink to="/">회원가입</StyledLink>
+            <StyledLink to="/login" >로그인</StyledLink>
+            <StyledLink to="/signup">회원가입</StyledLink>
           </>
         )}
       </AuthLinks>
