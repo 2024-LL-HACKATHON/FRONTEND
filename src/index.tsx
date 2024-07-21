@@ -11,8 +11,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+    <>
     <GlobalStyle />
     <RouterProvider router={router} />
+    </>
   </React.StrictMode>
 );
 

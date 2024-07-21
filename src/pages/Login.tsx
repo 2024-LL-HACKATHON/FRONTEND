@@ -13,7 +13,7 @@ const Login = () => {
       <InputGroup>
       <Input type="text" placeholder='아이디' />
       <Input type="password" placeholder='비밀번호' />
-      <SubmitButton type='submit'>로그인</SubmitButton>
+      <SubmitButton type='submit'>시작하기</SubmitButton>
       </InputGroup>
     </LoginLayout>
   );
@@ -23,7 +23,6 @@ export default Login;
 
 const LoginLayout = styled.div`
   display: flex;
-  font-family: "Noto Sans";
   margin-top: 157px;
   flex-direction: column;
   align-items: center;
@@ -36,7 +35,8 @@ const Tiltle = styled.div`
     height: 29px;
     font-size: 24px;
     font-weight: 700;
-    font-family: 'Gmarket Sans';
+    font-family: "Gmarket Sans";
+    font-style: nomal;
     background: linear-gradient(90deg, #72D49B 0%, #2CC1BF 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -79,6 +79,7 @@ const SubmitButton = styled.button`
   background: linear-gradient(90deg, #72D49B 0%, #2CC1BF 100%);
   color: white;
   font-size: 16px;
+  font-family: "Noto Sans";
   font-weight: 700;
   cursor: pointer;
 `;
