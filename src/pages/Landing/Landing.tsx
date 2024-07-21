@@ -5,9 +5,7 @@ export default function Landing() {
   return (
     <>
       <Header isLoggedIn={false}/>
-      <main>
-        <Outlet />
-      </main>
+      <Outlet />
     </>
   );
 }
