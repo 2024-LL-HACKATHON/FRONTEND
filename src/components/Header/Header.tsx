@@ -2,11 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../assets/images/Logo.svg";
 import { Link } from "react-router-dom";
-import { HeaderProps } from "./types";
+import { HeaderProps, StyledHeaderProps } from "./types";
 
-const Header = ({ isLoggedIn }: HeaderProps) => {
+const Header = ({
+  isLoggedIn,
+  marginTop = "34px",
+}: HeaderProps & StyledHeaderProps) => {
   return (
-    <HeaderLayout>
+    <HeaderLayout marginTop={marginTop}>
       <Logo />
       <NavLinks>
         <StyledLink to="/main">메인으로 가기</StyledLink>
@@ -29,19 +32,19 @@ const Header = ({ isLoggedIn }: HeaderProps) => {
 
 export default Header;
 
-const HeaderLayout = styled.div`
+const HeaderLayout = styled.div<StyledHeaderProps>`
   width: 1161px;
   height: 73px;
-  margin-top: 34px;
+  margin-top: ${({ marginTop }) => marginTop};
   display: flex;
   align-items: center;
   padding: 0 20px;
-  background-color: #fff;
+  background-color: transparent;
 `;
 
 const NavLinks = styled.nav`
   display: flex;
-  margin-left: 190px;
+  margin-left: 197px;
   gap: 98px;
 `;
 
