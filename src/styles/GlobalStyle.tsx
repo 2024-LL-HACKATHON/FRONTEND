@@ -3,14 +3,14 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Noto Sans';
-    src: url('../assets/fonts/NotoSansKR-Regular.otf') format('opentype');
+    src: url('../assets/fonts/NotoSansKR-Regular.otf') format('otf');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
   }
   @font-face {
     font-family: 'Gmarket Sans';
-    src: url('../assets/fonts/GmarketSansMedium.otf') format('opentype');
+    src: url('../assets/fonts/GmarketSansMedium.otf') format('otf');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
