@@ -10,7 +10,7 @@ import Header from "../Header/Header";
 export default function LandingSection4() {
   return (
     <LandingSection4Container>
-      <Header isLoggedIn={false} marginTop="" />
+      <Header isLoggedIn={false} marginTop="117px" />
       <LandingSection4Sub>지금 바로! 이곳에서!</LandingSection4Sub>
       <LandingSection4Title>
         <LandingSection4Span>관심사</LandingSection4Span>
@@ -165,7 +165,7 @@ const LandingSection4Box = styled.div<BoxProps>`
 const LandingSection4ContentSub = styled.div<BoxProps>`
   color: ${(props) => props.subjectColor || "#000"};
   text-align: center;
-  font-family: "Noto Sans";
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 10px;
   font-style: normal;
   font-weight: 400;
@@ -185,15 +185,15 @@ const LandingSection4ContentTitle = styled.div<BoxProps>`
 
 const LandingSection4Content = styled.div`
   color: #000;
-  font-family: "Noto Sans KR";
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 10px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   margin-top: 23px;
-  flex-grow: 1; /* Ensures that content div grows and aligns the text properly */
+  flex-grow: 1; 
   display: flex;
-  align-items: center; /* Vertically aligns the text */
-  justify-content: center; /* Horizontally aligns the text */
+  align-items: center; 
+  justify-content: center; 
   flex-direction: column;
 `;

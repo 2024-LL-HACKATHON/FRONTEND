@@ -6,7 +6,7 @@ import { HeaderProps, StyledHeaderProps } from "./types";
 
 const Header = ({
   isLoggedIn,
-  marginTop = "34px",
+  marginTop = "",
 }: HeaderProps & StyledHeaderProps) => {
   return (
     <HeaderLayout marginTop={marginTop}>
@@ -52,7 +52,7 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   color: #000;
   text-align: center;
-  font-family: "Noto Sans";
+  font-family: "Noto Sans KR";
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

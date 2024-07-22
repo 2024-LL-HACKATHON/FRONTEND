@@ -2,7 +2,7 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
-    font-family: 'Noto Sans';
+    font-family: "Noto Sans KR";
     src: url('/assets/NotoSansKR-Regular.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
@@ -25,13 +25,16 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
 
-  #root {
+  #root 
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     max-width: 80rem;
   }
+  html {
+  scroll-behavior: smooth;
+}
 `;
 
 export default GlobalStyle;

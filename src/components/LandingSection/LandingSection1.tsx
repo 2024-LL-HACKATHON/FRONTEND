@@ -2,10 +2,12 @@ import { ReactComponent as LandingToMainButton } from "../../assets/images/Landi
 import { ReactComponent as LandingImg1 } from "../../assets/images/LandingImg1.svg";
 import styled, { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
+import Header from "../Header/Header";
 
 export default function LandingSection1() {
   return (
     <>
+      <Header isLoggedIn={false} marginTop = "34px" />
       <LandingContent>
         <LandingTexts>
           <LandingSlogan>Prom Here, Prom Now</LandingSlogan>
@@ -73,7 +75,7 @@ const LandingSideText = styled.div`
   height: 42px;
   text-align: center;
   color: #7e7e7e;
-  font-family: "Noto Sans";
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 24px;
@@ -141,7 +143,7 @@ const LandingDiv405Stroke = styled.div`
 const LandingDiv405Content = styled.div`
   color: #fff;
   text-align: justify;
-  font-family: "Noto Sans KR";
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 144.858%;

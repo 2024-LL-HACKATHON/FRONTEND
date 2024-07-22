@@ -77,7 +77,7 @@ const CharacterWithCircle = styled.span`
 const LandingSection2SubTitle = styled.div`
   color: #000;
   text-align: center;
-  font-family: "Noto Sans";
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

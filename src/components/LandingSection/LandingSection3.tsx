@@ -5,6 +5,7 @@ import { ReactComponent as Content1Img } from "../../assets/images/Content1Img.s
 import { ReactComponent as Content2Img } from "../../assets/images/Content2Img.svg";
 import { ReactComponent as Content3Img } from "../../assets/images/Content3Img.svg";
 import { ReactComponent as Content4Img } from "../../assets/images/Content4Img.svg";
+import Header from "../Header/Header";
 
 export default function LandingSection3() {
   const [selectedContent, setSelectedContent] = useState("content1");
@@ -16,7 +17,10 @@ export default function LandingSection3() {
           <ContentWrapper>
             <ContentNum>01</ContentNum>
             <ContentTitle>
-              프롬프트 <ContentTitleSpan>공유 <Dot>•</Dot> 검색</ContentTitleSpan>
+              프롬프트
+              <ContentTitleSpan>
+                공유 <Dot>•</Dot> 검색
+              </ContentTitleSpan>
             </ContentTitle>
             <ContentSubTitle>
               프롬프렌은 커뮤니티 사용자들이 프롬프트를
@@ -31,7 +35,7 @@ export default function LandingSection3() {
               주제별 카테고리와 태그를 사용하여 필요에 맞는 프롬프트를
               효율적으로 관리하고 활용하세요.
             </ContentText>
-            <ContentImgBox>
+            <ContentImgBox height="571.855px">
               <Content1Img />
             </ContentImgBox>
           </ContentWrapper>
@@ -55,7 +59,7 @@ export default function LandingSection3() {
               <br />
               받으세요.
             </ContentText>
-            <ContentImgBox>
+            <ContentImgBox height="670.971px">
               <Content2Img />
             </ContentImgBox>
           </ContentWrapper>
@@ -77,7 +81,7 @@ export default function LandingSection3() {
               <br />한 프롬프트에 대한 피드백을 받아볼 수 있으며, 이를 통해 더욱
               완성도 높은 프롬프트를 작성할 수<br /> 있습니다.
             </ContentText>
-            <ContentImgBox>
+            <ContentImgBox height="770.971px">
               <Content3Img />
             </ContentImgBox>
           </ContentWrapper>
@@ -102,7 +106,7 @@ export default function LandingSection3() {
               <br />의 도움을 받아 프롬프트의 질을 향상시켜보세요.
             </ContentText>
             <ContentImgBox>
-              <Content4Img />
+              <Content4Img height="643.924px" />
             </ContentImgBox>
           </ContentWrapper>
         );
@@ -115,6 +119,7 @@ export default function LandingSection3() {
     <>
       <LandingSection3Container>
         <HeaderWrapper>
+          <Header isLoggedIn={false} marginTop="43px" />
         </HeaderWrapper>
         <MainContent>
           <LandingSection3SideBox>
@@ -199,7 +204,7 @@ const LandingSection3SideBoxTitle = styled.div`
 
 const LandingSection3SideBoxSubTitle = styled.div`
   color: #42d09f;
-  font-family: "Noto Sans KR";
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-weight: 400;
   margin-top: 7px;
@@ -223,7 +228,8 @@ const SideButton = styled.button<SideButtonProps>`
   font-size: 20px;
   font-weight: ${(props) => (props.isActive ? "700" : "500")};
   transition: background 0.3s;
-
+  text-align: left;
+  padding-left: 50px;
   &:hover {
     background: ${(props) =>
       props.isActive
@@ -267,7 +273,6 @@ const ContentTitleSpan = styled.span`
   color: #42d09f;
 `;
 
-
 const Dot = styled.span`
   display: inline-block;
   vertical-align: middle;
@@ -275,7 +280,7 @@ const Dot = styled.span`
 
 const ContentSubTitle = styled.div`
   color: #000;
-  font-family: "Noto Sans";
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 20px;
   font-weight: 600;
   margin-top: 47px;
@@ -283,7 +288,7 @@ const ContentSubTitle = styled.div`
 
 const ContentText = styled.div`
   color: #7e7e7e;
-  font-family: "Noto Sans";
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-weight: 400;
   line-height: 25px; /* 208.333% */
@@ -292,9 +297,9 @@ const ContentText = styled.div`
   z-index: 1;
 `;
 
-const ContentImgBox = styled.div`
+const ContentImgBox = styled.div<{ height?: string }>`
   position: absolute;
-  height: 541.855px;
+  height: ${(props) => props.height || "541.855px"};
   flex-shrink: 0;
   right: 0;
   bottom: 0;
