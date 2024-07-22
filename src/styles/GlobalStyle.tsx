@@ -2,8 +2,8 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
-    font-family: 'Noto Sans';
-    src: url('../assets/fonts/NotoSansKR-Regular.otf') format('otf');
+    font-family: "Noto Sans KR";
+    src: url('../assets/fonts/NotoSansKR-Regular.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -15,19 +15,33 @@ const GlobalStyle = createGlobalStyle`
     font-style: normal;
     font-display: swap;
   }
+
   * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
   }
-  html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    min-width: 20rem;
-    max-width: 80rem;
+
+  body {
+    font-family: 'Noto Sans', sans-serif;
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
   }
+
+  #root 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 80rem;
+  }
+  html {
+  scroll-behavior: smooth;
+}
 `;
 
 export default GlobalStyle;

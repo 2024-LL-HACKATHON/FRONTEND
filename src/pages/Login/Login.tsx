@@ -1,19 +1,19 @@
-import React from 'react';
-import styled from 'styled-components';
-
+import React from "react";
+import styled from "styled-components";
 
 const Login = () => {
-
   return (
     <LoginLayout>
       <Tiltle>
         <h1>프롬프렌과 함께해요</h1>
-        <p><span>아이디</span>와 <span>비밀번호</span>를 작성해주세요</p>
+        <p>
+          <span>아이디</span>와 <span>비밀번호</span>를 작성해주세요
+        </p>
       </Tiltle>
       <InputGroup>
-      <Input type="text" placeholder='아이디' />
-      <Input type="password" placeholder='비밀번호' />
-      <SubmitButton type='submit'>시작하기</SubmitButton>
+        <Input type="text" placeholder="아이디" />
+        <Input type="password" placeholder="비밀번호" />
+        <SubmitButton type="submit">시작하기</SubmitButton>
       </InputGroup>
     </LoginLayout>
   );
@@ -38,12 +38,12 @@ const Tiltle = styled.div`
     font-weight: 700;
     font-family: "Gmarket Sans TTF";
     font-style: nomal;
-    background: linear-gradient(90deg, #72D49B 0%, #2CC1BF 100%);
+    background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0;
-  }  
-   p {
+  }
+  p {
     margin-top: 5px;
     color: #949494;
     font-size: 12px;
@@ -76,7 +76,7 @@ const SubmitButton = styled.button`
   margin-top: 24px;
   border-radius: 16px;
   border: none;
-  background: linear-gradient(90deg, #72D49B 0%, #2CC1BF 100%);
+  background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
   color: white;
   font-size: 16px;
   font-weight: 700;
