@@ -27,6 +27,7 @@ const LoginLayout = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
+  font-family: "Noto Sans KR";
 `;
 
 const Tiltle = styled.div`
@@ -35,7 +36,7 @@ const Tiltle = styled.div`
     height: 29px;
     font-size: 24px;
     font-weight: 700;
-    font-family: "Gmarket Sans";
+    font-family: "Gmarket Sans TTF";
     font-style: nomal;
     background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
     -webkit-background-clip: text;
@@ -47,7 +48,6 @@ const Tiltle = styled.div`
     color: #949494;
     font-size: 12px;
     font-weight: 400;
-    font-family: "Noto Sans";
   }
   span {
     font-weight: 700;
@@ -79,7 +79,6 @@ const SubmitButton = styled.button`
   background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
   color: white;
   font-size: 16px;
-  font-family: "Noto Sans";
   font-weight: 700;
   cursor: pointer;
 `;

@@ -27,7 +27,6 @@ const Content = styled.div`
     font-size: 30px;
     font-weight: 300;
 
-
     span {
         color: #42D09F;
         font-size: 36px;

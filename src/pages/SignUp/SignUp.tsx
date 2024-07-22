@@ -23,7 +23,7 @@ const Signup = () => {
             <label>닉네임<Input type="text"/></label>
         </div>
         </InputGroup>
-        <SubmitButton type="submit">가입하기</SubmitButton>
+        <SubmitButton type="submit">다음</SubmitButton>
       </Form>
     </SignupLayout>
   );
@@ -34,7 +34,7 @@ export default Signup;
 const SignupLayout = styled.div`
   font-family: "Noto Sans";
   display: flex;
-  margin-top: 67px;
+  margin-top: 60px;
   flex-direction: column;
   align-items: center;
 `;
@@ -54,11 +54,10 @@ const Tiltle = styled.div`
     margin: 0;
   }
   p {
-    margin-top: px;
+    margin-top: 7px;
     color: #949494;
     font-size: 12px;
     font-weight: 400;
-    font-family: "Noto Sans";
   }
 `;
 
@@ -81,7 +80,7 @@ const InputGroup = styled.div`
   }
 `;
 
-const SectionTitle = styled.p`
+const SectionTitle = styled.text`
   margin-left: 32px;
   margin-bottom: 22px;
   font-size: 12px;
@@ -103,6 +102,7 @@ const SubmitButton = styled.button`
   width: 221px;
   height: 34px;
   margin-left: 57px;
+  margin-bottom: 97px;
   border-radius: 10px;
   border: none;
   background: linear-gradient(90deg, #72D49B 0%, #2CC1BF 100%);
