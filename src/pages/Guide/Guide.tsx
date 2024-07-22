@@ -51,6 +51,8 @@ export default function Guide() {
 const StyledFullPage = styled.div`
   position: relative;
   font-family: "Noto Sans";
+  width: 100%;
+  height: 100vh;
 `;
 
 const StyledSlide = styled.div`
