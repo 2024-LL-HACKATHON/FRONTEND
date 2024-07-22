@@ -53,7 +53,7 @@ const SubContent = styled.div`
 width: 441px;
 height: 85px;
 margin: auto;
-margin-top: 33px;
+margin-top: 150px;
 text-align: center;
 font-size: 14px;
 font-weight: 400;
