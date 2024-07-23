@@ -8,6 +8,7 @@ const Signup = () => {
         <h1>프롬프렌에 온걸 환영해요</h1>
         <p>회원가입을 진행해주세요</p>
       </Tiltle>
+      {/*회원가입 폼*/}
       <Form>
         <InputGroup>
           <div>
@@ -23,6 +24,7 @@ const Signup = () => {
             <label>닉네임<Input type="text"/></label>
         </div>
         </InputGroup>
+        {/*버튼*/}
         <SubmitButton type="submit">다음</SubmitButton>
       </Form>
     </SignupLayout>
@@ -32,7 +34,7 @@ const Signup = () => {
 export default Signup;
 
 const SignupLayout = styled.div`
-  font-family: "Noto Sans";
+  font-family: "Noto Sans KR";
   display: flex;
   margin-top: 60px;
   flex-direction: column;
@@ -47,7 +49,7 @@ const Tiltle = styled.div`
     height: 29px;
     font-size: 24px;
     font-weight: 700;
-    font-family: 'Gmarket Sans';
+    font-family: 'Gmarket Sans TTF';
     background: linear-gradient(90deg, #72D49B 0%, #2CC1BF 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

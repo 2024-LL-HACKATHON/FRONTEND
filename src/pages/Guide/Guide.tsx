@@ -13,13 +13,16 @@ import { ReactComponent as Guide_Circle2 } from "../../assets/images/Guide_Circl
 export default function Guide() {
   return (
       <StyledFullPage >
-        <CircleContainer>
-        <StyledGuide_Circle1 />
-        <StyledGuide_Circle2 />
-        <StyledGuide_Circle3 />
-        <StyledGuide_Circle4 />
-      </CircleContainer>
+        
+        {/*배경의 반원*/}
+        <Background>
+          <StyledGuide_Circle1 />
+          <StyledGuide_Circle2 />
+          <StyledGuide_Circle3 />
+          <StyledGuide_Circle4 />
+        </Background>
 
+        {/*가이드 페이지 슬라이드*/}
         <StyledSlide>
           <Header isLoggedIn={false} />
           <GuideSection1 />
@@ -50,7 +53,7 @@ export default function Guide() {
 
 const StyledFullPage = styled.div`
   position: relative;
-  font-family: "Noto Sans";
+  font-family: "Noto Sans KR";
   width: 100%;
   height: 100vh;
 `;
@@ -62,7 +65,7 @@ const StyledSlide = styled.div`
   position: relative;
 `;
 
-const CircleContainer = styled.div`
+const Background = styled.div`
   position: absolute;
   top: 0;
   right: 0;

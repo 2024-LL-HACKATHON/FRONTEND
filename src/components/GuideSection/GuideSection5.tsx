@@ -12,7 +12,9 @@ const GuideSection5 = () => {
         표 형식으로 정리해달라거나, 마크다운으로 작성하라고 하거나, <br />
         아웃라인을 주면서 어떤 식으로 구성하라고 말해주는 거죠.
       </ContentLeft>
+      {/*포맷 이미지*/}
       <FormatImg />
+
       <ContentRight>
         <Tip>어조 [tone]</Tip>
         <br />
@@ -21,6 +23,7 @@ const GuideSection5 = () => {
         형용사를 주거나, 어떤 예시 텍스트의 어조를 <br />
         따라하라고 하면 돼요.
       </ContentRight>
+      {/*어조 이미지*/}
       <ToneImg />
     </Page5>
   );
@@ -37,7 +40,7 @@ const Page5 = styled.div`
 `;
 
 const Tip = styled.div`
-  font-family: "Gmarket Sans";
+  font-family: "Gmarket Sans TTF";
   font-size: 40px;
   font-weight: 700;
 `;
@@ -48,6 +51,7 @@ const ContentLeft = styled.div`
   font-size: 20px;
 `;
 
+// 포맷 이미지
 const FormatImg = styled(Format)`
   position: absolute;
   top: 80px;
@@ -60,6 +64,7 @@ const ContentRight = styled.div`
   font-size: 20px;
 `;
 
+// 어조 이미지
 const ToneImg = styled(Tone)`
   position: absolute;
   bottom: 80px;
