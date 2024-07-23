@@ -1,5 +1,5 @@
 @font-face {
-    font-family: 'Gmarket Sans';
+    font-family: 'Gmarket Sans TTF';
   
     src:
       url("./GmarketSansMedium.otf") format("opentype");
@@ -9,7 +9,7 @@
   }
 
 @font-face {
-    font-family: 'Noto Sans';
+    font-family: 'Noto Sans KR';
   
     src:
       url("./NotoSansKR-Regular.otf") format("opentype");

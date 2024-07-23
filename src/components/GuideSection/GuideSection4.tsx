@@ -5,6 +5,7 @@ import { ReactComponent as Example } from "../../assets/images/Example.svg";
 const GuideSection4 = () => {
   return (
     <Page4>
+
       <ContentLeft>
         <Tip>페르소나 [persona]</Tip>
         <br />
@@ -14,7 +15,9 @@ const GuideSection4 = () => {
         회계 전문 용어로 답변해줄 거예요. <br/>
         페르소나가 구체적일수록 전문영역에 가까운 답을 제공해줘요.
       </ContentLeft>
+      {/*페르소나 이미지*/}
       <PersonaImg />
+
       <ContentRight>
         <Tip>예시 [example]</Tip>
         <br />
@@ -22,6 +25,7 @@ const GuideSection4 = () => {
         넣어주면 생성형 ai가 예시를 기반으로  <br />
         답변을 작성해요.
       </ContentRight>
+      {/*예시 이미지*/}
       <ExampleImg />
     </Page4>
   );
@@ -40,7 +44,7 @@ const Page4 = styled.div`
 `;
 
 const Tip = styled.div`
-  font-family: "Gmarket Sans";
+  font-family: "Gmarket Sans TTF";
   font-size: 40px;
   font-weight: 700;
 `;
@@ -51,6 +55,7 @@ const ContentLeft = styled.div`
   font-size: 20px;
 `;
 
+// 페르소나 이미지
 const PersonaImg = styled(Persona)`
   position: absolute;
   top: 80px;
@@ -63,6 +68,7 @@ const ContentRight = styled.div`
   font-size: 20px;
 `;
 
+// 예시 이미지
 const ExampleImg = styled(Example)`
   position: absolute;
   bottom: 80px;

@@ -23,7 +23,7 @@ const Page6 = styled.div`
 `;
 
 const Content = styled.div`
-    font-family: "Gmarket Sans";
+    font-family: "Gmarket Sans TTF";
     font-size: 30px;
     font-weight: 300;
 

@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Login = () => {
+
+  // 아이디, 비밀번호 상태 값 
+
   return (
     <LoginLayout>
       <Tiltle>
@@ -10,9 +13,11 @@ const Login = () => {
           <span>아이디</span>와 <span>비밀번호</span>를 작성해주세요
         </p>
       </Tiltle>
+      {/* 로그인 폼 */}
       <InputGroup>
         <Input type="text" placeholder="아이디" />
         <Input type="password" placeholder="비밀번호" />
+        {/*로그인 버튼*/}
         <SubmitButton type="submit">시작하기</SubmitButton>
       </InputGroup>
     </LoginLayout>
@@ -23,7 +28,6 @@ export default Login;
 
 const LoginLayout = styled.div`
   display: flex;
-  margin-top: 157px;
   flex-direction: column;
   align-items: center;
   text-align: center;
