@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
     font-display: swap;
   }
   @font-face {
-    font-family: 'Gmarket Sans';
+    font-family: 'Gmarket Sans TTF';
     src: url('../assets/fonts/GmarketSansMedium.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
@@ -23,11 +23,10 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     margin: 0;
     padding: 0;
   }

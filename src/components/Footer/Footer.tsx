@@ -21,6 +21,8 @@ export default function Footer() {
 
 const FooterLogoLayout = styled(Logo)`
   margin-top: 41px;
+  width: 115px;
+  height: 115px;
 `;
 const FooterDiv = styled.div`
   width: 1280px;
