@@ -1,21 +1,58 @@
 import React from "react";
-import styled, { createGlobalStyle, keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
+import Header from "../../components/Header/Header";
 
-const GlobalStyle = createGlobalStyle`
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    background-color: #323236;
-  }
+export default function Competition() {
+  return (
+    <>
+      <CompetitionHead>
+        <Header isLoggedIn={false} marginTop="34px" />
+        <CompetitionTitle>도전! 프롬프렌</CompetitionTitle>
+        <CarouselContainer>
+          <Container>
+            <Carousel id="carousel">
+              <Figure>1</Figure>
+              <Figure>2</Figure>
+              <Figure>3</Figure>
+              <Figure>4</Figure>
+            </Carousel>
+          </Container>
+        </CarouselContainer>
+      </CompetitionHead>
+    </>
+  );
+}
+
+const CompetitionHead = styled.div`
+  width: 1280px;
+  height: 501px;
+  flex-shrink: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(112, 138, 229, 0.7) 0.07%,
+    rgba(44, 193, 191, 0.7) 99.94%
+  );
+  padding-top: 34px;
 `;
 
-const Container = styled.section`
-  width: 500%;
+const CompetitionTitle = styled.div`
+  color: #000;
+  text-align: center;
+  font-family: "Gmarket Sans TTF";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-top: 90px;
+`;
+
+const CarouselContainer = styled.div``;
+
+const Container = styled.div`
+  width: 100%;
   position: relative;
   perspective: 3000px;
   padding: 100px;
-  left: 22.5%;
 `;
 
 const Carousel = styled.div`
@@ -53,53 +90,33 @@ const rotate = keyframes`
   }
 `;
 
-const Figure = styled.figure`
+const Figure = styled.div`
   display: block;
+  width: 456.575px;
+  -webkit-box-reflect: below 30px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255, 255, 255, 0.2)));
+  height: 302px;
+  border-radius: 16px;
   animation: ${rotate} 30000ms ease-in-out infinite;
   position: absolute;
   background-color: white;
   padding: 12em;
   text-align: center;
-  min-width: 66%;
-  -webkit-box-reflect: below 30px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255, 255, 255, 0.2)));
-
-  &:nth-child(0) {
+  &:nth-child(1) {
     animation-delay: -30000ms;
   }
-  &:nth-child(1) {
+  &:nth-child(2) {
     animation-delay: -22500ms;
   }
-  &:nth-child(2) {
+  &:nth-child(3) {
     animation-delay: -15000ms;
   }
-  &:nth-child(3) {
+  &:nth-child(4) {
     animation-delay: -7500ms;
   }
-  &:nth-child(4) {
+  &:nth-child(5) {
     animation-delay: 0ms;
   }
-  &:nth-child(5) {
+  &:nth-child(6) {
     animation-delay: 7500ms;
   }
-  &:nth-child(6) {
-    animation-delay: 15000ms;
-  }
 `;
-
-const Competition = () => {
-  return (
-    <>
-    <GlobalStyle/>
-      <Container>
-        <Carousel id="carousel">
-          <Figure>1</Figure>
-          <Figure>2</Figure>
-          <Figure>3</Figure>
-          <Figure>4</Figure>
-        </Carousel>
-      </Container>
-    </>
-  );
-};
-
-export default Competition;
