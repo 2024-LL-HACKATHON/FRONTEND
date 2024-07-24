@@ -10,10 +10,12 @@ const Header = ({
 }: HeaderProps & StyledHeaderProps) => {
   return (
     <HeaderLayout marginTop={marginTop}>
-      <Logo />
+      <LogoSize>
+        <Logo />
+      </LogoSize>
       <NavLinks>
         <StyledLink to="/main">메인으로 가기</StyledLink>
-        <StyledLink to="/">도전 프롬프렌!</StyledLink>
+        <StyledLink to="/competition">도전 프롬프렌!</StyledLink>
         <StyledLink to="/guide">프롬프트 작성 가이드</StyledLink>
       </NavLinks>
       <AuthLinks>
@@ -21,7 +23,7 @@ const Header = ({
           <StyledLink to="/">로그아웃</StyledLink>
         ) : (
           <>
-            <StyledLink to="/login" >로그인</StyledLink>
+            <StyledLink to="/login">로그인</StyledLink>
             <StyledLink to="/signup">회원가입</StyledLink>
           </>
         )}
@@ -42,9 +44,15 @@ const HeaderLayout = styled.div<StyledHeaderProps>`
   background-color: transparent;
 `;
 
+const LogoSize = styled(Logo)`
+  width: 115px;
+  height: 115px;
+  flex-shrink: 0;
+`;
+
 const NavLinks = styled.nav`
   display: flex;
-  margin-left: 197px;
+  margin-left: 225px;
   gap: 98px;
 `;
 

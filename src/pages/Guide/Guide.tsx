@@ -1,8 +1,8 @@
 import styled from "styled-components";
+import Header from "../../components/Header/Header";
 import GuideSection1 from "../../components/GuideSection/GuideSection1";
 import GuideSection2 from "../../components/GuideSection/GuideSection2";
 import GuideSection3 from "../../components/GuideSection/GuideSection3";
-import Header from "../../components/Header/Header";
 import GuideSection5 from "../../components/GuideSection/GuideSection5";
 import GuideSection4 from "../../components/GuideSection/GuideSection4";
 import GuideSection6 from "../../components/GuideSection/GuideSection6";
@@ -13,7 +13,6 @@ import { ReactComponent as Guide_Circle2 } from "../../assets/images/Guide_Circl
 export default function Guide() {
   return (
       <StyledFullPage >
-        
         {/*배경의 반원*/}
         <Background>
           <StyledGuide_Circle1 />
@@ -63,6 +62,7 @@ const StyledSlide = styled.div`
   height: 880px;
   box-sizing: border-box;
   position: relative;
+
 `;
 
 const Background = styled.div`

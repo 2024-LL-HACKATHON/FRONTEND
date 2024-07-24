@@ -9,25 +9,24 @@ const GlobalStyle = createGlobalStyle`
     font-display: swap;
   }
   @font-face {
-    font-family: 'Gmarket Sans';
-    src: url('../assets/fonts/GmarketSansMedium.otf') format('otf');
+    font-family: 'Gmarket Sans TTF';
+    src: url('../assets/fonts/GmarketSansMedium.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
   }
 
   * {
-    margin: 0;
+    margin: 0; 
     padding: 0;
     box-sizing: border-box;
   }
 
   body {
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     margin: 0;
     padding: 0;
   }
