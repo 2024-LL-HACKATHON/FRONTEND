@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Login = () => {
+
+  // 아이디, 비밀번호 상태 값 
+
   return (
     <LoginLayout>
       <Tiltle>
@@ -10,9 +13,11 @@ const Login = () => {
           <span>아이디</span>와 <span>비밀번호</span>를 작성해주세요
         </p>
       </Tiltle>
+      {/* 로그인 폼 */}
       <InputGroup>
         <Input type="text" placeholder="아이디" />
         <Input type="password" placeholder="비밀번호" />
+        {/*로그인 버튼*/}
         <SubmitButton type="submit">시작하기</SubmitButton>
       </InputGroup>
     </LoginLayout>
@@ -23,10 +28,10 @@ export default Login;
 
 const LoginLayout = styled.div`
   display: flex;
-  margin-top: 157px;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  font-family: "Noto Sans KR";
 `;
 
 const Tiltle = styled.div`
@@ -35,7 +40,7 @@ const Tiltle = styled.div`
     height: 29px;
     font-size: 24px;
     font-weight: 700;
-    font-family: "Gmarket Sans";
+    font-family: "Gmarket Sans TTF";
     font-style: nomal;
     background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
     -webkit-background-clip: text;
@@ -47,7 +52,6 @@ const Tiltle = styled.div`
     color: #949494;
     font-size: 12px;
     font-weight: 400;
-    font-family: "Noto Sans";
   }
   span {
     font-weight: 700;
@@ -79,7 +83,6 @@ const SubmitButton = styled.button`
   background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
   color: white;
   font-size: 16px;
-  font-family: "Noto Sans";
   font-weight: 700;
   cursor: pointer;
 `;

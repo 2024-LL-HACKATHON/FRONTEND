@@ -110,7 +110,7 @@ export default function Signup() {
 const SignupLayout = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   display: flex;
-  margin-top: 67px;
+  margin-top: 60px;
   flex-direction: column;
   align-items: center;
 `;
@@ -177,6 +177,7 @@ const SubmitButton = styled.button`
   width: 221px;
   height: 34px;
   margin-left: 57px;
+  margin-bottom: 97px;
   border-radius: 10px;
   border: none;
   background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
