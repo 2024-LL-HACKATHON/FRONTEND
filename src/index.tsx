@@ -5,6 +5,9 @@ import reportWebVitals from './reportWebVitals';
 import GlobalStyle from './styles/GlobalStyle';
 import { RouterProvider } from 'react-router-dom';
 import router from './router/Router';
+import '../src/assets/fonts/font.css'
+
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

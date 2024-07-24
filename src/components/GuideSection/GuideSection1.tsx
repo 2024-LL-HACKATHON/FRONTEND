@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { ReactComponent as Guide_Main } from "../../assets/images/Guide_Main.svg";
+
 
 const GuideSection1 = () => {
   return (
@@ -8,6 +10,8 @@ const GuideSection1 = () => {
       나의 지적 즐거움을 <br/>
       키워가세요
     </PageTitle>
+    {/*첫 페이지 오른쪽 이미지*/}
+    <StyledIcon />
     </Page1>
   );
 };
@@ -15,7 +19,7 @@ const GuideSection1 = () => {
 export default GuideSection1;
 
 const Page1 = styled.div`
-  font-family: "Gmarket Sans";
+  font-family: "Gmarket Sans TTF";
    width : 100%;
     height : 100%;
 `
@@ -33,7 +37,9 @@ const BigTitle = styled.text`
   font-size: 55px;
 `;
 
-const Img = styled.image`
-  margin-top: 236px;
-  margin-left: 624px;
+const StyledIcon = styled(Guide_Main)`
+  z-index: 1;
+  position: absolute;
+  right: 0;
+  bottom: 0;
 `;
