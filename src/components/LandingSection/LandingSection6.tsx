@@ -7,7 +7,7 @@ import { Link } from "react-router-dom"; // Import Link
 
 export default function LandingSection6() {
   return (
-    <>
+    <LandingSection6Box>
       <Header isLoggedIn={false} />
       <LandingSection6Container>
         <LandingSection6LogoLayout>
@@ -28,23 +28,28 @@ export default function LandingSection6() {
           <LandingSection6Togo />
         </LandingSection6TogoLayout>
       </LandingSection6BottomContainer>
-    </>
+    </LandingSection6Box>
   );
 }
 
+const LandingSection6Box = styled.div`
+  width: 80rem; // 1280px
+  margin: 0 auto;
+`;
+
 const StyledLink = styled(Link)`
-  text-decoration: none; 
+  text-decoration: none;
 `;
 
 const LandingSection6Container = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 138px;
-  margin-left: 220px;
+  margin-top: 8.625rem; // 138px
+  margin-left: 13.75rem; // 220px
 `;
 
 const LandingSection6LogoLayout = styled.div`
-  margin-right: 40px;
+  margin-right: 2.5rem; // 40px
 `;
 
 const LandingSection6TextContainer = styled.div`
@@ -55,7 +60,7 @@ const LandingSection6TextContainer = styled.div`
 const LandingSection6Sub = styled.div`
   color: #000;
   font-family: "Gmarket Sans TTF";
-  font-size: 24px;
+  font-size: 1.5rem; // 24px
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -64,41 +69,41 @@ const LandingSection6Sub = styled.div`
 const LandingSection6Title = styled.div`
   color: #000;
   font-family: "Gmarket Sans TTF";
-  font-size: 48px;
+  font-size: 3rem; // 48px
   font-style: normal;
   font-weight: 500;
-  line-height: 59px;
-  margin-top: 14px;
+  line-height: 3.6875rem; // 59px
+  margin-top: 0.875rem; // 14px
 `;
 
 const LandingSection6Span = styled.span`
   color: #42d09f;
   font-family: "Gmarket Sans TTF";
-  font-size: 64px;
+  font-size: 4rem; // 64px
   font-style: normal;
   font-weight: 700;
-  line-height: 59px;
+  line-height: 3.6875rem; // 59px
 `;
 
 const LandingSection6BottomContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 160px;
-  margin-left: 537px;
-  margin-bottom: 159px;
+  margin-top: 10rem; // 160px
+  margin-left: 33.4375rem; // 537px
+  margin-bottom: 9.9375rem; // 159px
 `;
 
 const LandingSection6Bottom = styled.div`
   color: #42d09f;
   font-family: "Gmarket Sans TTF";
-  font-size: 26px;
+  font-size: 1.625rem; // 26px
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-right: 20px;
+  margin-right: 1.25rem; // 20px
   cursor: pointer;
 `;
 
 const LandingSection6TogoLayout = styled.div`
-  margin-left: 20px;
+  margin-left: 1.25rem; // 20px
 `;

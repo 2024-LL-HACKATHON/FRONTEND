@@ -35,8 +35,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    max-width: 80rem;
+    width: 1280px;
   }
   html {
   scroll-behavior: smooth;

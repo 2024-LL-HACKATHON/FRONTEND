@@ -1,9 +1,27 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 const Login = () => {
+  const [formData, setFormData] = useState({
+    account: "",
+    password: "",
+  });
 
-  // 아이디, 비밀번호 상태 값 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/sign-api/sign-in?account=string&password=string", formData);
+      console.log(response.data);
+    } catch (error) {
+      console.error("로그인 에러", error);
+    }
+  };
 
   return (
     <LoginLayout>
@@ -13,13 +31,25 @@ const Login = () => {
           <span>아이디</span>와 <span>비밀번호</span>를 작성해주세요
         </p>
       </Tiltle>
-      {/* 로그인 폼 */}
-      <InputGroup>
-        <Input type="text" placeholder="아이디" />
-        <Input type="password" placeholder="비밀번호" />
-        {/*로그인 버튼*/}
-        <SubmitButton type="submit">시작하기</SubmitButton>
-      </InputGroup>
+      <LoginForm onSubmit={handleSubmit}>
+        <InputGroup>
+          <Input
+            name="account"
+            type="text"
+            placeholder="아이디"
+            value={formData.account}
+            onChange={handleChange}
+          />
+          <Input
+            name="password"
+            type="password"
+            placeholder="비밀번호"
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <SubmitButton type="submit">시작하기</SubmitButton>
+        </InputGroup>
+      </LoginForm>
     </LoginLayout>
   );
 };
@@ -41,7 +71,7 @@ const Tiltle = styled.div`
     font-size: 24px;
     font-weight: 700;
     font-family: "Gmarket Sans TTF";
-    font-style: nomal;
+    font-style: normal;
     background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -58,6 +88,12 @@ const Tiltle = styled.div`
   }
 `;
 
+const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
@@ -69,10 +105,9 @@ const Input = styled.input`
   margin-bottom: 12px;
   height: 49px;
   padding-left: 18px;
-  border: 1px solid #D9D9D9;
+  border: 1px solid #d9d9d9;
   border-radius: 16px;
   font-size: 14px;
-  }
 `;
 
 const SubmitButton = styled.button`
