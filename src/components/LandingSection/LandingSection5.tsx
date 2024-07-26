@@ -61,72 +61,73 @@ export default function LandingSection5() {
 }
 
 const LandingSection5Container = styled.div`
-  width: 1280px;
-  height: 1203px;
+  width: 80rem;
+  height: 75.1875rem;
   background: linear-gradient(
     180deg,
     rgba(114, 212, 155, 0.35) 30%,
     rgba(217, 217, 217, 0) 80%
   );
-  padding-top: 88px;
+  padding-top: 5.5rem;
   position: relative;
+  margin: 0 auto;
 `;
 
 const HeaderWrapper = styled.div`
-  margin-top: 88px;
+  margin-top: 5.5rem;
 `;
 
 const LandingSection5SubTitle = styled.div`
   color: #7e7e7e;
   font-family: "Gmarket Sans TTF";
-  font-size: 18px;
+  font-size: 1.125rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  margin-top: 107px;
-  margin-left:193px;
-  margin-bottom: 20px;
+  margin-top: 6.6875rem;
+  margin-left: 12.0625rem;
+  margin-bottom: 1.25rem;
 `;
 
 const LandingSection5Title = styled.div`
   color: #000;
   font-family: "Gmarket Sans TTF";
-  font-size: 48px;
+  font-size: 3rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-left:193px;
-  margin-bottom: 56px;
+  margin-left: 12.0625rem;
+  margin-bottom: 3.5rem;
 `;
 
 const LandingSection5Box = styled.div`
   position: relative;
-  width: 954px;
+  width: 59.625rem;
   height: auto;
   flex-shrink: 0;
-  border-radius: 16px;
+  border-radius: 1rem;
   border: 1px solid #b2f909;
   background: #fff;
-  box-shadow: 15px 13px 1.5px 0px rgba(97, 220, 132, 0.25);
+  box-shadow: 0.9375rem 0.8125rem 0.09375rem 0 rgba(97, 220, 132, 0.25);
   color: #000;
   font-family: "Gmarket Sans TTF";
-  font-size: 20px;
+  font-size: 1.25rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin-left: 193px;
-  margin-bottom: 21.17px;
-  padding: 16px;
+  margin-left: 12.0625rem;
+  margin-bottom: 1.3225rem;
+  padding: 1rem;
 `;
 
 const HoverText = styled.div`
-  width: 954px;
-  margin-top: 8px;
+  width: 59.625rem;
+  margin-top: 0.5rem;
   color: #555;
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 16px;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
-  margin-left: 193px;
+  margin-left: 12.0625rem;
   line-height: normal;
 `;
