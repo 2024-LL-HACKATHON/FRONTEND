@@ -3,13 +3,14 @@ import Landing from "../pages/Landing/Landing";
 import Signup from "../pages/SignUp/SignUp";
 import Login from "../pages/Login/Login";
 import Guide from "../pages/Guide/Guide";
-import Competition from "../pages/Competition/Competition";
+import Main from "../pages/Main/Main";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Landing />,
-    children: [],
+    children: [
+    ],
   },
   {
     path: "/login",
@@ -24,8 +25,8 @@ const router = createBrowserRouter([
     element: <Guide />,
   },
   {
-    path: "/competition",
-    element: <Competition />,
+    path: "/main",
+    element: <Main />,
   },
 ]);
 

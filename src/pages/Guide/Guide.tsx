@@ -23,7 +23,7 @@ export default function Guide() {
 
         {/*가이드 페이지 슬라이드*/}
         <StyledSlide>
-          <Header isLoggedIn={false} />
+          <Header isLoggedIn={false} marginTop="34px"/>
           <GuideSection1 />
         </StyledSlide>
 

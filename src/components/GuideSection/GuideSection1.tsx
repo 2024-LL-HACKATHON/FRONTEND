@@ -27,7 +27,7 @@ const Page1 = styled.div`
 const PageTitle = styled.div`
     font-size: 48px;
     margin-left: 114px;
-    margin-top: 254px;
+    margin-top: 220px;
 
 `;
 
