@@ -1,22 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useForm, FieldError } from "react-hook-form";
+import Header from "../../components/Header/Header";
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    account: "",
-    password: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: any) => {
     try {
-      const response = await axios.post("/sign-api/sign-in?account=string&password=string", formData);
+      const response = await axios.post(
+        "/sign-api/sign-in?account=string&password=string",
+        data
+      );
       console.log(response.data);
     } catch (error) {
       console.error("로그인 에러", error);
@@ -24,33 +24,34 @@ const Login = () => {
   };
 
   return (
-    <LoginLayout>
-      <Tiltle>
-        <h1>프롬프렌과 함께해요</h1>
-        <p>
-          <span>아이디</span>와 <span>비밀번호</span>를 작성해주세요
-        </p>
-      </Tiltle>
-      <LoginForm onSubmit={handleSubmit}>
-        <InputGroup>
-          <Input
-            name="account"
-            type="text"
-            placeholder="아이디"
-            value={formData.account}
-            onChange={handleChange}
-          />
-          <Input
-            name="password"
-            type="password"
-            placeholder="비밀번호"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <SubmitButton type="submit">시작하기</SubmitButton>
-        </InputGroup>
-      </LoginForm>
-    </LoginLayout>
+    <>
+      <Header isLoggedIn={false} marginTop="34px" />
+      <LoginLayout>
+        <Title>
+          <h1>프롬프렌과 함께해요</h1>
+          <p>
+            <span>아이디</span>와 <span>비밀번호</span>를 작성해주세요
+          </p>
+        </Title>
+        <LoginForm onSubmit={handleSubmit(onSubmit)}>
+          <InputGroup>
+            <Input
+              {...register("account", { required: "아이디를 입력해주세요" })}
+              type="text"
+              placeholder="아이디"
+            />
+            {errors.account && <Error>{(errors.account as FieldError).message}</Error>}
+            <Input
+              {...register("password", { required: "비밀번호를 입력해주세요" })}
+              type="password"
+              placeholder="비밀번호"
+            />
+            {errors.password && <Error>{(errors.password as FieldError).message}</Error>}
+            <SubmitButton type="submit">시작하기</SubmitButton>
+          </InputGroup>
+        </LoginForm>
+      </LoginLayout>
+    </>
   );
 };
 
@@ -62,9 +63,10 @@ const LoginLayout = styled.div`
   align-items: center;
   text-align: center;
   font-family: "Noto Sans KR";
+  margin-top: 9.81rem;
 `;
 
-const Tiltle = styled.div`
+const Title = styled.div`
   h1 {
     width: 326px;
     height: 29px;
@@ -120,4 +122,11 @@ const SubmitButton = styled.button`
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
+`;
+
+const Error = styled.span`
+  color: red;
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: 10px;
 `;
