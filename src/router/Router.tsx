@@ -4,6 +4,7 @@ import Signup from "../pages/SignUp/SignUp";
 import Login from "../pages/Login/Login";
 import Guide from "../pages/Guide/Guide";
 import Main from "../pages/Main/Main";
+import PromptDetail from "../pages/PromptDetail/PromptDetail";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/main",
     element: <Main />,
+  },
+  {
+    path: "/detail_page",
+    element: <PromptDetail />,
   },
 ]);
 

@@ -9,7 +9,12 @@ export default function MainSection2() {
   return (
     <Section2>
       <Title>
-        다양한 장르의 <span>프롬프트</span>를 만나보세요!
+        다양한 장르의 <span>
+          <SpanCircle>프</SpanCircle>
+          <SpanCircle>롬</SpanCircle>
+          <SpanCircle>프</SpanCircle>
+          <SpanCircle>트</SpanCircle>
+          </span>를 만나보세요!
       </Title>
 
       <TypeList>
@@ -64,14 +69,20 @@ const Title = styled.div`
   font-size: 32px;
   font-style: normal;
   font-weight: 300;
-  margin-top: 45px;
+  margin-top: 30px;
   margin-bottom: 20px;
 
   span {
     font-weight: 700;
     display: inline-block;
     box-shadow: inset 0 -30px 0 #FFFFFF;
+    text-emphasis: filled #FFFFFF;
   }
+`;
+
+const SpanCircle = styled.div`
+display: inline-block;
+
 `;
 
 const TypeList = styled.div`

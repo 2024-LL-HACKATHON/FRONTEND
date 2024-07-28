@@ -12,7 +12,6 @@ export default function Main() {
         <MainSection1 />
         <MainSection2 />
         <MainSection3 />
-        
         <Footer />
       </MainContainer>
     );
