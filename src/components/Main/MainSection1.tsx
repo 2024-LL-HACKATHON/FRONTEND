@@ -3,16 +3,20 @@ import { ReactComponent as SearchImg } from "../../assets/images/SearchIcon.svg"
 import { ReactComponent as ServiceImg1 } from "../../assets/images/MainSection1_Icon1.svg";
 import { ReactComponent as ServiceImg2 } from "../../assets/images/MainSection1_Icon2.svg";
 import { ReactComponent as ServiceImg3 } from "../../assets/images/MainSection1_Icon3.svg";
+import { ReactComponent as BackCircle } from "../../assets/images/MainSection1_BackCircle.svg";
 
 export default function MainSection1() {
   return (
     <Section1>
+      <Background>
+        <BackCircle />
+      </Background>
       <Contents>
         <Text1>
           <span>프롬프렌</span> 체험해보기
         </Text1>
         <Text2>
-          <p>해당 입력란을 통해 프롬프렌이 제공한 프롬프트를 바로 사용해 볼 수 있어요!</p>
+          해당 입력란을 통해 프롬프렌이 제공한 프롬프트를 바로 사용해 볼 수 있어요!
         </Text2>
 
         <Search>
@@ -63,12 +67,21 @@ export default function MainSection1() {
 
 const Section1 = styled.div`
   background: rgba(205, 240, 220, 0.05);
-  width: 1280px;
+  width: 100%;
   height: 800px;
+  position: relative;
+`;
+const Background = styled.div`
+  position: absolute;
+  top: -34px;
+  left: 0;
+  z-index: -1;
 `;
 
 const Contents = styled.div`
   padding: 151px 0px 62px 107px;
+  position: relative;
+  z-index: 1;
 `;
 
 /*타이틀*/
@@ -102,6 +115,7 @@ const Search = styled.div`
     margin: 10px;
     outline: none;
     border-style: none;
+    background: none;
   }
 `;
 
@@ -178,6 +192,9 @@ const Service = styled.div`
   align-items: center;
   font-size: 12px;
   font-weight: 300;
+  &:hover {
+    transform: scale(1.25);
+  }
 
   p {
     margin-top: 10px;

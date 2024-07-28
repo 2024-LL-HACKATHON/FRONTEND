@@ -12,8 +12,6 @@ export default function Prompt_Item() {
             GPT
         </Category>
         <StyleButton>상세보기</StyleButton>
-
-        
     </Item>
   );
 }

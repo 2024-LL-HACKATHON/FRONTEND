@@ -49,7 +49,7 @@ export default function MainSection2() {
 }
 
 const Section2 = styled.div`
-  width: 1280px;
+  width: 100%;
   height: 331px;
   background: linear-gradient(274deg, #3ec6b7 -5.6%, #6ad2a0 80.7%);
   display: flex;
@@ -69,6 +69,8 @@ const Title = styled.div`
 
   span {
     font-weight: 700;
+    display: inline-block;
+    box-shadow: inset 0 -30px 0 #FFFFFF;
   }
 `;
 
@@ -87,7 +89,7 @@ const Type = styled.div`
   padding: 20px;
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.25);
   }
 `;
 const StyledImg = styled.div`

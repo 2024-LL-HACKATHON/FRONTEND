@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Prompt_Item from './Prompt_Item';
 import { ReactComponent as PageButton1 } from "../../assets/images/MainSection3_Page.svg";
 import { ReactComponent as PageButton2 } from "../../assets/images/MainSection3_Page2.svg";
+import Review from './Review';
 
 
 export default function MainSection3() {
@@ -44,9 +45,13 @@ export default function MainSection3() {
         </PromptList>
 
             <PageButton>
-                <PageButton1 />
+                <PageButton_1 />
                 <PageButton2 />
             </PageButton>
+
+            <ReviewList>
+              <Review />
+            </ReviewList>
     </Section3>
   );
 }
@@ -89,9 +94,16 @@ const PromptList = styled.div`
 `;
 
 const PageButton = styled.div`
-    width: 20px;
     height: 20px;
     margin: 71px 589px 62px 589px;
-    gap: 62px;
 `;
 
+const PageButton_1 = styled(PageButton1)`
+  margin-right: 156px;
+`;
+
+
+const ReviewList = styled.div`
+margin-bottom: 107px; 
+margin-left: 187px;
+`;

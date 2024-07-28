@@ -11,7 +11,7 @@ export default function MainTop() {
         <Img2 />
       </Background>
       <HeaderWrapper>
-      <Header isLoggedIn={false} />
+      <Header isLoggedIn={false} marginTop="34px"/>
       </HeaderWrapper>
       <Text>
         <span>프롬프렌</span>의 다양한 기능을 <span>활용</span>해 보세요!
@@ -39,6 +39,7 @@ const Text = styled.div`
     font-weight: 700;
     display: inline-block;
     box-shadow: inset 0 -30px 0 rgba(66, 208, 159, 0.39);
+    text-emphasis: filled #B6EDDA;
   }
 `;
 

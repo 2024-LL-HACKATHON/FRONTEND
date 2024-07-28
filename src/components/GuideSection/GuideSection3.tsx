@@ -37,7 +37,6 @@ const Page3 = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 100%;
-
   position: relative;
 `;
 
@@ -51,7 +50,8 @@ const Tip = styled.div`
 const ContentRight = styled.div`
   width: 518px;
   height: auto;
-  font-size: 20px;
+  font-size: 16px;
+  font-weight: 300;
   align-items: flex-start;
   margin-top: 122px;
   margin-left: 110px;
@@ -68,7 +68,8 @@ const TaskImg = styled(Task)`
 const ContentLeft = styled.div`
   margin-bottom: 122px;
   margin-left: 750px;
-  font-size: 20px;
+  font-size: 16px;
+  font-weight: 300;
 `;
 
 // 맥락 이미지
