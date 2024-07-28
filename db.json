@@ -1,13 +1,26 @@
 {
-  "users": [
-    {
-      "id": "eb39",
-      "name": "배채은",
-      "email": "0101",
-      "phone": "010",
-      "username": "01lily0302",
-      "password": "1234",
-      "nickname": "챈"
-    }
-  ]
+  "competitions": {
+    "current": {
+      "title": "미래 도시 설계",
+      "participants": 24,
+      "dateRange": "2024.08.01~2024.08.08"
+    },
+    "past": [
+      {
+        "title": "스타트업 대표의 운영방식",
+        "participants": 33,
+        "dateRange": "2024.07.10~2024.07.20"
+      },
+      {
+        "title": "AI 혁신 아이디어 공모전",
+        "participants": 40,
+        "dateRange": "2024.06.15~2024.06.25"
+      },
+      {
+        "title": "스마트 홈 해커톤",
+        "participants": 28,
+        "dateRange": "2024.05.01~2024.05.10"
+      }
+    ]
+  }
 }
