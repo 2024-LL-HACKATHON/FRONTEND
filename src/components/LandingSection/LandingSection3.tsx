@@ -5,7 +5,6 @@ import { ReactComponent as Content1Img } from "../../assets/images/Content1Img.s
 import { ReactComponent as Content2Img } from "../../assets/images/Content2Img.svg";
 import { ReactComponent as Content3Img } from "../../assets/images/Content3Img.svg";
 import { ReactComponent as Content4Img } from "../../assets/images/Content4Img.svg";
-import Header from "../Header/Header";
 
 export default function LandingSection3() {
   const [selectedContent, setSelectedContent] = useState("content1");
@@ -17,8 +16,11 @@ export default function LandingSection3() {
           <ContentWrapper>
             <ContentNum>01</ContentNum>
             <ContentTitle>
-              프롬프트 
-              <ContentTitleSpan> 공유 <Dot>•</Dot> 검색</ContentTitleSpan>
+              프롬프트
+              <ContentTitleSpan>
+                {" "}
+                공유 <Dot>•</Dot> 검색
+              </ContentTitleSpan>
             </ContentTitle>
             <ContentSubTitle>
               프롬프렌은 커뮤니티 사용자들이 프롬프트를
@@ -115,9 +117,6 @@ export default function LandingSection3() {
 
   return (
     <LandingSection3Container>
-      <HeaderWrapper>
-        <Header isLoggedIn={false} marginTop="2.6875rem" />
-      </HeaderWrapper>
       <MainContent>
         <LandingSection3SideBox>
           <LandingSection3SideBoxTitle>서비스 소개</LandingSection3SideBoxTitle>
@@ -157,20 +156,11 @@ export default function LandingSection3() {
 }
 
 const LandingSection3Container = styled.div`
-  width: 80rem; // 1280px
   max-width: 80rem;
+  height: 50rem;
   background: rgba(114, 212, 155, 0.05);
-  margin-top: 9.5625rem; // 153px
   position: relative;
   margin: 0 auto;
-`;
-
-const HeaderWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 3;
 `;
 
 const MainContent = styled.div`
@@ -184,9 +174,9 @@ const MainContent = styled.div`
 
 const LandingSection3SideBox = styled.div`
   width: 21.1875rem; // 339px
-  height: 54.6875rem; // 875px
+  height: 48.9375rem; 
   flex-shrink: 0;
-  border-radius: 0px 2.875rem 0px 0px; // 0px 46px
+  border-radius: 0px 2.875rem 0px 0px; 
   background: #fff;
   box-shadow: 0.4375rem 0.4375rem 1.875rem 0 rgba(66, 208, 159, 0.3); // 7px 7px 30px
   display: flex;
@@ -194,6 +184,7 @@ const LandingSection3SideBox = styled.div`
   padding: 1.25rem; // 20px
   position: relative;
   z-index: 1;
+  margin-top: 1rem;
 
   @media (max-width: 768px) {
     width: 100%;

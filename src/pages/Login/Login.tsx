@@ -23,7 +23,7 @@ const Login = () => {
 
   return (
     <>
-      <Header isLoggedIn={false} marginTop="34px" />
+      <Header isLoggedIn={false} fixed={false} />
       <LoginLayout>
         <Title>
           <h1>프롬프렌과 함께해요</h1>

@@ -2,13 +2,11 @@ import React from "react";
 import { ReactComponent as LandingSection6Logo } from "../../assets/images/LandingSection6Logo.svg";
 import { ReactComponent as LandingSection6Togo } from "../../assets/images/LandingSection6Togo.svg";
 import styled from "styled-components";
-import Header from "../Header/Header";
-import { Link } from "react-router-dom"; // Import Link
+import { Link } from "react-router-dom";
 
 export default function LandingSection6() {
   return (
     <LandingSection6Box>
-      <Header isLoggedIn={false} />
       <LandingSection6Container>
         <LandingSection6LogoLayout>
           <LandingSection6Logo />
@@ -33,7 +31,8 @@ export default function LandingSection6() {
 }
 
 const LandingSection6Box = styled.div`
-  width: 80rem; // 1280px
+  width: 80rem;
+  height: 40rem;
   margin: 0 auto;
 `;
 

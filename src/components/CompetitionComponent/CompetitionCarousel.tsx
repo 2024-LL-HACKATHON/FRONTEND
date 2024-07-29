@@ -67,7 +67,7 @@ function CompetitionCarousel() {
   return (
     <>
       <CompetitionHead>
-        <Header isLoggedIn={false} marginTop="2.13rem" />
+        <Header isLoggedIn={false} fixed={false}/>
         <CarouselWrapper>
           <button onClick={handlePrev}>
             <CompetitionCarouselLeft />

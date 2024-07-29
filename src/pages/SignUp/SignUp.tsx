@@ -31,7 +31,7 @@ export default function Signup() {
 
   return (
     <>
-      <Header isLoggedIn={false} marginTop="47px" />
+      <Header isLoggedIn={false} fixed={false}/>
       <SignupLayout>
         <SignupTitle>
           <h1>프롬프렌에 온걸 환영해요</h1>

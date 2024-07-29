@@ -11,7 +11,7 @@ export default function MainTop() {
         <Img2 />
       </Background>
       <HeaderWrapper>
-      <Header isLoggedIn={false} marginTop="34px"/>
+      <Header isLoggedIn={false} fixed={false}/>
       </HeaderWrapper>
       <Text>
         <span>프롬프렌</span>의 다양한 기능을 <span>활용</span>해 보세요!

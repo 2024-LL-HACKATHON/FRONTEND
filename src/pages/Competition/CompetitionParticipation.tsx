@@ -55,7 +55,7 @@ function CompetitionParticipation() {
 
   return (
     <>
-      <Header isLoggedIn={false} marginTop="34px" />
+      <Header isLoggedIn={false} fixed={false}/>
       <ParticipationTitle>
         <h1>경진대회 참가 등록</h1>
         <p>경진대회 참가 정보를 입력해주세요</p>
