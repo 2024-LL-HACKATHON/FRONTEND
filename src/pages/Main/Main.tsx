@@ -21,4 +21,7 @@ export default function Main() {
   width: 100%;
   height: 100vh;
 `;
+<<<<<<< HEAD
+=======
 
+>>>>>>> 12b5cf23c1136e6df3c10aac4d4377d8129eabd0
