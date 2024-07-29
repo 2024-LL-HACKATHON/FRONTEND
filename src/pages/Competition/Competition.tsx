@@ -116,10 +116,10 @@ const CompetitionTitle = styled.div`
 `;
 
 const CompetitionContainer = styled.div`
-  display: flex;
   width: 80rem;
   margin: 0 auto;
   margin-top: 3.44rem;
+  position: relative;
 `;
 
 const CompetitionProceedingBox = styled.div`
@@ -229,22 +229,21 @@ const CompetitionImgBox = styled.div`
   height: 23.70831rem;
   border-radius: 1rem;
   position: absolute;
-  right: 214px;
-  top: 49rem;
   z-index: 2;
+  left: calc(56.8125rem - 16rem);
+  top: 3.44rem;
 `;
 
 const DDayCountdownBox = styled.div`
-  width: 35.5625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   height: 4.25rem;
   border-radius: 0rem 0rem 1rem 1rem;
   background: #72d49b;
   position: absolute;
   bottom: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const CompetitionPastBox = styled.div`

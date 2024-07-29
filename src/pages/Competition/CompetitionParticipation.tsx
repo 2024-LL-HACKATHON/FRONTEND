@@ -114,7 +114,7 @@ function CompetitionParticipation() {
 export default CompetitionParticipation;
 
 const ParticipationTitle = styled.div`
-  width: 80rem; 
+  width: 80rem;
   margin: 0 auto;
   h1 {
     color: #000;
@@ -138,21 +138,27 @@ const ParticipationTitle = styled.div`
   }
 `;
 const ParticipationInfo = styled.div`
+  width: 69.1875rem;
+  height: 24.6875rem;
+  flex-shrink: 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-top: 4.19rem;
+  margin-left: 10.69rem;
 `;
 
 const ParticipationInfoText = styled.div`
   display: flex;
   flex-direction: column;
+  margin-right: 14.88rem;
 `;
 
 const ParticipationToggleButtonBox = styled.div`
   display: flex;
   flex-direction: row;
   gap: 2.25rem;
+  margin-top: 4.5rem;
+  margin-left: 5.63rem;
 `;
 
 const ParticipateButton = styled.div`
@@ -205,6 +211,8 @@ const ParticipateForm = styled.form`
   flex-direction: column;
   padding: 2rem;
   gap: 1rem;
+  margin-left: 5.63rem;
+  margin-top: 5.69rem;
 
   label {
     width: 8.88rem;
@@ -312,3 +320,5 @@ const ErrorMessage = styled.span`
   font-size: 0.875rem;
   font-family: "Gmarket Sans TTF";
 `;
+
+export{ParticipationInfo, ParticipationInfoText, CompetitionExample };
