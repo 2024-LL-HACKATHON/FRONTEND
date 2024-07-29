@@ -3,11 +3,17 @@ import styled from "styled-components";
 import { ReactComponent as Logo } from "../../assets/images/Logo.svg";
 import { Link } from "react-router-dom";
 import { HeaderProps, StyledHeaderProps } from "./types";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { logout } from "../../services/authSlice";
 
-const Header = ({
-  isLoggedIn,
-  marginTop = "",
-}: HeaderProps & StyledHeaderProps) => {
+const Header: React.FC<HeaderProps> = ({ marginTop }) => {
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   return (
     <HeaderLayout marginTop={marginTop}>
       <Link to="/">
@@ -21,8 +27,8 @@ const Header = ({
         <StyledLink to="/guide">프롬프트 작성 가이드</StyledLink>
       </NavLinks>
       <AuthLinks>
-        {isLoggedIn ? (
-          <StyledLink to="/">로그아웃</StyledLink>
+      {isLoggedIn ? (
+          <StyledLink to="/" onClick={handleLogout}>로그아웃</StyledLink>
         ) : (
           <>
             <StyledLink to="/login">로그인</StyledLink>

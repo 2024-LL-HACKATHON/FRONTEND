@@ -8,17 +8,16 @@ import Competition from "../pages/Competition/Competition";
 import Main from "../pages/Main/Main";
 import CompetitionParticipation from "../pages/Competition/CompetitionParticipation";
 import CompetitionList from "../pages/Competition/CompetitionList";
+import PrivateRoute from "../pages/Private";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Landing />,
-    children: [
-    ],
   },
   {
     path: "/main",
-    element: <Main/>,
+    element: <PrivateRoute element={<Main />} />, 
   },
   {
     path: "/login",
@@ -33,12 +32,12 @@ const router = createBrowserRouter([
     element: <Guide />,
   },
   {
-    path: "/main",
-    element: <Main />,
-  },
-  {
     path: "/detail_page",
     element: <PromptDetail />,
+  },
+  {
+    path: "/competition",
+    element: <Competition />,
   },
   {
     path: "/competitionparticipation",

@@ -1,23 +1,20 @@
-import React, { useState } from "react";
-import Header from "../../components/Header/Header";
-import styled from "styled-components";
-import axios from "axios";
-import { useForm, FieldError } from "react-hook-form";
-import Header from "../../components/Header/Header";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useForm, FieldError } from 'react-hook-form';
+import axios from 'axios';
+import { login } from '../../services/authSlice';
+import styled from 'styled-components';
+import Header from '../../components/Header/Header';
 
 const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const dispatch = useDispatch();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = async (data: any) => {
     try {
-      const response = await axios.post(
-        "/sign-api/sign-in?account=string&password=string",
-        data
-      );
+      const response = await axios.post("/sign-api/sign-in?account=string&password=string", data);
+      const token = response.data.token; 
+      dispatch(login(token));
       console.log(response.data);
     } catch (error) {
       console.error("로그인 에러", error);
@@ -47,13 +44,12 @@ const Login = () => {
               type="password"
               placeholder="비밀번호"
             />
-            {errors.password && <Error>{(errors.password as FieldError).message}</Error>}
+            {errors.password && <Error>{(errors.account as FieldError).message}</Error>}
             <SubmitButton type="submit">시작하기</SubmitButton>
           </InputGroup>
         </LoginForm>
       </LoginLayout>
     </>
-
   );
 };
 
