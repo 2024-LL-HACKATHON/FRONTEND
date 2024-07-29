@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Header from "../../components/Header/Header";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -25,6 +26,7 @@ const Login = () => {
 
   return (
     <LoginLayout>
+      <Header isLoggedIn={false} marginTop="34px" />
       <Tiltle>
         <h1>프롬프렌과 함께해요</h1>
         <p>
