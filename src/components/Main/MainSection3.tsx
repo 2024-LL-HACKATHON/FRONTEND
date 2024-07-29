@@ -7,8 +7,9 @@ import Review from './Review';
 
 export default function MainSection3() {
   const [selectedButton, setSelectedButton] = useState('전체'); // item 종류
-  
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
   const itemsToShow = 9;
+
   // Prompt_Item을 렌더링하는 함수
   const renderPromptItems = (count: number) => {
     return Array.from({ length: count }, (_, index) => (
@@ -16,73 +17,86 @@ export default function MainSection3() {
     ));
   };
 
+  // 이전 페이지로 이동
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // 다음 페이지로 이동
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
   return (
     <Section3>
-        <ButtonList>
-            <StyledButton 
-              isSelected={selectedButton === '전체'}
-              onClick={() => setSelectedButton('전체')}
-            >
-              전체
-            </StyledButton>
-            <StyledButton 
-              isSelected={selectedButton === 'GPT'}
-              onClick={() => setSelectedButton('GPT')}
-            >
-              GPT
-            </StyledButton>
-            <StyledButton 
-              isSelected={selectedButton === 'DALL-E'}
-              onClick={() => setSelectedButton('DALL-E')}
-            >
-              DALL-E
-            </StyledButton>
-        </ButtonList>
+      <ButtonList>
+        <StyledButton 
+          isSelected={selectedButton === '전체'}
+          onClick={() => setSelectedButton('전체')}
+        >
+          전체
+        </StyledButton>
+        <StyledButton 
+          isSelected={selectedButton === 'GPT'}
+          onClick={() => setSelectedButton('GPT')}
+        >
+          GPT
+        </StyledButton>
+        <StyledButton 
+          isSelected={selectedButton === 'DALL-E'}
+          onClick={() => setSelectedButton('DALL-E')}
+        >
+          DALL-E
+        </StyledButton>
+      </ButtonList>
 
-        <PromptList>
-            {renderPromptItems(itemsToShow)}
-        </PromptList>
+      <PromptList>
+        {renderPromptItems(itemsToShow)}
+      </PromptList>
 
-            <PageButton>
-                <PageButton_1 />
-                <PageButton2 />
-            </PageButton>
+      <PageButton>
+        <PageButton_1 onClick={handlePreviousPage} />
+        <PageButton_2 onClick={handleNextPage} />
+      </PageButton>
 
-            <ReviewList>
-              <Review />
-            </ReviewList>
+      <ReviewList>
+        <Review />
+      </ReviewList>
     </Section3>
   );
 }
 /* 타입선정 */
 interface StyledButtonProps {
-    isSelected: boolean;
+  isSelected: boolean;
 }
 
 const Section3 = styled.div`
-width: 100%;
+  width: 100%;
 `;
 
 const ButtonList = styled.div`
-    display: flex;
-    margin-top: 36px;
-    margin-left: 106px;
-    gap-bottom: 20px;
+  display: flex;
+  margin-top: 36px;
+  margin-left: 106px;
+  gap-bottom: 20px;
 `;
 
 const StyledButton = styled.button<StyledButtonProps>`
-    width: 90px;
-    height: 44px;
-    border-radius: 7px;
-    border: 1px solid #72D49B;
-    background: ${props => props.isSelected ? '#72D49B' : '#FFF'};
-    color: ${props => props.isSelected ? '#FFF' : '#000'};
-    cursor: pointer;
+  width: 90px;
+  height: 44px;
+  border-radius: 7px;
+  border: 1px solid #72D49B;
+  background: ${props => props.isSelected ? '#72D49B' : '#FFF'};
+  color: ${props => props.isSelected ? '#FFF' : '#000'};
+  cursor: pointer;
+  margin-right: 20px;
 
-    &:hover {
-        background: #72D49B;
-        color: #FFF;
-    }
+  &:hover {
+    background: #72D49B;
+    color: #FFF;
+  }
 `;
 
 const PromptList = styled.div`
@@ -104,6 +118,11 @@ const PageButton = styled.div`
 
 const PageButton_1 = styled(PageButton1)`
   margin-right: 156px;
+  cursor: pointer;
+`;
+
+const PageButton_2 = styled(PageButton2)`
+  cursor: pointer;
 `;
 
 const ReviewList = styled.div`
