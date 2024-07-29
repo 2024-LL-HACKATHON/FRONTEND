@@ -4,6 +4,7 @@ import { ReactComponent as ServiceImg1 } from "../../assets/images/MainSection1_
 import { ReactComponent as ServiceImg2 } from "../../assets/images/MainSection1_Icon2.svg";
 import { ReactComponent as ServiceImg3 } from "../../assets/images/MainSection1_Icon3.svg";
 import { ReactComponent as BackCircle } from "../../assets/images/MainSection1_BackCircle.svg";
+import { Link } from "react-router-dom";
 
 export default function MainSection1() {
   return (
@@ -57,14 +58,23 @@ export default function MainSection1() {
           </ServiceInfo>
 
           <UserInfo>
-            
+            <UserInfo_Left>
+              <p><span>홍길동</span> 회원님 반갑습니다!</p>
+              {/* 유저이미지 */}
+            </UserInfo_Left>
+            <UserInfo_Right>
+              <StyledLink to="/prompt_register">
+                <StyledButton>프롬프트 등록하기</StyledButton>
+              </StyledLink>
+            </UserInfo_Right>
           </UserInfo>
         </InfoContainer>
       </Contents>
     </Section1>
   );
 }
-
+const StyledLink = styled(Link)`
+`;
 const Section1 = styled.div`
   background: rgba(205, 240, 220, 0.05);
   height: 800px;
@@ -234,4 +244,28 @@ const UserInfo = styled.div`
   font-family: "Noto Sans KR";
   font-size: 18px;
   font-weight: 300;
+  padding: 15px 0px;
+`;
+const UserInfo_Left = styled.div`
+  padding: 17px 33px 0px 57px;
+  border-right: 1px solid #72D49B;
+    p {
+    font-family: "Gmarket Sans TTF";
+    font-size: 18px;
+    font-weight: 300;
+    }
+    span {
+    font-weight: 700;
+    }
+`;
+const UserInfo_Right = styled.div`
+padding-left: 10px;
+`;
+const StyledButton = styled.button`
+  font-size: 20px;
+  padding: 15px;
+  font-family: "Gmarket Sans TTF";
+  border-radius: 10px;
+  background: linear-gradient(90deg, #72D49B 0%, #2CC1BF 100%);
+  border: none;
 `;

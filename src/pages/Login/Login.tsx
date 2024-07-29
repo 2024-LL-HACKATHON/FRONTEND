@@ -3,7 +3,6 @@ import Header from "../../components/Header/Header";
 import styled from "styled-components";
 import axios from "axios";
 import { useForm, FieldError } from "react-hook-form";
-import Header from "../../components/Header/Header";
 
 const Login = () => {
   const {
