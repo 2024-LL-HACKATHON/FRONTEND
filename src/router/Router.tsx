@@ -6,6 +6,8 @@ import Guide from "../pages/Guide/Guide";
 import PromptDetail from "../pages/PromptDetail/PromptDetail";
 import Competition from "../pages/Competition/Competition";
 import Main from "../pages/Main/Main";
+import CompetitionParticipation from "../pages/Competition/CompetitionParticipation";
+import CompetitionList from "../pages/Competition/CompetitionList";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
   {
     path: "/detail_page",
     element: <PromptDetail />,
+  },
+  {
+    path: "/competitionparticipation",
+    element: <CompetitionParticipation />,
+  },
+  {
+    path: "/competitionlist",
+    element: <CompetitionList />,
   },
 ]);
 

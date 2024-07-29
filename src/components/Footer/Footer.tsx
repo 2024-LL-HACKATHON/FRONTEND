@@ -25,6 +25,7 @@ const FooterLogoLayout = styled(Logo)`
   margin-top: 41px;
   width: 115px;
   height: 115px;
+  margin-left: 3.94rem;
 `;
 
 const FooterStroke = styled.div`
@@ -41,4 +42,5 @@ const FooterText = styled.div`
   font-weight: 400;
   line-height: 26px;
   margin-top: 14px;
+  margin-left: 3.94rem;
 `;
