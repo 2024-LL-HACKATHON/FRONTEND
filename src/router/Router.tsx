@@ -5,6 +5,7 @@ import Login from "../pages/Login/Login";
 import Guide from "../pages/Guide/Guide";
 import Main from "../pages/Main/Main";
 import PromptDetail from "../pages/PromptDetail/PromptDetail";
+import Competition from "../pages/Competition/Competition";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
     element: <Landing />,
     children: [
     ],
+  },
+  {
+    path: "/main",
+    element: <Main/>,
   },
   {
     path: "/login",
@@ -32,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/detail_page",
     element: <PromptDetail />,
+  },
+  {
+    path: "/competition",
+    element: <Competition />,
   },
 ]);
 

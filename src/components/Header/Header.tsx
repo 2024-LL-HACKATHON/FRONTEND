@@ -10,9 +10,11 @@ const Header = ({
 }: HeaderProps & StyledHeaderProps) => {
   return (
     <HeaderLayout marginTop={marginTop}>
-      <LogoSize>
-        <Logo />
-      </LogoSize>
+      <Link to="/">
+        <LogoSize>
+          <Logo />
+        </LogoSize>
+      </Link>
       <NavLinks>
         <StyledLink to="/main">메인으로 가기</StyledLink>
         <StyledLink to="/competition">도전 프롬프렌!</StyledLink>
@@ -35,25 +37,25 @@ const Header = ({
 export default Header;
 
 const HeaderLayout = styled.div<StyledHeaderProps>`
-  width: 1161px;
-  height: 73px;
+  width: 72.5625rem; // 1161px
+  height: 4.5625rem; // 73px
   margin-top: ${({ marginTop }) => marginTop};
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 1.25rem; // 20px
   background-color: transparent;
 `;
 
 const LogoSize = styled(Logo)`
-  width: 115px;
-  height: 115px;
+  width: 7.1875rem; // 115px
+  height: 7.1875rem; // 115px
   flex-shrink: 0;
 `;
 
 const NavLinks = styled.nav`
   display: flex;
-  margin-left: 225px;
-  gap: 98px;
+  margin-left: 14.0625rem; // 225px
+  gap: 6.125rem; // 98px
 `;
 
 const StyledLink = styled(Link)`
@@ -61,7 +63,7 @@ const StyledLink = styled(Link)`
   color: #000;
   text-align: center;
   font-family: "Noto Sans KR";
-  font-size: 14px;
+  font-size: 0.875rem; // 14px
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -70,5 +72,5 @@ const StyledLink = styled(Link)`
 const AuthLinks = styled.div`
   margin-left: auto;
   display: flex;
-  gap: 25px;
+  gap: 1.5625rem; // 25px
 `;

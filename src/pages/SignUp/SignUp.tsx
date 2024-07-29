@@ -8,7 +8,7 @@ export default function Signup() {
     name: "",
     email: "",
     phone: "",
-    username: "",
+    account: "",
     password: "",
     nickname: "",
   });
@@ -21,13 +21,12 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:4000/users", formData);
+      const response = await axios.post("/sign-api/sign-up", formData);
       console.log(response.data);
     } catch (error) {
       console.error("회원가입 에러", error);
     }
   };
-  
 
   return (
     <>
@@ -76,7 +75,7 @@ export default function Signup() {
                 <Input
                   name="username"
                   type="text"
-                  value={formData.username}
+                  value={formData.account}
                   onChange={handleChange}
                 />
               </label>
