@@ -52,7 +52,8 @@ const Tip = styled.div`
 const ContentLeft = styled.div`
   margin-top: 122px;
   margin-left: 110px;
-  font-size: 20px;
+  font-size: 16px;
+  font-weight: 300;
 `;
 
 // 페르소나 이미지
@@ -65,7 +66,8 @@ const PersonaImg = styled(Persona)`
 const ContentRight = styled.div`
   margin-bottom: 122px;
   margin-left: 750px;
-  font-size: 20px;
+  font-size: 16px;
+  font-weight: 300;
 `;
 
 // 예시 이미지

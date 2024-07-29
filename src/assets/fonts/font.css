@@ -4,8 +4,26 @@
     src:
       url("./GmarketSansMedium.otf") format("opentype");
             
-    font-weight: 400;
-    font-style: normal;
+      font-weight: 400;
+      font-style: normal;
+  }
+  @font-face {
+    font-family: 'Gmarket Sans TTF';
+  
+    src:
+      url("./GmarketSansBold.otf") format("opentype");
+            
+      font-weight: 700;
+      font-style: normal;
+  }
+  @font-face {
+    font-family: 'Gmarket Sans TTF';
+
+    src:
+      url("./GmarketSansMedium.otf") format("opentype");
+            
+      font-weight: 100;
+      font-style: normal;
   }
 
 @font-face {
@@ -14,6 +32,25 @@
     src:
       url("./NotoSansKR-Regular.otf") format("opentype");
             
-    font-weight: 300;
-    font-style: normal;
+      font-weight: 400;
+      font-style: normal;
+  }
+  @font-face {
+    font-family: 'Noto Sans KR';
+  
+    src:
+      url("./NotoSansKR-Bold.otf") format("opentype");
+            
+      font-weight: 700;
+      font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Noto Sans KR';
+  
+    src:
+      url("./NotoSansKR-Thin.otf") format("opentype");
+            
+      font-weight: 100;
+      font-style: normal;
   }
