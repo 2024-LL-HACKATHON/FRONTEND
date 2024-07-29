@@ -5,7 +5,6 @@ import { ReactComponent as PageButton1 } from "../../assets/images/MainSection3_
 import { ReactComponent as PageButton2 } from "../../assets/images/MainSection3_Page2.svg";
 import Review from './Review';
 
-
 export default function MainSection3() {
   const [selectedButton, setSelectedButton] = useState('전체'); // item 종류
   
@@ -58,16 +57,17 @@ export default function MainSection3() {
 /* 타입선정 */
 interface StyledButtonProps {
     isSelected: boolean;
-  }
+}
 
 const Section3 = styled.div`
+width: 100%;
 `;
 
 const ButtonList = styled.div`
     display: flex;
     margin-top: 36px;
     margin-left: 106px;
-    gap: 20px;
+    gap-bottom: 20px;
 `;
 
 const StyledButton = styled.button<StyledButtonProps>`
@@ -88,22 +88,25 @@ const StyledButton = styled.button<StyledButtonProps>`
 const PromptList = styled.div`
   margin-left: 106px;
   margin-top: 28px;
+  margin-right: 107px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 325px 325px 325px;
+  grid-template-rows: auto auto auto;
   gap: 35px;
 `;
 
 const PageButton = styled.div`
-    height: 20px;
-    margin: 71px 589px 62px 589px;
+  height: 20px;
+  text-align: center;
+  margin-top: 71px;
+  margin-bottom: 62px;
 `;
 
 const PageButton_1 = styled(PageButton1)`
   margin-right: 156px;
 `;
 
-
 const ReviewList = styled.div`
-margin-bottom: 107px; 
-margin-left: 187px;
+  margin-bottom: 107px; 
+  margin-left: 187px;
 `;

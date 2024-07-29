@@ -67,7 +67,6 @@ export default function MainSection1() {
 
 const Section1 = styled.div`
   background: rgba(205, 240, 220, 0.05);
-  width: 100%;
   height: 800px;
   position: relative;
 `;
