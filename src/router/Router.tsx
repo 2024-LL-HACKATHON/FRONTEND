@@ -3,8 +3,9 @@ import Landing from "../pages/Landing/Landing";
 import Signup from "../pages/SignUp/SignUp";
 import Login from "../pages/Login/Login";
 import Guide from "../pages/Guide/Guide";
-import Main from "../pages/Main/Main";
 import PromptDetail from "../pages/PromptDetail/PromptDetail";
+import Competition from "../pages/Competition/Competition";
+import Main from "../pages/Main/Main";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
     element: <Landing />,
     children: [
     ],
+  },
+  {
+    path: "/main",
+    element: <Main/>,
   },
   {
     path: "/login",

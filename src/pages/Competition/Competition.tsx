@@ -1,122 +1,241 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header/Header";
+import styled from "styled-components";
+import { ReactComponent as CompetitionCarouselLeft } from "../../assets/images/CompetitionCarouselLeft.svg";
+import { ReactComponent as CompetitionCarouselRight } from "../../assets/images/CompetitionCarouselRight.svg";
 
-export default function Competition() {
+interface Box {
+  id: number;
+  text: string;
+  title: string;
+  image?: {
+    src: string;
+    alt: string;
+  };
+}
+
+const boxes: Box[] = [
+  {
+    id: 1,
+    text: "최고의 AI 프롬프트를 찾아내는 여정에 함께해요!",
+    title: "바로 이곳, 프롬프렌에서 당신의 아이디어를 펼쳐보세요!",
+    image: {
+      src: require("../../assets/images/CompetitionCarouselImg1.svg").default,
+      alt: "프롬프트 이미지",
+    },
+  },
+  {
+    id: 2,
+    text: "AI의 힘을 이용해 새로운 세상을 만들어 보세요!",
+    title: "창의적인 아이디어를 현실로 만들어 드립니다!",
+    image: {
+      src: require("../../assets/images/CompetitionCarouselImg2.svg").default,
+      alt: "프롬프트 이미지",
+    },
+  },
+  {
+    id: 3,
+    text: "여러분의 꿈을 실현할 기회를 놓치지 마세요!",
+    title: "여기서 당신의 꿈을 펼쳐보세요!",
+    image: {
+      src: require("../../assets/images/CompetitionCarouselImg3.svg").default,
+      alt: "프롬프트 이미지",
+    },
+  },
+];
+
+function Competition() {
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === boxes.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000); // 3초 간격으로 자동 이동
+
+    return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 인터벌 정리
+  }, []);
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? boxes.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === boxes.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const handleDotClick = (index: number) => {
+    setCurrentIndex(index);
+  };
+
   return (
     <>
       <CompetitionHead>
-        <Header isLoggedIn={false} marginTop="34px" />
-        <CompetitionTitle>도전! 프롬프렌</CompetitionTitle>
-        <CarouselContainer>
-          <Container>
-            <Carousel id="carousel">
-              <Figure>1</Figure>
-              <Figure>2</Figure>
-              <Figure>3</Figure>
-              <Figure>4</Figure>
-            </Carousel>
-          </Container>
-        </CarouselContainer>
+        <Header isLoggedIn={false} marginTop="2.13rem" />
+        <CarouselWrapper>
+          <button onClick={handlePrev}>
+            <CompetitionCarouselLeft />
+          </button>
+          <CompetitionCarouselContainer>
+            {[0, 1, 2].map((offset) => {
+              const boxIndex = (currentIndex + offset) % boxes.length;
+              const box = boxes[boxIndex];
+              return (
+                <CompetitionCarouselBox key={boxIndex} active={offset === 1}>
+                  <p>{box.text}</p>
+                  <h1>{box.title}</h1>
+                  {box.image && (
+                    <img src={box.image?.src} alt={box.image?.alt} />
+                  )}
+                </CompetitionCarouselBox>
+              );
+            })}
+          </CompetitionCarouselContainer>
+          <button onClick={handleNext}>
+            <CompetitionCarouselRight />
+          </button>
+        </CarouselWrapper>
       </CompetitionHead>
+      <CarouselDots>
+        {boxes.map((_, index) => (
+          <CarouselDot
+            key={index}
+            active={index === currentIndex}
+            onClick={() => handleDotClick(index)}
+          />
+        ))}
+      </CarouselDots>
+      <CompetitionTitle>도전! 프롬프렌</CompetitionTitle>
+      <CompetitionProceedingBox></CompetitionProceedingBox>
     </>
   );
 }
 
+export default Competition;
+
 const CompetitionHead = styled.div`
-  width: 1280px;
-  height: 501px;
+  width: 80rem;
+  height: 31.3125rem;
   flex-shrink: 0;
   background: linear-gradient(
     90deg,
-    rgba(112, 138, 229, 0.7) 0.07%,
-    rgba(44, 193, 191, 0.7) 99.94%
+    rgba(114, 212, 155, 0.3) 0.07%,
+    rgba(114, 212, 155, 0.3) 99.94%
   );
-  padding-top: 34px;
+  margin: 0 auto;
+`;
+
+const CarouselWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4.06rem;
+  position: relative;
+
+  button {
+    background: transparent;
+    border: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  button:first-of-type {
+    left: 24rem;
+  }
+
+  button:last-of-type {
+    right: 24rem;
+  }
+`;
+
+const CompetitionCarouselContainer = styled.div`
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: 100%;
+  justify-content: center;
+  position: relative;
+`;
+
+const CompetitionCarouselBox = styled.div<{ active: boolean }>`
+  width: 27.95975rem;
+  height: 18.875rem;
+  flex-shrink: 0;
+  border-radius: 1rem;
+  background: #fff;
+  margin: 0 1rem;
+  transition: opacity 0.5s ease-in-out;
+
+  p {
+    color: #000;
+    font-family: "Noto Sans KR";
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: 4.63rem;
+    margin-left: 2.25rem;
+  }
+
+  h1 {
+    color: #000;
+    font-family: "Gmarket Sans TTF";
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: 1rem;
+    margin-left: 2.25rem;
+  }
+
+  img {
+    max-width: 100%;
+    height: 11.34944rem;
+    display: block;
+    margin-left: 13rem;
+    margin-top: -1rem;
+
+  }
+`;
+
+const CarouselDots = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+`;
+
+const CarouselDot = styled.div<{ active: boolean }>`
+  width: 0.9375rem;
+  height: 0.9375rem;
+  background-color: ${({ active }) => (active ? "#72D49B" : "#D9D9D9")};
+  border-radius: 50%;
+  margin: 0 0.5rem;
+  cursor: pointer;
 `;
 
 const CompetitionTitle = styled.div`
   color: #000;
   text-align: center;
   font-family: "Gmarket Sans TTF";
-  font-size: 40px;
+  font-size: 2.5rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin-top: 90px;
+  margin-top: 3.19rem;
 `;
 
-const CarouselContainer = styled.div``;
-
-const Container = styled.div`
-  width: 100%;
-  position: relative;
-  perspective: 3000px;
-  padding: 100px;
-`;
-
-const Carousel = styled.div`
-  position: relative;
-`;
-
-const rotate = keyframes`
-  0%, 20%, 99.7619047619%, 100% {
-    transform: rotateY(45deg) scale(0.6);
-    right: 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    z-index: -1;
-    -webkit-filter: opacity(100%) blur(3px);
-  }
-  24.7619047619%, 45% {
-    transform: rotateY(0deg) scale(1);
-    right: 40%;
-    box-shadow: 0 0 20px black;
-    z-index: 100;
-    -webkit-filter: opacity(100%) blur(0px);
-  }
-  49.7619047619%, 70% {
-    transform: rotateY(-45deg) scale(0.6);
-    right: 81%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    z-index: -1;
-    -webkit-filter: opacity(100%) blur(3px);
-  }
-  74.7619047619%, 95% {
-    transform: rotateY(-90deg) scale(0);
-    right: 0%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0);
-    z-index: 0;
-    -webkit-filter: opacity(0%) blur(0px);
-  }
-`;
-
-const Figure = styled.div`
-  display: block;
-  width: 456.575px;
-  -webkit-box-reflect: below 30px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255, 255, 255, 0.2)));
-  height: 302px;
-  border-radius: 16px;
-  animation: ${rotate} 30000ms ease-in-out infinite;
-  position: absolute;
-  background-color: white;
-  padding: 12em;
-  text-align: center;
-  &:nth-child(1) {
-    animation-delay: -30000ms;
-  }
-  &:nth-child(2) {
-    animation-delay: -22500ms;
-  }
-  &:nth-child(3) {
-    animation-delay: -15000ms;
-  }
-  &:nth-child(4) {
-    animation-delay: -7500ms;
-  }
-  &:nth-child(5) {
-    animation-delay: 0ms;
-  }
-  &:nth-child(6) {
-    animation-delay: 7500ms;
-  }
+const CompetitionProceedingBox = styled.div`
+  width: 56.8125rem;
+  height: 29.375rem;
+  flex-shrink: 0;
+  border-radius: 0rem 1rem 1rem 0rem;
+  background: rgba(114, 212, 155, 0.2);
+  margin-top: 3.44rem;
 `;

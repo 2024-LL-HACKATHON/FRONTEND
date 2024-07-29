@@ -10,7 +10,7 @@ import Header from "../Header/Header";
 export default function LandingSection4() {
   return (
     <LandingSection4Container>
-      <Header isLoggedIn={false} marginTop="117px" />
+      <Header isLoggedIn={false} marginTop="7.3125rem" />
       <LandingSection4Sub>지금 바로! 이곳에서!</LandingSection4Sub>
       <LandingSection4Title>
         <LandingSection4Span>관심사</LandingSection4Span>
@@ -98,43 +98,43 @@ export default function LandingSection4() {
 }
 
 const LandingSection4Container = styled.div`
-  width: 1280px;
-  height: 912px;
-  flex-shrink: 0;
+  width: 80rem;
+  height: 57rem;
   background: linear-gradient(
     180deg,
     rgba(217, 217, 217, 0) 30%,
     rgba(114, 212, 155, 0.35) 80%
   );
+  margin: 0 auto;
 `;
 
 const LandingSection4Sub = styled.div`
   color: #8f8f8f;
   text-align: center;
-  font-family: "Gmarket Sans";
-  font-size: 14px;
+  font-family: "Gmarket Sans TTF";
+  font-size: 0.875rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  margin-top: 86px;
+  margin-top: 5.375rem;
 `;
 
 const LandingSection4Title = styled.div`
   color: #000;
+  text-align: center;
   font-family: "Gmarket Sans TTF";
-  font-size: 48px;
+  font-size: 3rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  text-align: center;
-  margin-top: 26px;
+  margin-top: 1.625rem;
 `;
 
 const LandingSection4Span = styled.span`
   color: #42d09f;
   text-align: center;
   font-family: "Gmarket Sans TTF";
-  font-size: 48px;
+  font-size: 3rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -142,20 +142,20 @@ const LandingSection4Span = styled.span`
 
 const LandingSection4BoxContainer = styled.div`
   display: flex;
-  gap: 33px;
-  margin-top: 71px;
+  gap: 2.0625rem;
+  margin-top: 4.4375rem;
   justify-content: center;
 `;
 
 const LandingSection4Box = styled.div<BoxProps>`
-  width: 222px;
-  height: 362px;
+  width: 13.875rem;
+  height: 22.625rem;
   flex-shrink: 0;
-  border-radius: 16px;
+  border-radius: 1rem;
   border: 1px solid ${(props) => props.borderColor || "#000"};
   background: #fff;
-  box-shadow: 15px 13px 1.5px 0px rgba(97, 220, 132, 0.25);
-  padding: 16px;
+  box-shadow: 0.9375rem 0.8125rem 0.09375rem 0 rgba(97, 220, 132, 0.25);
+  padding: 1rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -166,7 +166,7 @@ const LandingSection4ContentSub = styled.div<BoxProps>`
   color: ${(props) => props.subjectColor || "#000"};
   text-align: center;
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -176,24 +176,24 @@ const LandingSection4ContentTitle = styled.div<BoxProps>`
   color: ${(props) => props.titleColor || "#000"};
   text-align: center;
   font-family: "Gmarket Sans TTF";
-  font-size: 36px;
+  font-size: 2.25rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-top: 12px;
+  margin-top: 0.75rem;
 `;
 
 const LandingSection4Content = styled.div`
   color: #000;
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  margin-top: 23px;
-  flex-grow: 1; 
+  margin-top: 1.4375rem;
+  flex-grow: 1;
   display: flex;
-  align-items: center; 
-  justify-content: center; 
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
 `;

@@ -17,10 +17,8 @@ export default function LandingSection3() {
           <ContentWrapper>
             <ContentNum>01</ContentNum>
             <ContentTitle>
-              프롬프트
-              <ContentTitleSpan>
-                공유 <Dot>•</Dot> 검색
-              </ContentTitleSpan>
+              프롬프트 
+              <ContentTitleSpan> 공유 <Dot>•</Dot> 검색</ContentTitleSpan>
             </ContentTitle>
             <ContentSubTitle>
               프롬프렌은 커뮤니티 사용자들이 프롬프트를
@@ -35,7 +33,7 @@ export default function LandingSection3() {
               주제별 카테고리와 태그를 사용하여 필요에 맞는 프롬프트를
               효율적으로 관리하고 활용하세요.
             </ContentText>
-            <ContentImgBox height="571.855px">
+            <ContentImgBox height="35.74rem">
               <Content1Img />
             </ContentImgBox>
           </ContentWrapper>
@@ -59,7 +57,7 @@ export default function LandingSection3() {
               <br />
               받으세요.
             </ContentText>
-            <ContentImgBox height="670.971px">
+            <ContentImgBox height="41.93rem">
               <Content2Img />
             </ContentImgBox>
           </ContentWrapper>
@@ -81,7 +79,7 @@ export default function LandingSection3() {
               <br />한 프롬프트에 대한 피드백을 받아볼 수 있으며, 이를 통해 더욱
               완성도 높은 프롬프트를 작성할 수<br /> 있습니다.
             </ContentText>
-            <ContentImgBox height="770.971px">
+            <ContentImgBox height="48.18rem">
               <Content3Img />
             </ContentImgBox>
           </ContentWrapper>
@@ -106,7 +104,7 @@ export default function LandingSection3() {
               <br />의 도움을 받아 프롬프트의 질을 향상시켜보세요.
             </ContentText>
             <ContentImgBox>
-              <Content4Img height="643.924px" />
+              <Content4Img height="40.25rem" />
             </ContentImgBox>
           </ContentWrapper>
         );
@@ -116,56 +114,55 @@ export default function LandingSection3() {
   };
 
   return (
-    <>
-      <LandingSection3Container>
-        <HeaderWrapper>
-          <Header isLoggedIn={false} marginTop="43px" />
-        </HeaderWrapper>
-        <MainContent>
-          <LandingSection3SideBox>
-            <LandingSection3SideBoxTitle>
-              서비스 소개
-            </LandingSection3SideBoxTitle>
-            <LandingSection3SideBoxSubTitle>
-              프롬프렌은 AI분석 기반 <br />
-              최상의 프롬프트를 경험하게 해드립니다.
-            </LandingSection3SideBoxSubTitle>
-            <SideButton
-              onClick={() => setSelectedContent("content1")}
-              isActive={selectedContent === "content1"}
-            >
-              01 프롬프트 공유 • 검색
-            </SideButton>
-            <SideButton
-              onClick={() => setSelectedContent("content2")}
-              isActive={selectedContent === "content2"}
-            >
-              02 도전 프롬프렌
-            </SideButton>
-            <SideButton
-              onClick={() => setSelectedContent("content3")}
-              isActive={selectedContent === "content3"}
-            >
-              03 사용자 피드백
-            </SideButton>
-            <SideButton
-              onClick={() => setSelectedContent("content4")}
-              isActive={selectedContent === "content4"}
-            >
-              04 프롬프트 작성 가이드
-            </SideButton>
-          </LandingSection3SideBox>
-          <ContentContainer>{renderContent()}</ContentContainer>
-        </MainContent>
-      </LandingSection3Container>
-    </>
+    <LandingSection3Container>
+      <HeaderWrapper>
+        <Header isLoggedIn={false} marginTop="2.6875rem" />
+      </HeaderWrapper>
+      <MainContent>
+        <LandingSection3SideBox>
+          <LandingSection3SideBoxTitle>서비스 소개</LandingSection3SideBoxTitle>
+          <LandingSection3SideBoxSubTitle>
+            프롬프렌은 AI분석 기반 <br />
+            최상의 프롬프트를 경험하게 해드립니다.
+          </LandingSection3SideBoxSubTitle>
+          <SideButton
+            onClick={() => setSelectedContent("content1")}
+            isActive={selectedContent === "content1"}
+          >
+            01 프롬프트 공유 • 검색
+          </SideButton>
+          <SideButton
+            onClick={() => setSelectedContent("content2")}
+            isActive={selectedContent === "content2"}
+          >
+            02 도전 프롬프렌
+          </SideButton>
+          <SideButton
+            onClick={() => setSelectedContent("content3")}
+            isActive={selectedContent === "content3"}
+          >
+            03 사용자 피드백
+          </SideButton>
+          <SideButton
+            onClick={() => setSelectedContent("content4")}
+            isActive={selectedContent === "content4"}
+          >
+            04 프롬프트 작성 가이드
+          </SideButton>
+        </LandingSection3SideBox>
+        <ContentContainer>{renderContent()}</ContentContainer>
+      </MainContent>
+    </LandingSection3Container>
   );
 }
 
 const LandingSection3Container = styled.div`
+  width: 80rem; // 1280px
+  max-width: 80rem;
   background: rgba(114, 212, 155, 0.05);
-  margin-top: 153px;
+  margin-top: 9.5625rem; // 153px
   position: relative;
+  margin: 0 auto;
 `;
 
 const HeaderWrapper = styled.div`
@@ -178,95 +175,128 @@ const HeaderWrapper = styled.div`
 
 const MainContent = styled.div`
   display: flex;
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const LandingSection3SideBox = styled.div`
-  width: 339px;
-  height: 875px;
+  width: 21.1875rem; // 339px
+  height: 54.6875rem; // 875px
   flex-shrink: 0;
-  border-radius: 0px 46px 0px 0px;
+  border-radius: 0px 2.875rem 0px 0px; // 0px 46px
   background: #fff;
-  box-shadow: 7px 7px 30px 0px rgba(66, 208, 159, 0.3);
+  box-shadow: 0.4375rem 0.4375rem 1.875rem 0 rgba(66, 208, 159, 0.3); // 7px 7px 30px
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 1.25rem; // 20px
   position: relative;
   z-index: 1;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+  }
 `;
 
 const LandingSection3SideBoxTitle = styled.div`
   color: #000;
   font-family: "Gmarket Sans TTF";
-  font-size: 48px;
+  font-size: 3rem; // 48px
   font-weight: 700;
-  margin-top: 189px;
+  margin-top: 11.8125rem; // 189px
+
+  @media (max-width: 768px) {
+    font-size: 2.25rem; // 36px
+    margin-top: 3rem; // 48px
+  }
 `;
 
 const LandingSection3SideBoxSubTitle = styled.div`
   color: #42d09f;
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem; // 14px
   font-weight: 400;
-  margin-top: 7px;
-  margin-bottom: 89px;
+  margin-top: 0.4375rem; // 7px
+  margin-bottom: 5.5625rem; // 89px
+
+  @media (max-width: 768px) {
+    margin-top: 0.25rem; // 4px
+    margin-bottom: 2rem; // 32px
+  }
 `;
 
 const SideButton = styled.button<SideButtonProps>`
-  width: 353px;
-  height: 69px;
+  width: 22.0625rem; // 353px
+  height: 4.3125rem; // 69px
   background: ${(props) =>
     props.isActive
       ? "linear-gradient(95deg, #72D49B -4.4%, #2CC1BF 113.17%)"
       : "transparent"};
   color: ${(props) => (props.isActive ? "#FFF" : "#000")};
   border: none;
-  border-radius: 50px 8px 8px 50px;
-  padding: 10px;
+  border-radius: 3.125rem 0.5rem 0.5rem 3.125rem; // 50px 8px 8px 50px
+  padding: 0.625rem; // 10px
   cursor: pointer;
-  margin: 5px 0;
+  margin: 0.3125rem 0; // 5px
   font-family: "Gmarket Sans TTF";
-  font-size: 20px;
+  font-size: 1.25rem; // 20px
   font-weight: ${(props) => (props.isActive ? "700" : "500")};
   transition: background 0.3s;
   text-align: left;
-  padding-left: 50px;
+  padding-left: 3.125rem; // 50px
   &:hover {
-    background: ${(props) =>
-      props.isActive
-        ? "linear-gradient(95deg, #72D49B -4.4%, #2CC1BF 113.17%)"
-        : "linear-gradient(95deg, #72D49B -4.4%, #2CC1BF 113.17%)"};
+    background: linear-gradient(95deg, #72d49b -4.4%, #2cc1bf 113.17%);
     color: white;
   }
 
   &:active {
-    background: ${(props) => (props.isActive ? "#3ab48b" : "#3ab48b")};
+    background: #3ab48b;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    border-radius: 1rem; // 16px
+    padding-left: 1.25rem; // 20px
   }
 `;
 
 const ContentContainer = styled.div`
-  width: calc(100% - 339px);
-  margin-left: 67px;
-  margin-top: 194px;
+  width: calc(100% - 21.1875rem); // 100% - 339px
+  margin-left: 4.1875rem; // 67px
+  margin-top: 12.125rem; // 194px
   position: relative;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 2rem; // 32px
+  }
 `;
 
 const ContentWrapper = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem; // 20px
 `;
 
 const ContentNum = styled.div`
   color: #42d09f;
   font-family: "Gmarket Sans TTF";
-  font-size: 20px;
+  font-size: 1.25rem; // 20px
   font-weight: 700;
-  margin-bottom: 11px;
+  margin-bottom: 0.6875rem; // 11px
 `;
 
 const ContentTitle = styled.div`
   color: #000;
   font-family: "Gmarket Sans TTF";
-  font-size: 64px;
+  font-size: 4rem; // 64px
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    font-size: 2.5rem; // 40px
+  }
 `;
 
 const ContentTitleSpan = styled.span`
@@ -281,27 +311,41 @@ const Dot = styled.span`
 const ContentSubTitle = styled.div`
   color: #000;
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 20px;
+  font-size: 1.25rem; // 20px
   font-weight: 600;
-  margin-top: 47px;
+  margin-top: 2.9375rem; // 47px
+
+  @media (max-width: 768px) {
+    font-size: 1rem; // 16px
+  }
 `;
 
 const ContentText = styled.div`
   color: #7e7e7e;
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem; // 12px
   font-weight: 400;
-  line-height: 25px; /* 208.333% */
-  margin-top: 17px;
+  line-height: 1.5625rem; // 25px
+  margin-top: 1.0625rem; // 17px
   position: relative;
   z-index: 1;
+
+  @media (max-width: 768px) {
+    font-size: 0.6875rem; // 11px
+    line-height: 1.375rem; // 22px
+  }
 `;
 
 const ContentImgBox = styled.div<{ height?: string }>`
   position: absolute;
-  height: ${(props) => props.height || "541.855px"};
+  height: ${(props) => props.height || "33.866rem"}; // 541.855px
   flex-shrink: 0;
   right: 0;
   bottom: 0;
   z-index: 0;
+
+  @media (max-width: 768px) {
+    height: auto;
+    position: relative;
+  }
 `;
