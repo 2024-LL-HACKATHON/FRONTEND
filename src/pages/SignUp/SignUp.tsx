@@ -11,6 +11,7 @@ export default function Signup() {
     account: "",
     password: "",
     nickname: "",
+    thumbnail: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +22,7 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/sign-api/sign-up", formData);
+      const response = await axios.post("/sign-api/sign-up?roles=ADMIN", formData);
       console.log(response.data);
     } catch (error) {
       console.error("회원가입 에러", error);
@@ -73,7 +74,7 @@ export default function Signup() {
               <label>
                 아이디
                 <Input
-                  name="username"
+                  name="account"
                   type="text"
                   value={formData.account}
                   onChange={handleChange}
@@ -94,6 +95,15 @@ export default function Signup() {
                   name="nickname"
                   type="text"
                   value={formData.nickname}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                썸네일
+                <Input
+                  name="thumbnail"
+                  type="text"
+                  value={formData.thumbnail}
                   onChange={handleChange}
                 />
               </label>
