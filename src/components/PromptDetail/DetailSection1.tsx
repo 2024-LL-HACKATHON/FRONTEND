@@ -132,6 +132,7 @@ const PromptTryButton = styled.button`
   border-radius: 16px;
   border: 1px solid #42D09F;
   cursor: pointer;
-  background-color: #fff;
+  background: linear-gradient(90deg, #72D49B 0%, #2CC1BF 100%);
+  color: #FFF;
   }
 `;

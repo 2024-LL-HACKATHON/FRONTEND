@@ -23,7 +23,6 @@ export default function MainTop() {
 const MainTopContainer = styled.div`
   position: relative;
   height: 435px;
-  width: 100%;
 `;
 
 const Text = styled.div`

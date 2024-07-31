@@ -41,9 +41,8 @@ const Background = styled.div`
 const TitleLayout = styled.div`
   width: 1127px;
   height: 267px;
-  fill: rgba(255, 255, 255, 0.60);
-  stroke-width: 2px;
-  stroke: rgba(44, 193, 191, 0.30);
+  fill: rgba(255, 255, 255, 0.6);
+  border: 2px solid rgba(44, 193, 191, 0.30);
   box-shadow: 50px 50px 200px 0px rgba(255, 255, 255, 0.25) inset;
   filter: drop-shadow(3px 4px 11px rgba(114, 212, 155, 0.25));
   backdrop-filter: blur(15px);

@@ -54,7 +54,6 @@ export default function MainSection2() {
 }
 
 const Section2 = styled.div`
-  width: 100%;
   height: 331px;
   background: linear-gradient(274deg, #3ec6b7 -5.6%, #6ad2a0 80.7%);
   display: flex;

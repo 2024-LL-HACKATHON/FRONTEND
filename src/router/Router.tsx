@@ -9,6 +9,7 @@ import Main from "../pages/Main/Main";
 import CompetitionParticipation from "../pages/Competition/CompetitionParticipation";
 import CompetitionList from "../pages/Competition/CompetitionList";
 import PrivateRoute from "../pages/Private";
+import PromptRegisterPage from "../pages/PromptDetail/PromptRegister";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
   {
     path: "/competitionlist",
     element: <CompetitionList />,
+  },
+  {
+    path: "/prompt_register",
+    element: <PromptRegisterPage />,
   },
 ]);
 
