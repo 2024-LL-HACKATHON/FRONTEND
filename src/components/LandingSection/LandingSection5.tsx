@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Header from "../Header/Header";
 
 export default function LandingSection5() {
   const [hoveredBox, setHoveredBox] = useState<number | null>(null);
   return (
     <LandingSection5Container>
-      <HeaderWrapper>
-        <Header isLoggedIn={false} marginTop="" />
-      </HeaderWrapper>
       <LandingSection5SubTitle>
         프롬프렌 사용 방법에 대해 궁금한 점이 있으신가요?
       </LandingSection5SubTitle>
@@ -62,19 +58,14 @@ export default function LandingSection5() {
 
 const LandingSection5Container = styled.div`
   width: 80rem;
-  height: 75.1875rem;
+  height: 50rem;
   background: linear-gradient(
     180deg,
     rgba(114, 212, 155, 0.35) 30%,
     rgba(217, 217, 217, 0) 80%
   );
-  padding-top: 5.5rem;
   position: relative;
   margin: 0 auto;
-`;
-
-const HeaderWrapper = styled.div`
-  margin-top: 5.5rem;
 `;
 
 const LandingSection5SubTitle = styled.div`
@@ -84,7 +75,6 @@ const LandingSection5SubTitle = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  margin-top: 6.6875rem;
   margin-left: 12.0625rem;
   margin-bottom: 1.25rem;
 `;

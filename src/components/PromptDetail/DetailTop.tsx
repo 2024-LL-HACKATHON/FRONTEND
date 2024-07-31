@@ -6,7 +6,7 @@ export default function PromptDetailTop() {
   return (
     <TopLayout>
       <Background>
-        <Header isLoggedIn={false} marginTop="34px" />
+        <Header isLoggedIn={false} fixed={false} />
         </Background>
         {/*불투명*/}
         <TitleLayout>

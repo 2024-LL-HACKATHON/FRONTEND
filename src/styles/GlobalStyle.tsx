@@ -9,8 +9,22 @@ const GlobalStyle = createGlobalStyle`
     font-display: swap;
   }
   @font-face {
+    font-family: "Noto Sans KR Thin";
+    src: url('../assets/fonts/NotoSansKR-Thin.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
     font-family: 'Gmarket Sans TTF';
     src: url('../assets/fonts/GmarketSansMedium.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+      @font-face {
+    font-family: 'Gmarket Sans TTF Light';
+    src: url('../assets/fonts/GmarketSansLight.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
