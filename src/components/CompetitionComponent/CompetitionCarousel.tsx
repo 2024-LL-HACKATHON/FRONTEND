@@ -117,7 +117,6 @@ const CompetitionHead = styled.div`
     rgba(114, 212, 155, 0.3) 99.94%
   );
   margin: 0 auto;
-  margin-top: -2.13rem;
 `;
 
 const CarouselWrapper = styled.div`

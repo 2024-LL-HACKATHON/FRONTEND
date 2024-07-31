@@ -49,7 +49,6 @@ export default Header;
 
 const HeaderLayout = styled.div<{ fixed?: boolean }>`
   width: 72.5625rem; // 1161px
-  margin-top: 34px;
   height: 4.5625rem; // 73px
   display: flex;
   align-items: center;
