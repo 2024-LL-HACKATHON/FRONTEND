@@ -3,19 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyle from './styles/GlobalStyle';
+import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
+import store from './store/store';
 import router from './router/Router';
-import '../src/assets/fonts/font.css'
-
-
+import '../src/assets/fonts/font.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <GlobalStyle />
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <GlobalStyle />
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
 

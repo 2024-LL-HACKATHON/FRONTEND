@@ -2,14 +2,23 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../assets/images/Logo.svg";
 import { Link } from "react-router-dom";
-import { HeaderProps, StyledHeaderProps } from "./types";
+import { HeaderProps } from "./types";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { logout } from "../../services/authSlice";
 
-const Header = ({
-  isLoggedIn,
-  marginTop = "",
-}: HeaderProps & StyledHeaderProps) => {
+const Header: React.FC<HeaderProps> = ({ fixed = true }) => {
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
-    <HeaderLayout marginTop={marginTop}>
+    <HeaderLayout fixed={fixed}>
       <Link to="/">
         <LogoSize>
           <Logo />
@@ -22,7 +31,9 @@ const Header = ({
       </NavLinks>
       <AuthLinks>
         {isLoggedIn ? (
-          <StyledLink to="/">로그아웃</StyledLink>
+          <StyledLink to="/" onClick={handleLogout}>
+            로그아웃
+          </StyledLink>
         ) : (
           <>
             <StyledLink to="/login">로그인</StyledLink>
@@ -36,14 +47,23 @@ const Header = ({
 
 export default Header;
 
-const HeaderLayout = styled.div<StyledHeaderProps>`
+const HeaderLayout = styled.div<{ fixed?: boolean }>`
   width: 72.5625rem; // 1161px
   height: 4.5625rem; // 73px
-  margin-top: ${({ marginTop }) => marginTop};
   display: flex;
   align-items: center;
   padding: 0 1.25rem; // 20px
   background-color: transparent;
+  ${({ fixed }) =>
+    fixed
+      ? `
+      position: fixed;
+      z-index: 1000;
+    `
+      : `
+      position: static;
+      z-index: auto;
+    `}
 `;
 
 const LogoSize = styled(Logo)`

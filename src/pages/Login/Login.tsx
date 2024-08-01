@@ -1,31 +1,57 @@
-import React, { useState } from "react";
-import Header from "../../components/Header/Header";
-import styled from "styled-components";
-import axios from "axios";
+import React from "react";
+import { useDispatch } from "react-redux";
 import { useForm, FieldError } from "react-hook-form";
+import axios from "axios";
+import { login } from "../../services/authSlice";
+import styled from "styled-components";
+import Header from "../../components/Header/Header";
+
+type LoginFormInputs = {
+  account: string;
+  password: string;
+};
 
 const Login = () => {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<LoginFormInputs>();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: LoginFormInputs) => {
     try {
       const response = await axios.post(
-        "/sign-api/sign-in?account=string&password=string",
-        data
+        "/sign-api/sign-in",
+        null,
+        {
+          params: {
+            account: data.account,
+            password: data.password,
+          },
+        }
       );
+      const token = response.data.token;
+      // 토큰을 로컬 스토리지에 저장
+      localStorage.setItem("authToken", token);
+      // Axios 기본 헤더에 토큰 추가
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      dispatch(login(token));
       console.log(response.data);
-    } catch (error) {
-      console.error("로그인 에러", error);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error("Axios 오류:", error.response?.data || error.message);
+      } else if (error instanceof Error) {
+        console.error("네트워크 오류:", error);
+      } else {
+        console.error("알 수 없는 오류:", error);
+      }
     }
   };
 
   return (
     <>
-      <Header isLoggedIn={false} marginTop="34px" />
+      <Header isLoggedIn={false} fixed={false} />
       <LoginLayout>
         <Title>
           <h1>프롬프렌과 함께해요</h1>
@@ -40,19 +66,22 @@ const Login = () => {
               type="text"
               placeholder="아이디"
             />
-            {errors.account && <Error>{(errors.account as FieldError).message}</Error>}
+            {errors.account && (
+              <Error>{(errors.account as FieldError).message}</Error>
+            )}
             <Input
               {...register("password", { required: "비밀번호를 입력해주세요" })}
               type="password"
               placeholder="비밀번호"
             />
-            {errors.password && <Error>{(errors.password as FieldError).message}</Error>}
+            {errors.password && (
+              <Error>{(errors.password as FieldError).message}</Error>
+            )}
             <SubmitButton type="submit">시작하기</SubmitButton>
           </InputGroup>
         </LoginForm>
       </LoginLayout>
     </>
-
   );
 };
 

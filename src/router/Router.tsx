@@ -8,18 +8,17 @@ import Competition from "../pages/Competition/Competition";
 import Main from "../pages/Main/Main";
 import CompetitionParticipation from "../pages/Competition/CompetitionParticipation";
 import CompetitionList from "../pages/Competition/CompetitionList";
+import PrivateRoute from "../pages/Private";
 import PromptRegisterPage from "../pages/PromptDetail/PromptRegister";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Landing />,
-    children: [
-    ],
   },
   {
     path: "/main",
-    element: <Main/>,
+    element: <Main />,
   },
   {
     path: "/login",
@@ -32,10 +31,6 @@ const router = createBrowserRouter([
   {
     path: "/guide",
     element: <Guide />,
-  },
-  {
-    path: "/main",
-    element: <Main />,
   },
   {
     path: "/detail_page",

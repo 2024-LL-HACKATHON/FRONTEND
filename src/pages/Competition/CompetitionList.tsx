@@ -59,7 +59,7 @@ const CompetitionList: React.FC = () => {
   return (
     <>
       <CompetitionListHead>
-        <Header isLoggedIn={false} marginTop="" />
+        <Header isLoggedIn={false} fixed={false}/>
         <CompetitionGlassWrapper>
           <CompetitionGlassSvg />
           <TextOverlay>경진대회 참가 리스트</TextOverlay>

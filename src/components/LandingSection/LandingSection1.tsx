@@ -2,117 +2,102 @@ import { ReactComponent as LandingToMainButton } from "../../assets/images/Landi
 import { ReactComponent as LandingImg1 } from "../../assets/images/LandingImg1.svg";
 import styled, { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
-import Header from "../Header/Header";
 
 export default function LandingSection1() {
   return (
-    <>
-      <Header isLoggedIn={false} marginTop="2.125rem" />
-      <LandingContent>
-        <LandingTexts>
-          <LandingSlogan>Prom Here, Prom Now</LandingSlogan>
-          <LandingMainText>프롬프렌</LandingMainText>
-          <LandingSideText>
-            Promfren과 함께 AI 프롬프트를 공유하고 <br /> 새로운 웰니스를
-            경험하세요
-          </LandingSideText>
+    <Container>
+      <Content>
+        <Texts>
+          <Slogan>Prom Here, Prom Now</Slogan>
+          <MainHeading>프롬프렌</MainHeading>
+          <SideText>
+            Promfren과 함께 AI 프롬프트를 공유하고 <br /> 새로운 웰니스를 경험하세요
+          </SideText>
           <StyledLink to="/main">
-            <LandingToMain>
+            <ToMain>
               지금 시작하기
               <LandingToMainButton />
-            </LandingToMain>
+            </ToMain>
           </StyledLink>
-        </LandingTexts>
-        <LandingImg1Styled />
-      </LandingContent>
-      <LandingDiv405>
-        <LandingDiv405Title>프롬프트?</LandingDiv405Title>
-        <LandingDiv405Stroke />
-        <LandingDiv405Content>
-          AI가 최상의 답을 할 수 있도록 훈련 시키고 AI로
-          <br />
+        </Texts>
+        <Img1Styled />
+      </Content>
+      <Div405>
+        <Div405Title>프롬프트?</Div405Title>
+        <Div405Stroke />
+        <Div405Content>
+          AI가 최상의 답을 할 수 있도록 훈련 시키고 AI로<br />
           부터 최상의 답을 이끌어내는 도구
-        </LandingDiv405Content>
-      </LandingDiv405>
-    </>
+        </Div405Content>
+      </Div405>
+    </Container>
   );
 }
 
-const LandingContent = styled.div`
-  display: flex;
-  max-width: 80rem; 
-  justify-content: space-between;
+const Container = styled.section`
+  max-width: 80rem;
+  height: 60.0625rem;
   margin: 0 auto;
 `;
 
-const LandingTexts = styled.div`
-  width: 31.25rem; // 500px
-  height: 17.1875rem; // 275px
+const Content = styled.div`
+  display: flex;
+  height: 50rem;
+  justify-content: space-between;
+`;
+
+const Texts = styled.div`
+  width: 31.25rem;
+  height: 17.1875rem;
   flex-shrink: 0;
-  margin-top: 14.625rem; // 234px
-
-  @media (max-width: 768px) {
-    margin-top: 5rem;
-  }
+  margin-top: 14.63rem;
 `;
 
-const LandingTextBase = styled.div`
+const Slogan = styled.p`
   font-family: "Gmarket Sans TTF";
-  font-style: normal;
   font-weight: 700;
-`;
-
-const LandingSlogan = styled(LandingTextBase)`
   color: #7e7e7e;
-  font-size: 1rem; // 16px
-  margin-left: 13.4375rem; // 215px
-
-  @media (max-width: 768px) {
-    margin-left: 0;
-    text-align: center;
-  }
+  font-size: 1rem;
+  margin-left: 13.4375rem;
 `;
 
-const LandingMainText = styled(LandingTextBase)`
+const MainHeading = styled.h1`
+  font-family: "Gmarket Sans TTF";
+  font-weight: 700;
   color: #2cc1bf;
-  font-size: 6rem; // 96px
+  font-size: 6rem;
   line-height: 1.18;
-  margin-left: 8.125rem; // 130px
-  margin-top: 1.1875rem; // 19px
-
-  @media (max-width: 768px) {
-    margin-left: 0;
-    text-align: center;
-    font-size: 3rem;
-  }
+  margin-left: 8.125rem;
+  margin-top: 1.1875rem;
 `;
 
-const LandingSideText = styled.div`
-  width: 16.25rem; // 260px
-  height: 2.625rem; // 42px
+const SideText = styled.p`
+  width: 16.25rem;
+  height: 2.625rem;
   text-align: center;
   color: #7e7e7e;
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.875rem; // 14px
+  font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.5;
-  margin-left: 11.875rem; // 190px
-  margin-top: 1.1875rem; // 19px
+  margin-left: 11.875rem;
+  margin-top: 1.1875rem;
 
   @media (max-width: 768px) {
     margin-left: 0;
   }
 `;
 
-const LandingToMain = styled(LandingTextBase)`
+const ToMain = styled.div`
   display: flex;
   align-items: center;
+  font-family: "Gmarket Sans TTF";
+  font-weight: 700;
   color: #2cc1bf;
-  font-size: 1rem; // 16px
-  line-height: normal;
-  margin-left: 15.9375rem; // 255px
-  margin-top: 3.5rem; // 56px
-  gap: 0.3125rem; // 5px
+  font-size: 1rem;
+  margin-left: 15.9375rem;
+  margin-top: 3.5rem;
+  gap: 0.3125rem;
 
   @media (max-width: 768px) {
     margin-left: 0;
@@ -136,9 +121,11 @@ const swayAnimation = keyframes`
   }
 `;
 
-const LandingImg1Styled = styled(LandingImg1)`
-  margin-top: 3.5rem; // 56px
-  margin-left: 2.3125rem; // 37px
+const Img1Styled = styled(LandingImg1)`
+  width: 40.375rem;
+  height: 37.5625rem;
+  flex-shrink: 0;
+  margin-left: 5.3125rem;
   animation: ${swayAnimation} 4s ease-in-out infinite;
 
   @media (max-width: 768px) {
@@ -148,16 +135,14 @@ const LandingImg1Styled = styled(LandingImg1)`
   }
 `;
 
-const LandingDiv405 = styled.div`
+const Div405 = styled.div`
   display: flex;
-  width: 80rem; // 1280px
-  height: 14.0625rem; // 225px
-  flex-shrink: 0;
+  width: 100%;
+  max-width: 80rem;
+  height: 14.0625rem;
   background: linear-gradient(90deg, #42d09f 0%, #2cc1bf 100%);
   align-items: center;
-  margin-top: 11.1875rem; // 179px
   padding: 0 1rem;
-  margin: 0 auto;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -166,10 +151,12 @@ const LandingDiv405 = styled.div`
   }
 `;
 
-const LandingDiv405Title = styled(LandingTextBase)`
+const Div405Title = styled.h2`
+  font-family: "Gmarket Sans TTF";
+  font-weight: 700;
   color: #fff;
-  font-size: 4rem; // 64px
-  margin-left: 16.6875rem; // 267px
+  font-size: 4rem;
+  margin-left: 16.6875rem;
 
   @media (max-width: 768px) {
     margin-left: 0;
@@ -178,28 +165,28 @@ const LandingDiv405Title = styled(LandingTextBase)`
   }
 `;
 
-const LandingDiv405Stroke = styled.div`
-  width: 0.09375rem; // 1.5px
-  height: 8.59375rem; // 137.5px
+const Div405Stroke = styled.div`
+  width: 0.09375rem;
+  height: 8.59375rem;
   background: #fff;
   flex-shrink: 0;
-  margin-left: 3.875rem; // 62px
+  margin-left: 3.875rem;
 
   @media (max-width: 768px) {
     width: 80%;
-    height: 0.09375rem; // 1.5px
+    height: 0.09375rem;
     margin: 1rem 0;
   }
 `;
 
-const LandingDiv405Content = styled.div`
+const Div405Content = styled.p`
   color: #fff;
   text-align: justify;
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 1rem; // 16px
+  font-size: 1rem;
   font-weight: 500;
   line-height: 1.44858;
-  margin-left: 3.875rem; // 62px
+  margin-left: 3.875rem;
 
   @media (max-width: 768px) {
     margin-left: 0;

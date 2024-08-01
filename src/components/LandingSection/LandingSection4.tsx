@@ -5,12 +5,10 @@ import { ReactComponent as LandingSection4Img1 } from "../../assets/images/Landi
 import { ReactComponent as LandingSection4Img2 } from "../../assets/images/LandingSection4Img2.svg";
 import { ReactComponent as LandingSection4Img3 } from "../../assets/images/LandingSection4Img3.svg";
 import { ReactComponent as LandingSection4Img4 } from "../../assets/images/LandingSection4Img4.svg";
-import Header from "../Header/Header";
 
 export default function LandingSection4() {
   return (
     <LandingSection4Container>
-      <Header isLoggedIn={false} marginTop="7.3125rem" />
       <LandingSection4Sub>지금 바로! 이곳에서!</LandingSection4Sub>
       <LandingSection4Title>
         <LandingSection4Span>관심사</LandingSection4Span>
@@ -99,7 +97,7 @@ export default function LandingSection4() {
 
 const LandingSection4Container = styled.div`
   width: 80rem;
-  height: 57rem;
+  height: 50rem;
   background: linear-gradient(
     180deg,
     rgba(217, 217, 217, 0) 30%,

@@ -14,6 +14,7 @@
     "@types/react-dom": "^18.0.0",
     "axios": "^1.7.2",
     "framer-motion": "^11.3.19",
+    "framer-motion": "^11.3.19",
     "global": "^4.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -50,5 +51,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8000"
+  "proxy": "http://3.34.212.137:8080"
 }
