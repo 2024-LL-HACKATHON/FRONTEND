@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import Header from "../../components/Header/Header";
 import axios from "axios";
+import { ReactComponent as SignUpImg } from "../../assets/images/SignUpImg.svg";
 
 export default function Signup() {
+  // 회원가입 폼 데이터 상태 관리
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,29 +16,31 @@ export default function Signup() {
     thumbnail: "",
   });
 
+  // 회원가입 단계 상태 관리
   const [step, setStep] = useState(1);
 
+  // 입력 필드 변경 처리
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, files } = e.target;
     if (type === "file" && files) {
       const file = files[0];
       try {
-        // Create a FormData object and append the file
+        // FormData 객체를 생성하고 파일 추가
         const fileData = new FormData();
         fileData.append("file", file);
 
-        // Send a POST request to the server
+        // 서버에 파일 업로드 요청 보내기
         const uploadResponse = await axios.post("/api/files/upload", fileData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
 
-        // Handle response
+        // 응답 처리
         const fileUrl = uploadResponse.data;
         setFormData((prevData) => ({
           ...prevData,
-          thumbnail: fileUrl, // Update the state with the file URL
+          thumbnail: fileUrl, // 파일 URL로 상태 업데이트
         }));
       } catch (error) {
         console.error("파일 업로드 에러", error);
@@ -46,10 +50,12 @@ export default function Signup() {
     }
   };
 
+  // 다음 단계로 이동
   const handleNext = () => {
     setStep((prevStep) => prevStep + 1);
   };
 
+  // 폼 제출 처리
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -167,20 +173,26 @@ export default function Signup() {
                         alt="Thumbnail Preview"
                       />
                     ) : (
-                      "썸네일 업로드"
+                      "이미지 파일 업로드"
                     )}
                   </ThumbnailButton>
                 </label>
-                <SubmitButton type="submit">
-                  확인
-                </SubmitButton>
+                <SubmitButton type="submit">확인</SubmitButton>
               </SignupInputGroup>
             </SlideIn>
           )}
           {step === 3 && (
             <SignupInputGroup>
-              <h2>{formData.name}님, 회원가입을 축하드립니다!</h2>
-              <SubmitButton type="submit">가입하기</SubmitButton>
+              <SignUpImgBox>
+                <SignUpImg />
+              </SignUpImgBox>
+              <h1 id="step3H1">가입을 축하드립니다</h1>
+              <h2 id="step3H2">
+                <span>{formData.name}</span>님
+              </h2>
+              <SubmitButton id="step3Btn" type="submit">
+                로그인 하러가기
+              </SubmitButton>
             </SignupInputGroup>
           )}
         </SignupForm>
@@ -214,6 +226,7 @@ const SignupLayout = styled.div`
 
 const SignupTitle = styled.div`
   text-align: center;
+  margin-bottom: 2.12rem;
   h1 {
     font-size: 1.5rem;
     font-weight: 700;
@@ -235,6 +248,10 @@ const SignupForm = styled.form`
   margin-top: 2.12rem;
 `;
 
+const SignUpImgBox = styled.div`
+  margin-left: 5rem;
+  margin-bottom: 2.25rem;
+`;
 const SignupInputGroup = styled.div`
   margin-bottom: 2.375rem;
 
@@ -255,6 +272,45 @@ const SignupInputGroup = styled.div`
     text-align: right;
     margin-right: 0.5rem;
     margin-bottom: 1rem;
+  }
+  #step3H1 {
+    color: #000;
+    text-align: center;
+    font-family: "Gmarket Sans TTF";
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 1.25rem;
+  }
+  #step3H2 {
+    background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: "Gmarket Sans TTF";
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-left: 5rem;
+  }
+  #step3H2 span {
+    text-align: center;
+    font-family: "Gmarket Sans TTF";
+    font-size: 6rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  #step3Btn {
+    margin-top: 7rem;
+    margin-left: 5rem;
   }
 `;
 
@@ -310,12 +366,14 @@ const ThumbnailButton = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  text-align: center;
   font-family: "Noto Sans KR";
-  font-size: 1rem;
-  font-weight: 700;
+  color: #626260;
+  text-align: center;
+  font-family: "Noto Sans";
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
   line-height: normal;
-  color: #fff;
   border: none;
 `;
 

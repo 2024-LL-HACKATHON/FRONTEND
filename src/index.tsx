@@ -5,8 +5,8 @@ import reportWebVitals from './reportWebVitals';
 import GlobalStyle from './styles/GlobalStyle';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
-import store from './store/store';
 import router from './router/Router';
+import { store } from './store/store';
 import '../src/assets/fonts/font.css';
 
 const root = ReactDOM.createRoot(

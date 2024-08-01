@@ -1,151 +1,143 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Header from "../../components/Header/Header";
 import { useForm } from "react-hook-form";
-import { ReactComponent as CompetitionExample } from "../../assets/images/CompetitionExampleImg.svg";
-import { ReactComponent as ParticipateImg } from "../../assets/images/ParticipateImg.svg";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
   title: string;
   content: string;
-  image: File | string; // Modified to handle file and string type
-}
-
-interface Competition {
-  title: string;
-  participants: number;
-  dateRange: string;
-}
-
-interface CompetitionsResponse {
-  current: Competition;
-  past: Competition[];
+  image: string; // 이미지 URL을 저장할 string 타입
 }
 
 function CompetitionParticipation() {
-  const [competitions, setCompetitions] = useState<CompetitionsResponse | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue, // 폼 값을 프로그래밍 방식으로 업데이트하기 위해 사용
+  } = useForm<FormData>();
+  const [error, setError] = React.useState<string | null>(null);
+  const [token, setToken] = React.useState<string | null>(
+    localStorage.getItem("token")
+  );
+  const navigate = useNavigate();
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  // 파일 변경 및 업로드 처리
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, type, files } = e.target;
 
-  useEffect(() => {
-    const fetchCompetitions = async () => {
+    if (type === "file" && files) {
+      const file = files[0];
       try {
-        const response = await axios.get('http://localhost:3001/competitions');
-        setCompetitions(response.data);
-      } catch (err) {
-        setError('데이터를 가져오는 중 오류가 발생했습니다.');
-      } finally {
-        setLoading(false);
+        const fileData = new FormData();
+        fileData.append("file", file);
+
+        // 파일 업로드
+        const uploadResponse = await axios.post("/api/files/upload", fileData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        // 응답 처리
+        const fileUrl = uploadResponse.data; // 서버에서 반환한 이미지 URL
+        setValue("image", fileUrl); // 이미지 URL을 폼 값에 설정
+      } catch (error) {
+        console.error("파일 업로드 에러", error);
+        setError("파일 업로드 중 오류가 발생했습니다.");
       }
-    };
+    }
+  };
 
-    fetchCompetitions();
-  }, []);
-
+  // 폼 제출 처리
   const onSubmit = async (data: FormData) => {
     try {
+      // FormData 객체 생성
       const formData = new FormData();
       formData.append("title", data.title);
       formData.append("content", data.content);
-      if (selectedFile) {
-        formData.append("image", selectedFile); // Send the selected file
-      } else if (typeof data.image === "string") {
-        formData.append("image", data.image); // If the image is a URL or path string
-      }
+      formData.append("image", data.image); // 이미지 URL 추가
 
-      const token = localStorage.getItem('authToken'); // Get the auth token from localStorage
+      // 폼 제출
       const response = await axios.post(
         "/api/v1/competition/createCompetition",
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
-            "Authorization": `Bearer ${token}` // Add auth token to headers
+            "Content-Type": "application/json",
+            "X-AUTH-TOKEN": token || "",
           },
         }
       );
 
       console.log(response.data);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
+
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          if (error.response.status === 401) {
+            setError(
+              "토큰이 만료되었거나 유효하지 않습니다. 로그인 페이지로 이동합니다."
+            );
+            localStorage.removeItem("token");
+            setToken(null);
+            navigate("/login");
+          } else {
+            setError("경진대회 등록 중 오류가 발생했습니다.");
+          }
+        } else if (error.request) {
+          setError("서버에 요청을 보냈지만 응답이 없습니다.");
+        } else {
+          setError(`오류 발생: ${error.message}`);
+        }
+      } else {
+        setError("알 수 없는 오류가 발생했습니다.");
+      }
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-      setValue('image', file); // Update the form with the file object
+  React.useEffect(() => {
+    if (!token) {
+      navigate("/login", { state: { from: window.location.pathname } });
     }
-  };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  }, [token, navigate]);
 
   return (
     <>
-      <Header isLoggedIn={false} fixed={false}/>
+      <Header isLoggedIn={!!token} fixed={false} />
       <ParticipationTitle>
         <h1>경진대회 참가 등록</h1>
         <p>경진대회 참가 정보를 입력해주세요</p>
       </ParticipationTitle>
-      {competitions && (
-        <>
-          <ParticipationInfo>
-            <ParticipationInfoText>
-              <p>등록중인 경진대회</p>
-              <h1>{competitions.current.title}</h1>
-              <p>{competitions.current.dateRange}</p>
-              <p>{competitions.current.participants}명</p>
-            </ParticipationInfoText>
-            <CompetitionExample />
-          </ParticipationInfo>
-          <ParticipationToggleButtonBox>
-            <ParticipateButton>참가하기</ParticipateButton>
-            <RecommendButton>추천하러 가기</RecommendButton>
-          </ParticipationToggleButtonBox>
-          <ParticipateForm onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="title">제목</label>
-            <input
-              id="title"
-              type="text"
-              {...register("title", { required: "제목을 입력해주세요" })}
-            />
-            {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
-
-            <label htmlFor="image">OUTPUT</label>
-            <FileInputWrapper>
-              <FileInput
-                id="image"
-                type="file"
-                onChange={handleFileChange}
-              />
-              {previewUrl ? (
-                <ImagePreview src={previewUrl} alt="Selected Image" />
-              ) : (
-                <SVGWrapper>
-                  <ParticipateImg />
-                </SVGWrapper>
-              )}
-            </FileInputWrapper>
-            {errors.image && (
-              <ErrorMessage>{errors.image.message}</ErrorMessage>
-            )}
-
-            <label htmlFor="content">프롬프트</label>
-            <textarea id="content" {...register("content", { required: "내용을 입력해주세요" })} />
-            {errors.content && <ErrorMessage>{errors.content.message}</ErrorMessage>}
-
-            <SubmitButton type="submit">등록하기</SubmitButton>
-          </ParticipateForm>
-        </>
-      )}
+      <ParticipateForm onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="title">제목</label>
+        <input
+          id="title"
+          type="text"
+          {...register("title", { required: "제목을 입력해주세요" })}
+        />
+        {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
+        <label htmlFor="content">내용</label>
+        <textarea
+          id="content"
+          {...register("content", { required: "내용을 입력해주세요" })}
+        />
+        {errors.content && (
+          <ErrorMessage>{errors.content.message}</ErrorMessage>
+        )}
+        <label htmlFor="image">이미지</label>
+        <input
+          id="image"
+          type="file"
+          accept="image/*"
+          onChange={handleChange}
+        />
+        <SubmitButton type="submit">등록하기</SubmitButton>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+      </ParticipateForm>
     </>
   );
 }
@@ -172,58 +164,6 @@ const ParticipationTitle = styled.div`
     font-weight: 500;
     margin-top: 2.25rem;
   }
-`;
-
-const ParticipationInfo = styled.div`
-  width: 69.1875rem;
-  height: 24.6875rem;
-  display: flex;
-  align-items: center;
-  margin-top: 4.19rem;
-  margin-left: 10.69rem;
-`;
-
-const ParticipationInfoText = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-right: 14.88rem;
-`;
-
-const ParticipationToggleButtonBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 2.25rem;
-  margin-top: 4.5rem;
-  margin-left: 5.63rem;
-`;
-
-const ParticipateButton = styled.div`
-  width: 8.625rem;
-  height: 3.625rem;
-  border-radius: 1rem;
-  background: #72d49b;
-  color: #fff;
-  font-family: "Gmarket Sans TTF";
-  font-size: 1.25rem;
-  font-weight: 500;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const RecommendButton = styled.div`
-  width: 10.5625rem;
-  height: 3.625rem;
-  border-radius: 1rem;
-  border: 1px solid #72d49b;
-  background: #fff;
-  color: #000;
-  font-family: "Gmarket Sans TTF";
-  font-size: 1.25rem;
-  font-weight: 500;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const ParticipateForm = styled.form`
@@ -270,27 +210,9 @@ const ParticipateForm = styled.form`
     background: rgba(114, 212, 155, 0.1);
     resize: none;
   }
-`;
-
-const FileInputWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
-
-const FileInput = styled.input`
-  width: 8.875rem;
-`;
-
-const ImagePreview = styled.img`
-  width: 8.875rem;
-  height: 8.875rem;
-  border-radius: 1rem;
-`;
-
-const SVGWrapper = styled.div`
-  width: 8.875rem;
-  height: 8.875rem;
+  #image {
+    margin-top: 1rem;
+  }
 `;
 
 const ErrorMessage = styled.p`
@@ -314,6 +236,3 @@ const SubmitButton = styled.button`
   cursor: pointer;
   margin-top: 2rem;
 `;
-
-
-export { ParticipationInfo, ParticipationInfoText, CompetitionExample };
