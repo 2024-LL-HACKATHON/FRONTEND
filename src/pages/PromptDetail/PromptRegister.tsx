@@ -7,7 +7,7 @@ export default function PromptRegisterPage() {
 
     return (
         <PromptRegisterLayout>
-            <Header isLoggedIn={false} marginTop="34px"  />
+            <Header isLoggedIn={false} fixed={false}/>
             <PromptRegister />
             <Footer />
         </PromptRegisterLayout>

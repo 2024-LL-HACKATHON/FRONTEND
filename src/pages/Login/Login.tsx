@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useForm, FieldError } from "react-hook-form";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { login } from "../../services/authSlice";
 import styled from "styled-components";
 import Header from "../../components/Header/Header";
@@ -21,8 +21,16 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      const apiUrl = process.env.REACT_APP_API_URL;
-      const response = await axios.post(`${apiUrl}/sign-api/sign-in`, data);
+      const response = await axios.post(
+        "/sign-api/sign-in",
+        null,
+        {
+          params: {
+            account: data.account,
+            password: data.password,
+          },
+        }
+      );
       const token = response.data.token;
       // 토큰을 로컬 스토리지에 저장
       localStorage.setItem("authToken", token);

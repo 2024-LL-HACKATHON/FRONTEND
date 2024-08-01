@@ -11,57 +11,62 @@ export default function Signup() {
     account: "",
     password: "",
     nickname: "",
-    thumbnailUrl: "", // 파일 URL을 저장할 변수로 변경
+    thumbnail: "",
   });
 
   const [step, setStep] = useState(1);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, files } = e.target;
     if (type === "file" && files) {
       const file = files[0];
-      const fileUrl = URL.createObjectURL(file); // 파일의 URL 생성
-      setFormData((prevData) => ({
-        ...prevData,
-        thumbnailUrl: fileUrl, // 파일 URL을 상태로 저장
-      }));
+      try {
+        // Create a FormData object and append the file
+        const fileData = new FormData();
+        fileData.append("file", file);
+
+        // Send a POST request to the server
+        const uploadResponse = await axios.post("/api/files/upload", fileData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        // Handle response
+        const fileUrl = uploadResponse.data;
+        setFormData((prevData) => ({
+          ...prevData,
+          thumbnail: fileUrl, // Update the state with the file URL
+        }));
+      } catch (error) {
+        console.error("파일 업로드 에러", error);
+      }
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
   };
 
   const handleNext = () => {
-    if (step === 1) {
-      setStep(2);
-    } else if (step === 2) {
-      setStep(3);
-    }
+    setStep((prevStep) => prevStep + 1);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (step === 3) {
-      try {
-        const response = await axios.post(
-          "/sign-api/sign-up?roles=ADMIN",
-          {
-            ...formData,
-            // `thumbnailUrl`을 서버로 전송할 때는 실제 파일이 아닌 URL로 전송
-            thumbnail: formData.thumbnailUrl,
+    try {
+      const response = await axios.post(
+        "/sign-api/sign-up?roles=ADMIN",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log(response.data);
-        // 성공 처리 로직 추가
-      } catch (error) {
-        console.error("회원가입 에러", error);
-        // 에러 처리 로직 추가
-      }
+        }
+      );
+      console.log(response.data);
+      setStep(3);
+    } catch (error) {
+      console.error("회원가입 에러", error);
     }
   };
 
@@ -156,9 +161,9 @@ export default function Signup() {
                     onChange={handleChange}
                   />
                   <ThumbnailButton>
-                    {formData.thumbnailUrl ? (
+                    {formData.thumbnail ? (
                       <ThumbnailPreview
-                        src={formData.thumbnailUrl}
+                        src={formData.thumbnail}
                         alt="Thumbnail Preview"
                       />
                     ) : (
@@ -166,8 +171,8 @@ export default function Signup() {
                     )}
                   </ThumbnailButton>
                 </label>
-                <SubmitButton type="button" onClick={handleNext}>
-                  다음
+                <SubmitButton type="submit">
+                  확인
                 </SubmitButton>
               </SignupInputGroup>
             </SlideIn>
@@ -274,12 +279,6 @@ const Input = styled.input`
   font-size: 0.875rem;
 `;
 
-const Error = styled.div`
-  color: red;
-  font-size: 0.75rem;
-  margin-top: 0.5rem;
-`;
-
 const SubmitButton = styled.button`
   width: 13.1875rem;
   height: 2.9375rem;
@@ -321,7 +320,8 @@ const ThumbnailButton = styled.div`
 `;
 
 const ThumbnailPreview = styled.img`
-  width: 20.5rem;
-  height: 20.5rem;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
+  object-fit: cover;
 `;
