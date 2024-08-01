@@ -4,13 +4,17 @@ import { Navigate } from 'react-router-dom';
 import { RootState } from '../store/store';
 
 interface PrivateRouteProps {
-  element: React.ReactElement;
+  element: JSX.Element;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
-  return isAuthenticated ? element : <Navigate to="/login" />;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return element;
 };
 
 export default PrivateRoute;

@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ fixed = true }) => {
       </Link>
       <NavLinks>
         <StyledLink to="/main">메인으로 가기</StyledLink>
-        <StyledLink to="/competition">도전 프롬프렌!</StyledLink>
+        <StyledLink to="/competitionparticipation">도전 프롬프렌!</StyledLink>
         <StyledLink to="/guide">프롬프트 작성 가이드</StyledLink>
       </NavLinks>
       <AuthLinks>

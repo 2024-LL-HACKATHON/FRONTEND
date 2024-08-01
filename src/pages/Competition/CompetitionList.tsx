@@ -3,11 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import Header from "../../components/Header/Header";
 import { ReactComponent as CompetitionGlassSvg } from "../../assets/images/Glass.svg";
-import {
-  CompetitionExample,
-  ParticipationInfo,
-  ParticipationInfoText,
-} from "./CompetitionParticipation";
+import { ReactComponent as CompetitionExample } from "../../assets/images/CompetitionExampleImg.svg";
 
 interface Post {
   id: number;
@@ -28,7 +24,7 @@ const CompetitionList: React.FC = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await axios.get("http://localhost:3001/posts");
+      const response = await axios.get("/api/v1/competition/getCompetitionByList");
       setPosts(response.data);
     };
     fetchPosts();
@@ -274,6 +270,20 @@ const Content = styled.div`
     max-width: 100%;
     height: auto;
   }
+`;
+const ParticipationInfo = styled.div`
+  width: 69.1875rem;
+  height: 24.6875rem;
+  display: flex;
+  align-items: center;
+  margin-top: 4.19rem;
+  margin-left: 10.69rem;
+`;
+
+const ParticipationInfoText = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 14.88rem;
 `;
 
 const Pagination = styled.div`

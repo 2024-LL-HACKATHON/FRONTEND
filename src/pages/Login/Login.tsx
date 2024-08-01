@@ -5,6 +5,7 @@ import axios from "axios";
 import { login } from "../../services/authSlice";
 import styled from "styled-components";
 import Header from "../../components/Header/Header";
+import { useNavigate } from "react-router-dom";
 
 type LoginFormInputs = {
   account: string;
@@ -13,6 +14,8 @@ type LoginFormInputs = {
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); 
+
   const {
     register,
     handleSubmit,
@@ -35,9 +38,12 @@ const Login = () => {
       // 토큰을 로컬 스토리지에 저장
       localStorage.setItem("authToken", token);
       // Axios 기본 헤더에 토큰 추가
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios.defaults.headers.common["Authorization"] = `${token}`;
       dispatch(login(token));
+      navigate("/main");
+      
       console.log(response.data);
+
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.error("Axios 오류:", error.response?.data || error.message);

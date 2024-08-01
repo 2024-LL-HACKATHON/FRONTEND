@@ -42,7 +42,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/competitionparticipation",
-    element: <CompetitionParticipation />,
+    element:  <PrivateRoute element={<CompetitionParticipation />}/>,
   },
   {
     path: "/competitionlist",
