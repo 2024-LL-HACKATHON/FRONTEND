@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ReactComponent as SearchImg } from "../../assets/images/SearchIcon.svg";
 import { ReactComponent as ServiceImg1 } from "../../assets/images/MainSection1_Icon1.svg";
@@ -5,8 +6,54 @@ import { ReactComponent as ServiceImg2 } from "../../assets/images/MainSection1_
 import { ReactComponent as ServiceImg3 } from "../../assets/images/MainSection1_Icon3.svg";
 import { ReactComponent as BackCircle } from "../../assets/images/MainSection1_BackCircle.svg";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function MainSection1() {
+  const [searchText, setSearchText] = useState("");
+  const [output, setOutput] = useState("프롬프트 전송 결과물 예시입니다.");
+  const [userName, setUserName] = useState("");
+  const [userImage, setUserImage] = useState("");
+
+  const handleSearch = async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      setOutput("로그인해주세요.");
+      return;
+    }
+
+    try {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const response = await axios.get(`/api/v1/main/getGptApi?prompt=${searchText}`);
+      setOutput(response.data || "결과가 없습니다.");
+    } catch (error) {
+      setOutput("Error");
+    }
+  };
+
+  // 사용자 이름 & 이미지 가져오기
+  const fetchUserInfo = async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      setOutput("로그인해주세요.");
+      return;
+    }
+    try {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const response = await axios.get('/sign-api/sign-up');
+      const { name, image } = response.data;
+
+      setUserName(name);
+      setUserImage(image);
+    } catch (error) {
+      console.error("사용자 정보 가져오기 실패", error);
+    }
+  };
+
+  // 컴포넌트가 마운트될 때 사용자 정보를 불러옴
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
+
   return (
     <Section1>
       <Background>
@@ -21,8 +68,13 @@ export default function MainSection1() {
         </Text2>
 
         <Search>
-          <input type="text" placeholder="입력하세요" />
-          <SearchIcon />
+          <input 
+            type="text" 
+            placeholder="입력하세요" 
+            value={searchText} 
+            onChange={(e) => setSearchText(e.target.value)} 
+          />
+          <SearchIcon onClick={handleSearch} />
         </Search>
 
         <Category>
@@ -35,7 +87,7 @@ export default function MainSection1() {
         </Category>
 
         <Output>
-          프롬프트 전송 결과물 예시입니다.
+          {output}
         </Output>
 
         <InfoContainer>
@@ -59,8 +111,8 @@ export default function MainSection1() {
 
           <UserInfo>
             <UserInfo_Left>
-              <p><span>홍길동</span> 회원님 반갑습니다!</p>
-              {/* 유저이미지 */}
+              <p><span>{userName}</span>님 반갑습니다!</p>
+              <UserImage src={userImage} alt="User profile" />
             </UserInfo_Left>
             <UserInfo_Right>
               <StyledLink to="/prompt_register">
@@ -73,6 +125,7 @@ export default function MainSection1() {
     </Section1>
   );
 }
+
 const StyledLink = styled(Link)`
 `;
 const Section1 = styled.div`
@@ -95,7 +148,7 @@ const Contents = styled.div`
 
 /*타이틀*/
 const Text1 = styled.div`
-  font-family: "Gmarket Sans TTF";
+  font-family: "Gmarket Sans TTF", sans-serif;
   font-size: 36px;
   font-weight: 300;
   line-height: normal;
@@ -132,6 +185,7 @@ const SearchIcon = styled(SearchImg)`
   width: 32.191px;
   height: 39.344px;
   margin-bottom: 6px;
+  cursor: pointer;
 `;
 
 /*맞춤형 카테고리*/
@@ -159,6 +213,7 @@ const CategoryHash = styled.div`
 
 /*프롬프트 전송 결과물*/
 const Output = styled.div`
+font-family: "Noto Sans KR", sans-serif;
   width: 1066px;
   height: 131px;
   border-radius: 9px;
@@ -167,12 +222,12 @@ const Output = styled.div`
   margin-bottom: 26px;
 `;
 
+/*프롬프렌 서비스*/
 const InfoContainer = styled.div`
   display: flex;
   gap: 17px;
 `;
 
-/*프롬프렌 서비스*/
 const ServiceInfo = styled.div`
   width: 525px;
   height: 170px;
@@ -246,21 +301,28 @@ const UserInfo = styled.div`
   font-weight: 300;
   padding: 15px 0px;
 `;
+const UserImage = styled.img`
+`;
 const UserInfo_Left = styled.div`
+  width: 300px;
   padding: 17px 33px 0px 57px;
   border-right: 1px solid #72D49B;
-    p {
+
+  p {
     font-family: "Gmarket Sans TTF";
     font-size: 18px;
     font-weight: 300;
-    }
-    span {
+  }
+
+  span {
     font-weight: 700;
-    }
+  }
 `;
+
 const UserInfo_Right = styled.div`
-padding-left: 10px;
+  padding-left: 10px;
 `;
+
 const StyledButton = styled.button`
   font-size: 20px;
   padding: 15px;
