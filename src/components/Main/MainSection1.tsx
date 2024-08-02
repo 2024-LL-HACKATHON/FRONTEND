@@ -49,7 +49,6 @@ export default function MainSection1() {
     }
   };
 
-  // 컴포넌트가 마운트될 때 사용자 정보를 불러옴
   useEffect(() => {
     fetchUserInfo();
   }, []);
