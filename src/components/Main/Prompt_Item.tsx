@@ -1,24 +1,52 @@
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
-export default function Prompt_Item() {
+// PromptItem 정의
+interface PromptItemProps {
+  prompt_id: string;
+}
+
+interface PromptData {
+  title: string;
+  review: string;
+  category: string;
+}
+
+const Prompt_Item: React.FC<PromptItemProps> = ({ prompt_id }) => {
+  const [promptData, setPromptData] = useState<PromptData | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/api/v1/main/getPrompt/${prompt_id}`);
+        setPromptData(response.data);
+      } catch (error) {
+        console.error("프롬프트 데이터를 가져오는 중 에러 발생:", error);
+      }
+    };
+
+    fetchData();
+  }, [prompt_id]);
+
+  if (!promptData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Item>
       <Img />
-      <Title>몽환적인 애니메이션 장면</Title>
-      <Review>
-        리뷰
-      </Review>
-      <Category>
-        GPT
-      </Category>
-      <StyledLink to="/detail_page">
+      <Title>{promptData.title}</Title>
+      <Review>{promptData.review}</Review>
+      <Category>{promptData.category}</Category>
+      <StyledLink to={`/detail_page/${prompt_id}`}>
         <StyleButton>상세보기</StyleButton>
       </StyledLink>
     </Item>
   );
-}
-
+};
+// 스타일드 컴포넌트 정의
 const Item = styled.div`
   width: 325px;
   height: 298px;
@@ -39,9 +67,7 @@ const Title = styled.div`
   color: #000;
   font-family: "Gmarket Sans TTF";
   font-size: 20px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   margin-top: 14px;
 `;
 
@@ -49,9 +75,7 @@ const Review = styled.div`
   color: #A0A0A0;
   font-family: "Noto Sans KR";
   font-size: 12px;
-  font-style: normal;
   font-weight: 300;
-  line-height: normal;
   margin-top: 8px;
 `;
 
@@ -60,14 +84,15 @@ const Category = styled.div`
   color: #72D49B;
   font-family: "Noto Sans KR";
   font-size: 14px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   margin-top: 4px;
 `;
 
 const StyledLink = styled(Link)`
   text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const StyleButton = styled.button`
@@ -77,8 +102,10 @@ const StyleButton = styled.button`
   height: 31px;
   border-radius: 5px;
   background: #72D49B;
-  border-style: none;
+  border: none;
   color: #FFF;
-  font-family: Inter;
+  font-family: "Inter";
   font-size: 11px;
 `;
+
+export default Prompt_Item;

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import Header from "../../components/Header/Header";
 import axios from "axios";
+import { ReactComponent as SignUpImg } from "../../assets/images/SignUpImg.svg";
 
 export default function Signup() {
+  // 회원가입 폼 데이터 상태 관리
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -11,57 +13,66 @@ export default function Signup() {
     account: "",
     password: "",
     nickname: "",
-    thumbnailUrl: "", // 파일 URL을 저장할 변수로 변경
+    thumbnail: "",
   });
 
+  // 회원가입 단계 상태 관리
   const [step, setStep] = useState(1);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 입력 필드 변경 처리
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, files } = e.target;
     if (type === "file" && files) {
       const file = files[0];
-      const fileUrl = URL.createObjectURL(file); // 파일의 URL 생성
-      setFormData((prevData) => ({
-        ...prevData,
-        thumbnailUrl: fileUrl, // 파일 URL을 상태로 저장
-      }));
+      try {
+        // FormData 객체를 생성하고 파일 추가
+        const fileData = new FormData();
+        fileData.append("file", file);
+
+        // 서버에 파일 업로드 요청 보내기
+        const uploadResponse = await axios.post("/api/files/upload", fileData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        // 응답 처리
+        const fileUrl = uploadResponse.data;
+        setFormData((prevData) => ({
+          ...prevData,
+          thumbnail: fileUrl, // 파일 URL로 상태 업데이트
+        }));
+      } catch (error) {
+        console.error("파일 업로드 에러", error);
+      }
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
   };
 
+  // 다음 단계로 이동
   const handleNext = () => {
-    if (step === 1) {
-      setStep(2);
-    } else if (step === 2) {
-      setStep(3);
-    }
+    setStep((prevStep) => prevStep + 1);
   };
 
+  // 폼 제출 처리
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (step === 3) {
-      try {
-        const response = await axios.post(
-          "/sign-api/sign-up?roles=ADMIN",
-          {
-            ...formData,
-            // `thumbnailUrl`을 서버로 전송할 때는 실제 파일이 아닌 URL로 전송
-            thumbnail: formData.thumbnailUrl,
+    try {
+      const response = await axios.post(
+        "/sign-api/sign-up?roles=ADMIN",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log(response.data);
-        // 성공 처리 로직 추가
-      } catch (error) {
-        console.error("회원가입 에러", error);
-        // 에러 처리 로직 추가
-      }
+        }
+      );
+      console.log(response.data);
+      setStep(3);
+    } catch (error) {
+      console.error("회원가입 에러", error);
     }
   };
 
@@ -156,26 +167,32 @@ export default function Signup() {
                     onChange={handleChange}
                   />
                   <ThumbnailButton>
-                    {formData.thumbnailUrl ? (
+                    {formData.thumbnail ? (
                       <ThumbnailPreview
-                        src={formData.thumbnailUrl}
+                        src={formData.thumbnail}
                         alt="Thumbnail Preview"
                       />
                     ) : (
-                      "썸네일 업로드"
+                      "이미지 파일 업로드"
                     )}
                   </ThumbnailButton>
                 </label>
-                <SubmitButton type="button" onClick={handleNext}>
-                  다음
-                </SubmitButton>
+                <SubmitButton type="submit">확인</SubmitButton>
               </SignupInputGroup>
             </SlideIn>
           )}
           {step === 3 && (
             <SignupInputGroup>
-              <h2>{formData.name}님, 회원가입을 축하드립니다!</h2>
-              <SubmitButton type="submit">가입하기</SubmitButton>
+              <SignUpImgBox>
+                <SignUpImg />
+              </SignUpImgBox>
+              <h1 id="step3H1">가입을 축하드립니다</h1>
+              <h2 id="step3H2">
+                <span>{formData.name}</span>님
+              </h2>
+              <SubmitButton id="step3Btn" type="submit">
+                로그인 하러가기
+              </SubmitButton>
             </SignupInputGroup>
           )}
         </SignupForm>
@@ -209,6 +226,7 @@ const SignupLayout = styled.div`
 
 const SignupTitle = styled.div`
   text-align: center;
+  margin-bottom: 2.12rem;
   h1 {
     font-size: 1.5rem;
     font-weight: 700;
@@ -230,6 +248,10 @@ const SignupForm = styled.form`
   margin-top: 2.12rem;
 `;
 
+const SignUpImgBox = styled.div`
+  margin-left: 5rem;
+  margin-bottom: 2.25rem;
+`;
 const SignupInputGroup = styled.div`
   margin-bottom: 2.375rem;
 
@@ -250,6 +272,45 @@ const SignupInputGroup = styled.div`
     text-align: right;
     margin-right: 0.5rem;
     margin-bottom: 1rem;
+  }
+  #step3H1 {
+    color: #000;
+    text-align: center;
+    font-family: "Gmarket Sans TTF";
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 1.25rem;
+  }
+  #step3H2 {
+    background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: "Gmarket Sans TTF";
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-left: 5rem;
+  }
+  #step3H2 span {
+    text-align: center;
+    font-family: "Gmarket Sans TTF";
+    font-size: 6rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  #step3Btn {
+    margin-top: 7rem;
+    margin-left: 5rem;
   }
 `;
 
@@ -272,12 +333,6 @@ const Input = styled.input`
   border: 1px solid #d9d9d9;
   border-radius: 0.625rem;
   font-size: 0.875rem;
-`;
-
-const Error = styled.div`
-  color: red;
-  font-size: 0.75rem;
-  margin-top: 0.5rem;
 `;
 
 const SubmitButton = styled.button`
@@ -311,17 +366,20 @@ const ThumbnailButton = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  text-align: center;
   font-family: "Noto Sans KR";
-  font-size: 1rem;
-  font-weight: 700;
+  color: #626260;
+  text-align: center;
+  font-family: "Noto Sans";
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
   line-height: normal;
-  color: #fff;
   border: none;
 `;
 
 const ThumbnailPreview = styled.img`
-  width: 20.5rem;
-  height: 20.5rem;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
+  object-fit: cover;
 `;

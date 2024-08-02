@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-interface PromptData {
-    title: string;
-    category: string;
-    explain: string;
-    AI_category: string;
-    prompt: string;
-    img: FileList;
-}
-
 export default function PromptRegister() {
-    
+    //프롬프트 등록 폼 데이터 상태 관리
+    const [promptFormData, setPromptData] = useState({
+        "category": "",
+        "condition": "",
+        "content": "",
+        "image": "",
+        "output": "",
+        "prompt_id": "",
+        "summary": "",
+        "title": ""
+    })
   return (
     <PromptRegisterLayout>
         <Title>
@@ -26,21 +27,21 @@ export default function PromptRegister() {
                 <label>제목</label>
                 <input type='text' id='title'></input>
                 <label>카테고리</label>
-                <select name='category' id='category'>
-                    <option value='productive'>생산적인</option>
-                    <option value='artistic'>예술적인</option>
-                    <option value='symbolic'>상징적인</option>
-                    <option value='funny'>재미있는</option>
+                <select name='condition' id='condition'>
+                    <option value='PRODUCTIVE'>생산적인</option>
+                    <option value='ARTISTIC'>예술적인</option>
+                    <option value='SYMBOLIC'>상징적인</option>
+                    <option value='INTERESTING'>재미있는</option>
                 </select>
 
                 <label>설명</label>
-                <input type='text' id='explain' placeholder='프롬포트에 대한 소개를 해주세요.'></input>
+                <input type='text' id='summary' placeholder='프롬포트에 대한 소개를 해주세요.'></input>
                 <label>프롬프트</label>
-                <select name='AI_categoty' id='AI_category'>
+                <select name='categoty' id='category'>
                     <option value='GPT'>GPT</option>
                     <option value='DALL-E'>DALL-E</option>
                 </select>
-                <input type='text' id='prompt' placeholder='사용자가 사용할 프롬포트를 작성해주세요.'></input>
+                <input type='text' id='content' placeholder='사용자가 사용할 프롬포트를 작성해주세요.'></input>
                 <label>결과</label>
                 <input type='text' id='output' placeholder='프롬프트 사용 예시를 작성해주세요'></input>
                 <input type='file' id='img'></input>
@@ -122,7 +123,7 @@ margin-left: 26px;
 margin-right: 76px;
 margin-bottom: 45px;
 }
-#category {
+#condition {
 width: 299px;
 height: 48px;
 margin-left: 35.85px;
@@ -132,13 +133,13 @@ background: #D9F6EC;
 text-align: center;
 color: #626260;
 }
-#explain {
+#summary {
 width: 978px;
 height: 74px;
 margin-top: 18px;
 margin-bottom: 46px;
 }
-#AI_category {
+#category {
 width: 252px;
 height: 48px;
 border: none;
@@ -149,7 +150,7 @@ color: #626260;
 margin-left: 26px;
 margin-bottom: 18px;
 }
-#prompt {
+#content {
 width: 978px;
 height: 380px;
 margin-bottom: 46px;
