@@ -4,11 +4,15 @@ import styled from "styled-components";
 import Header from "../../components/Header/Header";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import CompetitionDetail from "../../components/CompetitionComponent/CompetitionDetail";
+import ParticipationSwitchButtonComponent from "../../components/CompetitionComponent/ParticipationSwitchButtonComponent";
+import Footer from "../../components/Footer/Footer";
+import { ReactComponent as ParticipateImg } from "../../assets/images/ParticipateImg.svg";
 
 interface FormData {
   title: string;
   content: string;
-  image: string; // 이미지 URL을 저장할 string 타입
+  image: string;
 }
 
 function CompetitionParticipation() {
@@ -16,34 +20,36 @@ function CompetitionParticipation() {
     register,
     handleSubmit,
     formState: { errors },
-    setValue, // 폼 값을 프로그래밍 방식으로 업데이트하기 위해 사용
+    setValue,
   } = useForm<FormData>();
   const [error, setError] = React.useState<string | null>(null);
   const [token, setToken] = React.useState<string | null>(
     localStorage.getItem("token")
   );
+  const [preview, setPreview] = React.useState<string | null>(null);
   const navigate = useNavigate();
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  // 파일 변경 및 업로드 처리
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, type, files } = e.target;
+    const { files } = e.target;
 
-    if (type === "file" && files) {
+    if (files && files.length > 0) {
       const file = files[0];
+      const fileUrl = URL.createObjectURL(file);
+      setPreview(fileUrl);
+
       try {
         const fileData = new FormData();
         fileData.append("file", file);
 
-        // 파일 업로드
         const uploadResponse = await axios.post("/api/files/upload", fileData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
 
-        // 응답 처리
-        const fileUrl = uploadResponse.data; // 서버에서 반환한 이미지 URL
-        setValue("image", fileUrl); // 이미지 URL을 폼 값에 설정
+        const uploadedFileUrl = uploadResponse.data;
+        setValue("image", uploadedFileUrl);
       } catch (error) {
         console.error("파일 업로드 에러", error);
         setError("파일 업로드 중 오류가 발생했습니다.");
@@ -51,16 +57,23 @@ function CompetitionParticipation() {
     }
   };
 
-  // 폼 제출 처리
+  const handleParticipateClick = () => {
+    navigate("/competitionparticipation");
+  };
+
+  const handleRecommendClick = () => {
+    navigate("/competitionlist");
+  };
+
+  const endDate = "2024-08-15T23:59:00";
+
   const onSubmit = async (data: FormData) => {
     try {
-      // FormData 객체 생성
       const formData = new FormData();
       formData.append("title", data.title);
       formData.append("content", data.content);
-      formData.append("image", data.image); // 이미지 URL 추가
+      formData.append("image", data.image);
 
-      // 폼 제출
       const response = await axios.post(
         "/api/v1/competition/createCompetition",
         formData,
@@ -75,27 +88,6 @@ function CompetitionParticipation() {
       console.log(response.data);
     } catch (error: unknown) {
       console.error(error);
-
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          if (error.response.status === 401) {
-            setError(
-              "토큰이 만료되었거나 유효하지 않습니다. 로그인 페이지로 이동합니다."
-            );
-            localStorage.removeItem("token");
-            setToken(null);
-            navigate("/login");
-          } else {
-            setError("경진대회 등록 중 오류가 발생했습니다.");
-          }
-        } else if (error.request) {
-          setError("서버에 요청을 보냈지만 응답이 없습니다.");
-        } else {
-          setError(`오류 발생: ${error.message}`);
-        }
-      } else {
-        setError("알 수 없는 오류가 발생했습니다.");
-      }
     }
   };
 
@@ -112,41 +104,77 @@ function CompetitionParticipation() {
         <h1>경진대회 참가 등록</h1>
         <p>경진대회 참가 정보를 입력해주세요</p>
       </ParticipationTitle>
+      <CompetitionDetail endDate={endDate} />
+      <ParticipationSwitchButtonComponent
+        participateBackgroundColor="#72d49b"
+        participateBorderColor="#72d49b"
+        participateTextColor="#fff"
+        recommendBackgroundColor="#fff"
+        recommendBorderColor="#72d49b"
+        recommendTextColor="#000"
+        onParticipateClick={handleParticipateClick}
+        onRecommendClick={handleRecommendClick}
+      />
       <ParticipateForm onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="title">제목</label>
-        <input
-          id="title"
-          type="text"
-          {...register("title", { required: "제목을 입력해주세요" })}
-        />
-        {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
-        <label htmlFor="content">내용</label>
-        <textarea
-          id="content"
-          {...register("content", { required: "내용을 입력해주세요" })}
-        />
-        {errors.content && (
-          <ErrorMessage>{errors.content.message}</ErrorMessage>
-        )}
-        <label htmlFor="image">이미지</label>
-        <input
-          id="image"
-          type="file"
-          accept="image/*"
-          onChange={handleChange}
-        />
+        <div id="formdiv">
+          <div id="titleGroup">
+            <label htmlFor="title">제목</label>
+            <input
+              id="title"
+              type="text"
+              {...register("title", { required: "제목을 입력해주세요" })}
+            />
+          </div>
+          {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
+          <div id="imageGroup">
+            <div id="imgLabel">OUTPUT</div>
+            <label id="imageLabel" htmlFor="image">
+              {!preview && <ParticipateImg />} 
+              {preview && <PreviewImage src={preview} alt="미리보기" />}
+            </label>
+            <input
+              id="image"
+              type="file"
+              accept="image/*"
+              onChange={handleChange}
+              ref={fileInputRef}
+              style={{ display: "none" }}
+            />
+          </div>
+          <div id="contentGroup">
+            <label htmlFor="content">프롬프트</label>
+            <textarea
+              id="content"
+              {...register("content", { required: "내용을 입력해주세요" })}
+            />
+          </div>
+          {errors.content && (
+            <ErrorMessage>{errors.content.message}</ErrorMessage>
+          )}
+        </div>
+        <ParticipateStroke />
         <SubmitButton type="submit">등록하기</SubmitButton>
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </ParticipateForm>
+      <Footer />
     </>
   );
 }
 
 export default CompetitionParticipation;
 
+const ParticipateStroke = styled.div`
+  width: 68.31263rem;
+  height: 0.0625rem;
+  background: #72d49b;
+  margin-top: 4.06rem;
+  margin-left: 5.88rem;
+`;
+
 const ParticipationTitle = styled.div`
   width: 80rem;
   margin: 0 auto;
+  margin-bottom: 5rem;
   h1 {
     color: #000;
     text-align: center;
@@ -167,18 +195,22 @@ const ParticipationTitle = styled.div`
 `;
 
 const ParticipateForm = styled.form`
-  width: 69.1875rem;
-  height: 66.1875rem;
-  border-radius: 1rem;
-  border: 2px solid #72d49b;
-  background: #fff;
-  box-shadow: 4px 3px 10px 1px #ececec;
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
-  gap: 1rem;
-  margin-left: 5.63rem;
-  margin-top: 5.69rem;
+  margin-bottom: 15.37rem;
+  #formdiv {
+    width: 69.1875rem;
+    height: 66.1875rem;
+    border-radius: 1rem;
+    border: 2px solid #72d49b;
+    background: #fff;
+    box-shadow: 4px 3px 10px 1px #ececec;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    gap: 1rem;
+    margin-left: 5.63rem;
+    margin-top: 5.69rem;
+    align-items: center;
+  }
 
   label {
     width: 8.88rem;
@@ -194,6 +226,38 @@ const ParticipateForm = styled.form`
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+  }
+  #imgLabel {
+    width: 8.88rem;
+    height: 3rem;
+    border-radius: 1rem;
+    border: 2px solid #72d49b;
+    background: #fff;
+    color: #000;
+    text-align: center;
+    font-family: "Gmarket Sans TTF";
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  #titleGroup {
+    display: flex;
+    align-items: center;
+    gap: 1.43rem;
+    margin-bottom: 2.75rem;
+    margin-top: 1.81rem;
+  }
+  #imageGroup {
+    margin-bottom: 1.31rem;
+    display: flex;
+    flex-direction: column;
+  }
+  #contentGroup {
+    margin-bottom: 1.31rem;
   }
   #title {
     width: 50.5rem;
@@ -201,6 +265,7 @@ const ParticipateForm = styled.form`
     border-radius: 1rem;
     border: none;
     background: rgba(114, 212, 155, 0.1);
+    padding: 1rem;
   }
   #content {
     width: 61.125rem;
@@ -209,10 +274,30 @@ const ParticipateForm = styled.form`
     border: none;
     background: rgba(114, 212, 155, 0.1);
     resize: none;
-  }
-  #image {
     margin-top: 1rem;
+    padding: 1rem;
   }
+
+  #imageLabel {
+    width: 61.125rem;
+    height: 17.625rem;
+    flex-shrink: 0;
+    border-radius: 1rem;
+    border: none;
+    background: rgba(114, 212, 155, 0.1);
+    margin-top: 1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const PreviewImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 1rem;
 `;
 
 const ErrorMessage = styled.p`
@@ -221,18 +306,22 @@ const ErrorMessage = styled.p`
 `;
 
 const SubmitButton = styled.button`
-  width: 8.875rem;
-  height: 3.625rem;
-  border-radius: 1rem;
+  width: 13.1875rem;
+  height: 2.9375rem;
+  border-radius: 0.625rem;
   background: #72d49b;
   color: #fff;
-  font-family: "Gmarket Sans TTF";
-  font-size: 1.25rem;
-  font-weight: 500;
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border: none;
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: none;
-  cursor: pointer;
   margin-top: 2rem;
+  margin-left: 33.44rem;
 `;

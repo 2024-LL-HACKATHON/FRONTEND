@@ -13,30 +13,60 @@ interface CompetitionData {
   dateRange: string;
 }
 
-interface CompetitionsResponse {
-  current: CompetitionData;
-  past: CompetitionData[];
-}
+const currentCompetitionData: CompetitionData = {
+  title: "미래 도시 설계",
+  participants: 0,
+  dateRange: "2024.08.01~2024.08.15",
+};
+
+const pastCompetitions: CompetitionData[] = [
+  {
+    title: "스타트업 대표의 운영방식",
+    participants: 33,
+    dateRange: "2024.07.10~2024.07.20"
+  },
+  {
+    title: "AI 혁신 아이디어 공모전",
+    participants: 40,
+    dateRange: "2024.06.15~2024.06.25"
+  },
+  {
+    title: "스마트 홈 해커톤",
+    participants: 28,
+    dateRange: "2024.05.01~2024.05.10"
+  }
+];
+
+const calculateDaysRemaining = (deadline: Date): string => {
+  const now = new Date();
+  const timeDiff = deadline.getTime() - now.getTime();
+  const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
+  if (timeDiff <= 0) {
+    return "D-DAY";
+  } else if (daysDiff < 1) {
+    return "D-DAY";
+  } else {
+    return `D-${daysDiff}`;
+  }
+};
 
 export default function Competition() {
+  const [currentCompetition, setCurrentCompetition] = useState<CompetitionData>(currentCompetitionData);
   const [isProceeding] = useState<boolean>(true);
-  const [currentCompetition, setCurrentCompetition] =
-    useState<CompetitionData | null>(null);
-  const [pastCompetitions, setPastCompetitions] = useState<CompetitionData[]>(
-    []
-  );
+  const deadline = new Date("2024-08-15T23:59:59");
+  const daysRemaining = calculateDaysRemaining(deadline);
 
   useEffect(() => {
     axios
-      .get<CompetitionsResponse>("http://localhost:3001/competitions")
+      .get<number>("/api/v1/competition/countCompetitions")
       .then((response) => {
-        setCurrentCompetition(response.data.current);
-        setPastCompetitions(response.data.past);
+        setCurrentCompetition((prev) => ({
+          ...prev,
+          participants: response.data,
+        }));
       })
-      .catch((error) => console.error("Error fetching data:", error));
+      .catch((error) => console.error("Error fetching participant count:", error));
   }, []);
-
-  if (!currentCompetition) return <div>Loading...</div>;
 
   return (
     <>
@@ -46,7 +76,7 @@ export default function Competition() {
         <CompetitionProceedingBox>
           <CompetitionProceed>
             <IsProceed isProceeding={isProceeding} />
-            <CompetitionDday>D-DAY</CompetitionDday>
+            <CompetitionDday>{daysRemaining}</CompetitionDday>
           </CompetitionProceed>
           <div id="stroke" />
           <h1>{currentCompetition.title}</h1>
@@ -61,7 +91,7 @@ export default function Competition() {
         <CompetitionImgBox>
           <CompetitionImgExample />
           <DDayCountdownBox>
-            <DDayCountdown deadline={new Date("2024-07-31T23:59:59")} />
+            <DDayCountdown deadline={deadline} />
           </DDayCountdownBox>
         </CompetitionImgBox>
       </CompetitionContainer>
