@@ -12,7 +12,6 @@ interface PromptData {
   title: string;
   review: string;
   category: string;
-  // 필요한 다른 필드들...
 }
 
 const Prompt_Item: React.FC<PromptItemProps> = ({ prompt_id }) => {
