@@ -31,28 +31,43 @@ const CompetitionList: React.FC = () => {
 
   const pageRange: number = 3;
   const endDate = "2024-08-15T23:59:00";
+  const itemsPerPage = 5;
+
+  // 생성된 데이터의 개수로 totalpage 결정
+  useEffect(() => {
+    const fetchTotalPages = async () => {
+      try {
+        const response = await axios.get("/api/v1/competition/countCompetitions");
+        const totalItems = response.data;
+        const pages = Math.ceil(totalItems / itemsPerPage);
+        setTotalPages(pages);
+      } catch (error) {
+        setError("Failed to fetch total number of competitions");
+      }
+    };
+
+    fetchTotalPages();
+  }, []);
 
   useEffect(() => {
     const fetchItems = async () => {
       setLoading(true);
       setError(null);
       try {
+        const reversedPage = totalPages - currentPage + 1;
         const response = await axios.get(
-          `/api/v1/competition/getCompetitionByList?page=${currentPage}`
+          `/api/v1/competition/getCompetitionByList?page=${reversedPage}`
         );
-        const itemsData = response.data.items;
-        const likesPromises = itemsData.map((item: any) =>
-          axios.get(`/api/v1/like/countLike/${item.com_id}`)
-        );
-        const likesResponses = await Promise.all(likesPromises);
 
-        const itemsWithLikes = itemsData.map((item: any, index: number) => ({
+        const sortedData = response.data.items.sort((a: Item, b: Item) => b.com_id - a.com_id);
+
+        const dataWithLikes = sortedData.map((item: any) => ({
           ...item,
-          likes: likesResponses[index].data, // Update likes from API
+          likes: 0,
           isLiked: false,
         }));
 
-        setItems(itemsWithLikes);
+        setItems(dataWithLikes);
 
         if (response.data.totalPages) {
           setTotalPages(response.data.totalPages);
@@ -64,7 +79,7 @@ const CompetitionList: React.FC = () => {
       }
     };
     fetchItems();
-  }, [currentPage]);
+  }, [currentPage, totalPages]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -85,29 +100,35 @@ const CompetitionList: React.FC = () => {
   const updateLikeStatus = async (itemId: number, isLiked: boolean) => {
     const token = localStorage.getItem("token");
     try {
-      await axios.post(
-        "/api/v1/like/createLike",
-        { comId: itemId },
-        {
-          headers: { "X-AUTH-TOKEN": token || "" },
-        }
-      );
+      if (isLiked) {
+        await axios.post(
+          "/api/v1/like/removeLike",
+          { comId: itemId },
+          {
+            headers: { "X-AUTH-TOKEN": token || "" },
+          }
+        );
+      } else {
+        await axios.post(
+          "/api/v1/like/createLike",
+          { comId: itemId },
+          {
+            headers: { "X-AUTH-TOKEN": token || "" },
+          }
+        );
+      }
 
-      // Fetch updated like count
       const response = await axios.get(`/api/v1/like/countLike/${itemId}`);
-      const updatedLikes = response.data;
+      const updatedLikes = response.data.likes;
 
-      // Update items state
-      setItems((prevItems) =>
-        prevItems.map((item) =>
+      setItems(
+        items.map((item) =>
           item.com_id === itemId
             ? { ...item, likes: updatedLikes, isLiked: !isLiked }
             : item
         )
       );
-    } catch (error) {
-      console.error("Error updating like status", error);
-    }
+    } catch (error) {}
   };
 
   const handleParticipateClick = () => {
@@ -173,6 +194,7 @@ const CompetitionList: React.FC = () => {
                 ))}
               </ListWrapper>
             </ListBox>
+
             {expandedItem && (
               <ExpandedContent>
                 <Content>
@@ -248,7 +270,6 @@ const CompetitionList: React.FC = () => {
 };
 
 export default CompetitionList;
-
 
 const CompetitionListHead = styled.div`
   width: 80rem;
@@ -357,6 +378,8 @@ const Content = styled.div`
     margin-bottom: 1.88rem;
     align-items: center;
     gap: 1.5rem;
+    padding: 30px;
+    border-bottom: 2px solid #72d49b;
   }
   h1 {
     color: #72d49b;
@@ -373,6 +396,7 @@ const Content = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    margin: 30px 0px;
   }
   h3 {
     color: #000;
@@ -411,7 +435,7 @@ const Content = styled.div`
     align-items: center;
     justify-content: center;
     gap: 0.6rem;
-    margin-left: 2rem;
+    margin-left: auto;
   }
   #imgnbtn {
     display: flex;
