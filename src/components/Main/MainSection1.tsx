@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import { ReactComponent as SearchImg } from "../../assets/images/SearchIcon.svg";
 import { ReactComponent as ServiceImg1 } from "../../assets/images/MainSection1_Icon1.svg";
@@ -6,46 +7,65 @@ import { ReactComponent as ServiceImg2 } from "../../assets/images/MainSection1_
 import { ReactComponent as ServiceImg3 } from "../../assets/images/MainSection1_Icon3.svg";
 import { ReactComponent as BackCircle } from "../../assets/images/MainSection1_BackCircle.svg";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
-export default function MainSection1() {
-  const [searchText, setSearchText] = useState("");
-  const [output, setOutput] = useState("프롬프트 전송 결과물 예시입니다.");
-  const [userName, setUserName] = useState("");
-  const [userImage, setUserImage] = useState("");
+interface User {
+  name: string;
+  nickname: string;
+  thumbnail: string;
+}
+
+const MainSection1: React.FC = () => {
+  const [searchText, setSearchText] = useState<string>("");
+  const [output, setOutput] =
+    useState<string>("프롬프트 전송 결과물 예시입니다.");
+  const [userName, setUserName] = useState<string>("");
+  const [userImage, setUserImage] = useState<string>("");
+  const [userNickname, setUserNickname] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSearch = async () => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     if (!token) {
       setOutput("로그인해주세요.");
       return;
     }
-
+    setLoading(true);
+    setError(null);
     try {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const response = await axios.get(`/api/v1/main/getGptApi?prompt=${searchText}`);
+      axios.defaults.headers.common["X-AUTH-TOKEN"] = token;
+      const response = await axios.get(
+        `/api/v1/main/getGptApi?prompt=${searchText}`
+      );
       setOutput(response.data || "결과가 없습니다.");
     } catch (error) {
       setOutput("Error");
+      setError("프롬프트 전송 중 오류 발생");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // 사용자 이름 & 이미지 가져오기
   const fetchUserInfo = async () => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     if (!token) {
       setOutput("로그인해주세요.");
       return;
     }
+    setLoading(true);
+    setError(null);
     try {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const response = await axios.get('/sign-api/sign-up');
-      const { name, image } = response.data;
-
+      axios.defaults.headers.common["X-AUTH-TOKEN"] = token;
+      const response = await axios.get("/api/v1/user/getUser");
+      const { name, nickname, thumbnail } = response.data;
       setUserName(name);
-      setUserImage(image);
+      setUserImage(thumbnail);
+      setUserNickname(nickname);
     } catch (error) {
+      setError("사용자 정보 가져오기 실패");
       console.error("사용자 정보 가져오기 실패", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,15 +83,16 @@ export default function MainSection1() {
           <span>프롬프렌</span> 체험해보기
         </Text1>
         <Text2>
-          해당 입력란을 통해 프롬프렌이 제공한 프롬프트를 바로 사용해 볼 수 있어요!
+          해당 입력란을 통해 프롬프렌이 제공한 프롬프트를 바로 사용해 볼 수
+          있어요!
         </Text2>
 
         <Search>
-          <input 
-            type="text" 
-            placeholder="입력하세요" 
-            value={searchText} 
-            onChange={(e) => setSearchText(e.target.value)} 
+          <input
+            type="text"
+            placeholder="입력하세요"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
           />
           <SearchIcon onClick={handleSearch} />
         </Search>
@@ -84,10 +105,7 @@ export default function MainSection1() {
           <CategoryHash>#지금 바로!</CategoryHash>
           <CategoryHash>#여기에서!</CategoryHash>
         </Category>
-
-        <Output>
-          {output}
-        </Output>
+        <Output>{output}</Output>
 
         <InfoContainer>
           <ServiceInfo>
@@ -107,26 +125,32 @@ export default function MainSection1() {
               </Service>
             </ServiceList>
           </ServiceInfo>
-
           <UserInfo>
-            <UserInfo_Left>
-              <p><span>{userName}</span>님 반갑습니다!</p>
+            <UserInfoLeft>
+              <p>
+                <span>{userName}</span>회원님 반갑습니다!
+              </p>
               <UserImage src={userImage} alt="User profile" />
-            </UserInfo_Left>
-            <UserInfo_Right>
+            </UserInfoLeft>
+            <UserInfoRight>
+              <p>
+                프롬프렌 닉네임: <span>{userNickname}</span>
+              </p>
+              <div id="userinfostroke" />
               <StyledLink to="/prompt_register">
                 <StyledButton>프롬프트 등록하기</StyledButton>
               </StyledLink>
-            </UserInfo_Right>
+            </UserInfoRight>
           </UserInfo>
         </InfoContainer>
       </Contents>
     </Section1>
   );
-}
+};
 
-const StyledLink = styled(Link)`
-`;
+export default MainSection1;
+
+const StyledLink = styled(Link)``;
 const Section1 = styled.div`
   background: rgba(205, 240, 220, 0.05);
   height: 800px;
@@ -212,11 +236,11 @@ const CategoryHash = styled.div`
 
 /*프롬프트 전송 결과물*/
 const Output = styled.div`
-font-family: "Noto Sans KR", sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   width: 1066px;
   height: 131px;
   border-radius: 9px;
-  border: 1px solid #72D49B;
+  border: 1px solid #72d49b;
   padding: 19px 13px;
   margin-bottom: 26px;
 `;
@@ -231,7 +255,7 @@ const ServiceInfo = styled.div`
   width: 525px;
   height: 170px;
   border-radius: 9px;
-  border: 1px solid #72D49B;
+  border: 1px solid #72d49b;
   padding-top: 31px;
   text-align: center;
   font-family: "Gmarket Sans TTF";
@@ -293,40 +317,78 @@ const UserInfo = styled.div`
   width: 525px;
   height: 170px;
   border-radius: 9px;
-  border: 1px solid #72D49B;
+  border: 1px solid #72d49b;
   display: flex;
+  text-align: center;
   font-family: "Noto Sans KR";
   font-size: 18px;
   font-weight: 300;
   padding: 15px 0px;
 `;
 const UserImage = styled.img`
+  max-width: 10.125rem;
+  max-height: 6.8125rem;
+  border-radius: 1rem;
 `;
-const UserInfo_Left = styled.div`
+const UserInfoLeft = styled.div`
   width: 300px;
   padding: 17px 33px 0px 57px;
-  border-right: 1px solid #72D49B;
+  border-right: 1px solid #72d49b;
 
   p {
-    font-family: "Gmarket Sans TTF";
-    font-size: 18px;
+    color: #000;
+    font-family: "Gmarket Sans TTF Thin";
+    font-size: 1.125rem;
+    font-style: normal;
     font-weight: 300;
+    line-height: normal;
   }
 
   span {
+    color: #000;
+    text-align: center;
+    font-family: "Gmarket Sans TTF";
+    font-size: 1.125rem;
+    font-style: normal;
     font-weight: 700;
+    line-height: normal;
   }
 `;
 
-const UserInfo_Right = styled.div`
-  padding-left: 10px;
+const UserInfoRight = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-left: 2rem;
+  color: #949494;
+  font-family: "Gmarket Sans TTF Thin";
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  text-align: left;
+  #userinfostroke {
+    width: 9.9375rem;
+    height: 0.06rem;
+    background-color: #72d49b;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const StyledButton = styled.button`
-  font-size: 20px;
-  padding: 15px;
-  font-family: "Gmarket Sans TTF";
-  border-radius: 10px;
-  background: linear-gradient(90deg, #72D49B 0%, #2CC1BF 100%);
+  width: 8.875rem;
+  height: 2.0625rem;
+  flex-shrink: 0;
+  border-radius: 0.625rem;
+  background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
+  color: #fff;
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
   border: none;
+  margin-left: 0.4rem;
+  cursor: pointer;
 `;

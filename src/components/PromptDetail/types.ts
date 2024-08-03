@@ -12,8 +12,9 @@ export interface PromptData {
 
   export interface Review {
     review_id: number;
-    writer_thumbnail: string; // URL or path to the user's profile image
-    review_writer: string; // Reviewer's name
-    title: string; // Review title
-    content: string; // Review content
+    writer_thumbnail: string; 
+    review_writer: string; 
+    title: string; 
+    content: string; 
+    star: string;
   }

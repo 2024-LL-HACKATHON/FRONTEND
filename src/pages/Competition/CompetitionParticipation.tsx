@@ -8,6 +8,7 @@ import CompetitionDetail from "../../components/CompetitionComponent/Competition
 import ParticipationSwitchButtonComponent from "../../components/CompetitionComponent/ParticipationSwitchButtonComponent";
 import Footer from "../../components/Footer/Footer";
 import { ReactComponent as ParticipateImg } from "../../assets/images/ParticipateImg.svg";
+import Modal from "../../components/Modal/Modal"; 
 
 interface FormData {
   title: string;
@@ -27,6 +28,7 @@ function CompetitionParticipation() {
     localStorage.getItem("token")
   );
   const [preview, setPreview] = React.useState<string | null>(null);
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false); // State for modal visibility
   const navigate = useNavigate();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -37,7 +39,6 @@ function CompetitionParticipation() {
       const file = files[0];
       const fileUrl = URL.createObjectURL(file);
       setPreview(fileUrl);
-      
 
       try {
         const fileData = new FormData();
@@ -87,9 +88,16 @@ function CompetitionParticipation() {
       );
 
       console.log(response.data);
+      setModalOpen(true); 
     } catch (error: unknown) {
       console.error(error);
+      setError("등록 중 오류가 발생했습니다.");
     }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    navigate("/competitionlist"); 
   };
 
   React.useEffect(() => {
@@ -130,7 +138,7 @@ function CompetitionParticipation() {
           <div id="imageGroup">
             <div id="imgLabel">OUTPUT</div>
             <label id="imageLabel" htmlFor="image">
-              {!preview && <ParticipateImg />} 
+              {!preview && <ParticipateImg />}
               {preview && <PreviewImage src={preview} alt="미리보기" />}
             </label>
             <input
@@ -158,6 +166,12 @@ function CompetitionParticipation() {
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </ParticipateForm>
       <Footer />
+      <Modal
+        isOpen={modalOpen}
+        onClose={handleCloseModal}
+        message="경진대회 등록이 완료되었습니다!"
+        linkto="확인"
+      />
     </>
   );
 }

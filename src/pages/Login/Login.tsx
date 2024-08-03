@@ -5,7 +5,7 @@ import axios from "axios";
 import { login } from "../../services/authSlice";
 import styled from "styled-components";
 import Header from "../../components/Header/Header";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type LoginFormInputs = {
   account: string;
@@ -15,6 +15,9 @@ type LoginFormInputs = {
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate(); 
+  const location = useLocation();
+
+  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || "/";
 
   const {
     register,
@@ -40,7 +43,7 @@ const Login = () => {
       // Axios 기본 헤더에 토큰 추가
       axios.defaults.headers.common["Authorization"] = `${token}`;
       dispatch(login(token));
-      navigate("/main");
+      navigate(from);  // 원래 접근하려 했던 페이지로 리디렉션
       
       console.log(response.data);
 
