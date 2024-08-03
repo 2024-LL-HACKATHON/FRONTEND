@@ -33,7 +33,7 @@ const router = createBrowserRouter([
     element: <Guide />,
   },
   {
-    path: "/detail_page",
+    path: "/detail_page/:prompt_id",
     element: <PromptDetail />,
   },
   {

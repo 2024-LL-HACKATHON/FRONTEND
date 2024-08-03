@@ -1,35 +1,105 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { Review } from "./types";
+
+type Params = Record<string, string | undefined>;
 
 export default function PromptReview() {
+  const { prompt_id } = useParams<Params>();
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token") || null
+  );
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      if (!prompt_id) {
+        setError('Invalid prompt ID.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        console.log(`Fetching reviews for prompt_id: ${prompt_id}`); // Debug log
+        const response = await axios.get<{ items: Review[] }>(
+          `/api/v1/review/getTop4ReviewList/${prompt_id}`,
+          {
+            headers: {
+              accept: "*/*",
+              "X-AUTH-TOKEN": token || "",
+            },
+          }
+        );
+        console.log(response.data); // Debug log
+        setReviews(response.data.items);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setError("Failed to fetch reviews.");
+        } else {
+          setError("Unexpected error occurred.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [prompt_id, token]); // Ensure useEffect runs when prompt_id changes
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (reviews.length === 0) {
+    return <div>No reviews available</div>;
+  }
+
   return (
-    <PromptReviewLayout>
-      <User>
-        <UserProfile>
-          
-        </UserProfile>
-        <UserName>홍**님</UserName>
-      </User>
-      <ReviewContent>
-        <Quote>"지금까지 이런 프롬프트는 없었다."</Quote>
-        <ReviewText>
-          제가 비전공생이어서 인공지능에 대해 잘 모르지만 프롬프렌을 통해 인공지능을 똑똑하게 사용할 수 있어서 너무 좋아요.
-          똑똑하게 질문하는 것의 중요성은 인공지능이나 사람이나 마찬가지더라구요.
-        </ReviewText>
-      </ReviewContent>
-    </PromptReviewLayout>
+    <ReviewsContainer>
+      {reviews.map((review) => (
+        <PromptReviewLayout key={review.review_id}>
+          <User>
+            <UserProfile>
+              <img src={review.writer_thumbnail} alt="Profile" />
+            </UserProfile>
+            <UserName>{review.review_writer}</UserName>
+          </User>
+          <ReviewContent>
+            <Quote>{review.title}</Quote>
+            <ReviewText>{review.content}</ReviewText>
+          </ReviewContent>
+        </PromptReviewLayout>
+      ))}
+    </ReviewsContainer>
   );
 }
+
+const ReviewsContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  margin: 62px 250px 81px 16px;
+  gap: 34px;
+`;
 
 const PromptReviewLayout = styled.div`
   display: flex;
   align-items: center;
-  width: 485px;
+  width: 100%;
+  max-width: 485px;
   height: 146px;
   border-radius: 16px;
-  border: 2px solid #42D09F;
-  background: rgba(66, 208, 159, 0.20);
-  box-shadow: 4px 3px 10px 1px #ECECEC;
+  border: 2px solid #42d09f;
+  background: rgba(66, 208, 159, 0.2);
+  box-shadow: 4px 3px 10px 1px #ececec;
 `;
 
 const User = styled.div`
@@ -40,15 +110,21 @@ const User = styled.div`
 `;
 
 const UserProfile = styled.div`
-  width: 68.118px;
-  height: 68.118px;
+  width: 68px;
+  height: 68px;
   border-radius: 16px;
   margin-bottom: 10px;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const UserName = styled.div`
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-size: 12px;
 `;
 
@@ -57,14 +133,19 @@ const ReviewContent = styled.div`
 `;
 
 const Quote = styled.p`
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-size: 16px;
   margin-bottom: 7px;
 `;
 
 const ReviewText = styled.p`
-    width: 331px;
-    height: 63px;
-  font-family: 'Noto SansKR';
+  width: 331px;
+  height: 63px;
+  font-family: "Noto Sans KR";
   font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 `;

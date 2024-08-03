@@ -40,12 +40,19 @@ const CompetitionList: React.FC = () => {
         const response = await axios.get(
           `/api/v1/competition/getCompetitionByList?page=${currentPage}`
         );
-        const dataWithLikes = response.data.items.map((item: any) => ({
+        const itemsData = response.data.items;
+        const likesPromises = itemsData.map((item: any) =>
+          axios.get(`/api/v1/like/countLike/${item.com_id}`)
+        );
+        const likesResponses = await Promise.all(likesPromises);
+
+        const itemsWithLikes = itemsData.map((item: any, index: number) => ({
           ...item,
-          likes: 0,
+          likes: likesResponses[index].data, // Update likes from API
           isLiked: false,
         }));
-        setItems(dataWithLikes);
+
+        setItems(itemsWithLikes);
 
         if (response.data.totalPages) {
           setTotalPages(response.data.totalPages);
@@ -78,35 +85,29 @@ const CompetitionList: React.FC = () => {
   const updateLikeStatus = async (itemId: number, isLiked: boolean) => {
     const token = localStorage.getItem("token");
     try {
-      if (isLiked) {
-        await axios.post(
-          "/api/v1/like/removeLike",
-          { comId: itemId },
-          {
-            headers: { "X-AUTH-TOKEN": token || "" },
-          }
-        );
-      } else {
-        await axios.post(
-          "/api/v1/like/createLike",
-          { comId: itemId },
-          {
-            headers: { "X-AUTH-TOKEN": token || "" },
-          }
-        );
-      }
+      await axios.post(
+        "/api/v1/like/createLike",
+        { comId: itemId },
+        {
+          headers: { "X-AUTH-TOKEN": token || "" },
+        }
+      );
 
+      // Fetch updated like count
       const response = await axios.get(`/api/v1/like/countLike/${itemId}`);
-      const updatedLikes = response.data.likes;
+      const updatedLikes = response.data;
 
-      setItems(
-        items.map((item) =>
+      // Update items state
+      setItems((prevItems) =>
+        prevItems.map((item) =>
           item.com_id === itemId
             ? { ...item, likes: updatedLikes, isLiked: !isLiked }
             : item
         )
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error updating like status", error);
+    }
   };
 
   const handleParticipateClick = () => {
@@ -247,6 +248,7 @@ const CompetitionList: React.FC = () => {
 };
 
 export default CompetitionList;
+
 
 const CompetitionListHead = styled.div`
   width: 80rem;

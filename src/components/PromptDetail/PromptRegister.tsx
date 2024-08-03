@@ -13,12 +13,14 @@ interface FormData {
   title: string;
 }
 
-function PromptRegister ()  {
+function PromptRegister() {
   const { control, handleSubmit, setValue } = useForm<FormData>();
-  const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -36,7 +38,7 @@ function PromptRegister ()  {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
-        const uploadedFileUrl = uploadResponse.data.url;
+        const uploadedFileUrl = uploadResponse.data;
         setValue("image", uploadedFileUrl);
       } catch (error) {
         console.error("파일 업로드 에러", error);
@@ -47,16 +49,24 @@ function PromptRegister ()  {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await axios.post("/api/v1/main/createPrompt", data, {
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("content", data.content);
+      formData.append("image", data.image);
+      formData.append("category", data.category);
+      formData.append("condition", data.condition);
+      formData.append("output", data.output);
+      formData.append("summary", data.summary);
+
+      const response = await axios.post("/api/v1/main/createPrompt", formData, {
         headers: {
           "Content-Type": "application/json",
           "X-AUTH-TOKEN": token || "",
         },
       });
-      alert("프롬프트가 성공적으로 등록되었습니다!");
-    } catch (error) {
-      console.error("프롬프트 등록 중 오류가 발생했습니다:", error);
-      setError("프롬프트 등록 중 오류가 발생했습니다.");
+      console.log(response.data);
+    } catch (error: unknown) {
+      console.error(error);
     }
   };
 
@@ -71,7 +81,7 @@ function PromptRegister ()  {
         <Sentence>프롬프렌에 프롬프트를 등록해보세요!</Sentence>
         <RegisterForm onSubmit={handleSubmit(onSubmit)}>
           <Text1>정보를 입력해주세요</Text1>
-          
+
           <label htmlFor="title">제목</label>
           <Controller
             name="title"
@@ -83,6 +93,7 @@ function PromptRegister ()  {
           <Controller
             name="condition"
             control={control}
+            defaultValue="PRODUCTIVE"
             render={({ field }) => (
               <select id="condition" {...field}>
                 <option value="PRODUCTIVE">생산적인</option>
@@ -107,10 +118,11 @@ function PromptRegister ()  {
             )}
           />
 
-          <label htmlFor="category">프롬프트 유형</label>
+          <label htmlFor="content">프롬프트</label>
           <Controller
             name="category"
             control={control}
+            defaultValue="GPT"
             render={({ field }) => (
               <select id="category" {...field}>
                 <option value="GPT">GPT</option>
@@ -118,8 +130,6 @@ function PromptRegister ()  {
               </select>
             )}
           />
-
-          <label htmlFor="content">프롬프트</label>
           <Controller
             name="content"
             control={control}
@@ -147,26 +157,28 @@ function PromptRegister ()  {
             )}
           />
 
-          <label htmlFor="img">이미지 업로드</label>
-          <input type="file" id="img" onChange={handleFileChange} ref={fileInputRef} />
-          {preview && <ImagePreview src={preview} alt="Preview" />}
+          <label id="imglabel" htmlFor="img">
+            {!preview && <p>이미지 파일 업로드</p>}
+            {preview && <ImagePreview src={preview} alt="Preview" />}
+          </label>
+          <input
+            type="file"
+            id="img"
+            onChange={handleFileChange}
+            ref={fileInputRef}
+            style={{
+              display: "none",
+            }}
+          />
 
           <RegisterButton type="submit">등록하기</RegisterButton>
         </RegisterForm>
       </RegisterFormLayout>
     </PromptRegisterLayout>
   );
-};
+}
 
 export default PromptRegister;
-
-const ImagePreview = styled.img`
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-top: 10px;
-  border: 1px solid #ddd;
-`;
 
 const PromptRegisterLayout = styled.div``;
 
@@ -277,7 +289,8 @@ const RegisterForm = styled.form`
     height: 154px;
     margin-top: 20px;
   }
-  #img {
+  #imglabel {
+    display: flex;
     width: 978px;
     height: 74px;
     margin-top: 25px;
@@ -285,7 +298,20 @@ const RegisterForm = styled.form`
     border: 1px solid #42d09f;
     background: #fff;
     text-align: center;
+    cursor: pointer;
+    color: #626260;
+    font-family: "Noto Sans KR";
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
+`;
+const ImagePreview = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0.625rem;
 `;
 
 const Text1 = styled.div`
