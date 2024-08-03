@@ -10,7 +10,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token'); // 로컬 저장소에서 토큰 가져오기
+    const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -23,7 +23,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      store.dispatch(setToken(null)); // 401 에러 발생 시 토큰 제거
+      store.dispatch(setToken(null));
     }
     return Promise.reject(error);
   }

@@ -5,7 +5,6 @@ import { ReactComponent as PageButton2 } from "../../assets/images/MainSection3_
 import Prompt_Item from './Prompt_Item';
 import axios from 'axios';
 
-// MainSection3 컴포넌트
 const MainSection3: React.FC = () => {
   const [selectedButton, setSelectedButton] = useState('전체'); // item 종류
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호

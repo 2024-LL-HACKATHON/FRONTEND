@@ -1,23 +1,80 @@
-import React from 'react';
-import styled from 'styled-components';
-import Header from '../Header/Header';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import axios from "axios";
+import Header from "../Header/Header";
+import { PromptData } from "./types";
+import { useParams } from "react-router-dom";
+
+type Params = Record<string, string | undefined>;
 
 export default function PromptDetailTop() {
+  const { prompt_id } = useParams<Params>(); // 수정된 Params 타입을 사용
+  const [prompt, setPrompt] = useState<PromptData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token") || null
+  );
+
+  useEffect(() => {
+    const fetchPromptData = async () => {
+      if (!prompt_id) {
+        setError('Invalid prompt ID.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get<PromptData>(
+          `/api/v1/main/getPrompt/${prompt_id}`,
+          {
+            headers: {
+              accept: "*/*",
+              "X-AUTH-TOKEN": token || "",
+            },
+          }
+        );
+        setPrompt(response.data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          setError("Server error: Unable to fetch data.");
+        } else {
+          setError("Unexpected error occurred.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPromptData();
+  }, [prompt_id, token]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!prompt) {
+    return <div>No data available</div>;
+  }
+
   return (
     <TopLayout>
       <Background>
         <Header isLoggedIn={false} fixed={false} />
-        </Background>
-        {/*불투명*/}
-        <TitleLayout>
-          <Title>몽환적인 애니메이션 장면</Title>
-          <CategoryLayout>
-            <Category>예술적인</Category>
-            <Category>DALL-E</Category>
-            <Category>리뷰</Category>
-          </CategoryLayout>
-          <Writer>작성자 홍길동</Writer>
-        </TitleLayout>
+      </Background>
+      <TitleLayout>
+        <Title>{prompt.title}</Title>
+        <CategoryLayout>
+          <Category>{prompt.condition}</Category>
+          <Category>{prompt.category}</Category>
+          <Category>리뷰</Category>
+        </CategoryLayout>
+        <Writer>작성자 {prompt.prompt_writer}</Writer>
+      </TitleLayout>
     </TopLayout>
   );
 }
@@ -34,7 +91,7 @@ const Background = styled.div`
   top: 0;
   width: 1280px;
   height: 292px;
-  background: linear-gradient(90deg, #42D09F 0%, #2CC1BF 100%);
+  background: linear-gradient(90deg, #42d09f 0%, #2cc1bf 100%);
   z-index: 1;
 `;
 
@@ -42,7 +99,7 @@ const TitleLayout = styled.div`
   width: 1127px;
   height: 267px;
   fill: rgba(255, 255, 255, 0.6);
-  border: 2px solid rgba(44, 193, 191, 0.30);
+  border: 2px solid rgba(44, 193, 191, 0.3);
   box-shadow: 50px 50px 200px 0px rgba(255, 255, 255, 0.25) inset;
   filter: drop-shadow(3px 4px 11px rgba(114, 212, 155, 0.25));
   backdrop-filter: blur(15px);
@@ -54,8 +111,8 @@ const TitleLayout = styled.div`
   z-index: 2;
 `;
 
-const Title = styled.text`
-  font-family: 'Gmarket Sans TTF';
+const Title = styled.div`
+  font-family: "Gmarket Sans TTF";
   font-size: 40px;
   font-weight: 500;
   margin-bottom: 52px;
@@ -76,7 +133,7 @@ const Category = styled.div`
   border: 2px solid #42d09f;
   background: #fff;
   box-shadow: 4px 3px 10px 1px #ececec;
-  font-family: 'Gmarket Sans TTF';
+  font-family: "Gmarket Sans TTF";
   font-size: 14px;
   font-weight: 500;
   margin-right: 38px;
@@ -84,7 +141,7 @@ const Category = styled.div`
 
 const Writer = styled.div`
   float: right;
-  font-family: 'Gmarket Sans TTF';
+  font-family: "Gmarket Sans TTF";
   font-size: 18px;
   font-weight: 500;
   color: #333;

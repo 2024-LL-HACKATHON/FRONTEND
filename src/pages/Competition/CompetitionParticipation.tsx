@@ -37,6 +37,7 @@ function CompetitionParticipation() {
       const file = files[0];
       const fileUrl = URL.createObjectURL(file);
       setPreview(fileUrl);
+      
 
       try {
         const fileData = new FormData();
