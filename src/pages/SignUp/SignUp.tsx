@@ -3,72 +3,78 @@ import styled, { keyframes } from "styled-components";
 import Header from "../../components/Header/Header";
 import axios from "axios";
 import { ReactComponent as SignUpImg } from "../../assets/images/SignUpImg.svg";
+import { Link } from "react-router-dom";
+import { useForm, Controller } from "react-hook-form";
 
 export default function Signup() {
-  // 회원가입 폼 데이터 상태 관리
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    account: "",
-    password: "",
-    nickname: "",
-    thumbnail: "",
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    trigger,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      account: "",
+      password: "",
+      nickname: "",
+      thumbnail: "",
+    },
   });
-
-  // 회원가입 단계 상태 관리
   const [step, setStep] = useState(1);
 
-  // 입력 필드 변경 처리
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, files } = e.target;
-    if (type === "file" && files) {
+  const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    if (files && files.length > 0) {
       const file = files[0];
       try {
-        // FormData 객체를 생성하고 파일 추가
         const fileData = new FormData();
         fileData.append("file", file);
 
-        // 서버에 파일 업로드 요청 보내기
         const uploadResponse = await axios.post("/api/files/upload", fileData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
 
-        // 응답 처리
         const fileUrl = uploadResponse.data;
-        setFormData((prevData) => ({
-          ...prevData,
-          thumbnail: fileUrl, // 파일 URL로 상태 업데이트
-        }));
+        setValue("thumbnail", fileUrl);
       } catch (error) {
         console.error("파일 업로드 에러", error);
       }
-    } else {
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
   };
 
-  // 다음 단계로 이동
-  const handleNext = () => {
-    setStep((prevStep) => prevStep + 1);
+  const handleNext = async () => {
+    if (step === 1) {
+      // Step 1의 필수 입력 필드 검증
+      const result = await trigger([
+        "name",
+        "email",
+        "phone",
+        "account",
+        "password",
+        "nickname",
+      ]);
+      if (result) {
+        setStep(2);
+      }
+    } else if (step === 2) {
+      setStep(3);
+    }
   };
 
-  // 폼 제출 처리
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async (data: any) => {
     try {
-      const response = await axios.post(
-        "/sign-api/sign-up?roles=ADMIN",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post("/sign-api/sign-up?roles=ADMIN", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       console.log(response.data);
       setStep(3);
     } catch (error) {
@@ -80,7 +86,7 @@ export default function Signup() {
     <>
       <Header isLoggedIn={false} fixed={false} />
       <SignupLayout>
-        <SignupForm onSubmit={handleSubmit}>
+        <SignupForm onSubmit={handleSubmit(onSubmit)}>
           {step === 1 && (
             <SlideIn>
               <SignupTitle>
@@ -90,67 +96,91 @@ export default function Signup() {
               <SignupInputGroup>
                 <div>
                   <SignupSectionTitle>회원정보</SignupSectionTitle>
-                  <label>
-                    이름
-                    <Input
-                      name="name"
-                      type="text"
-                      value={formData.name}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label>
-                    이메일
-                    <Input
-                      name="email"
-                      type="text"
-                      value={formData.email}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label>
-                    전화번호
-                    <Input
-                      name="phone"
-                      type="text"
-                      value={formData.phone}
-                      onChange={handleChange}
-                    />
-                  </label>
+                  <Controller
+                    name="name"
+                    control={control}
+                    rules={{ required: "이름은 필수 입력 사항입니다." }}
+                    render={({ field }) => (
+                      <label>
+                        이름
+                        <Input {...field} />
+                        {errors.name && <Error>{errors.name.message}</Error>}
+                      </label>
+                    )}
+                  />
+                  <Controller
+                    name="email"
+                    control={control}
+                    rules={{ required: "이메일은 필수 입력 사항입니다." }}
+                    render={({ field }) => (
+                      <label>
+                        이메일
+                        <Input {...field} />
+                        {errors.email && <Error>{errors.email.message}</Error>}
+                      </label>
+                    )}
+                  />
+                  <Controller
+                    name="phone"
+                    control={control}
+                    rules={{ required: "전화번호는 필수 입력 사항입니다." }}
+                    render={({ field }) => (
+                      <label>
+                        전화번호
+                        <Input {...field} />
+                        {errors.phone && <Error>{errors.phone.message}</Error>}
+                      </label>
+                    )}
+                  />
                 </div>
                 <div>
                   <SignupSectionTitle>회원가입</SignupSectionTitle>
-                  <label>
-                    아이디
-                    <Input
-                      name="account"
-                      type="text"
-                      value={formData.account}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label>
-                    패스워드
-                    <Input
-                      name="password"
-                      type="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label>
-                    닉네임
-                    <Input
-                      name="nickname"
-                      type="text"
-                      value={formData.nickname}
-                      onChange={handleChange}
-                    />
-                  </label>
+                  <Controller
+                    name="account"
+                    control={control}
+                    rules={{ required: "아이디는 필수 입력 사항입니다." }}
+                    render={({ field }) => (
+                      <label>
+                        아이디
+                        <Input {...field} />
+                        {errors.account && (
+                          <Error>{errors.account.message}</Error>
+                        )}
+                      </label>
+                    )}
+                  />
+                  <Controller
+                    name="password"
+                    control={control}
+                    rules={{ required: "패스워드는 필수 입력 사항입니다." }}
+                    render={({ field }) => (
+                      <label>
+                        패스워드
+                        <Input type="password" {...field} />
+                        {errors.password && (
+                          <Error>{errors.password.message}</Error>
+                        )}
+                      </label>
+                    )}
+                  />
+                  <Controller
+                    name="nickname"
+                    control={control}
+                    rules={{ required: "닉네임은 필수 입력 사항입니다." }}
+                    render={({ field }) => (
+                      <label>
+                        닉네임
+                        <Input {...field} />
+                        {errors.nickname && (
+                          <Error>{errors.nickname.message}</Error>
+                        )}
+                      </label>
+                    )}
+                  />
                 </div>
-                <SubmitButton type="button" onClick={handleNext}>
+                <NextButton type="button" onClick={handleNext}>
                   다음
-                </SubmitButton>
+                </NextButton>
               </SignupInputGroup>
             </SlideIn>
           )}
@@ -164,12 +194,12 @@ export default function Signup() {
                   <HiddenFileInput
                     name="thumbnail"
                     type="file"
-                    onChange={handleChange}
+                    onChange={handleChangeFile}
                   />
                   <ThumbnailButton>
-                    {formData.thumbnail ? (
+                    {watch("thumbnail") ? (
                       <ThumbnailPreview
-                        src={formData.thumbnail}
+                        src={watch("thumbnail")}
                         alt="Thumbnail Preview"
                       />
                     ) : (
@@ -183,16 +213,16 @@ export default function Signup() {
           )}
           {step === 3 && (
             <SignupInputGroup>
-              <SignUpImgBox>
-                <SignUpImg />
-              </SignUpImgBox>
-              <h1 id="step3H1">가입을 축하드립니다</h1>
-              <h2 id="step3H2">
-                <span>{formData.name}</span>님
-              </h2>
-              <SubmitButton id="step3Btn" type="submit">
-                로그인 하러가기
-              </SubmitButton>
+              <div id="step3box">
+                <SignUpImgBox>
+                  <SignUpImg />
+                </SignUpImgBox>
+                <h1 id="step3H1">가입을 축하드립니다</h1>
+                <h2 id="step3H2">
+                  <span>{watch("name")}</span>님
+                </h2>
+                <LinktoLogin to="/login">로그인 하러가기</LinktoLogin>
+              </div>
             </SignupInputGroup>
           )}
         </SignupForm>
@@ -224,6 +254,10 @@ const SignupLayout = styled.div`
   align-items: center;
 `;
 
+const SignupForm = styled.form`
+  margin-top: 2.12rem;
+`;
+
 const SignupTitle = styled.div`
   text-align: center;
   margin-bottom: 2.12rem;
@@ -244,24 +278,18 @@ const SignupTitle = styled.div`
   }
 `;
 
-const SignupForm = styled.form`
-  margin-top: 2.12rem;
-`;
-
-const SignUpImgBox = styled.div`
-  margin-left: 5rem;
-  margin-bottom: 2.25rem;
-`;
 const SignupInputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-bottom: 2.375rem;
-
+  
   div {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1.875rem;
   }
   label {
-    font-size: 0.75rem; /* 12px */
+    font-size: 0.75rem;
     color: #000;
     text-align: center;
     font-family: "Noto Sans KR";
@@ -273,6 +301,13 @@ const SignupInputGroup = styled.div`
     margin-right: 0.5rem;
     margin-bottom: 1rem;
   }
+  #step3box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
   #step3H1 {
     color: #000;
     text-align: center;
@@ -281,9 +316,11 @@ const SignupInputGroup = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    margin-top: 2.25rem;
     margin-bottom: 1.25rem;
   }
   #step3H2 {
+    text-align: center;
     background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
     background-clip: text;
     -webkit-background-clip: text;
@@ -293,7 +330,6 @@ const SignupInputGroup = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    margin-left: 5rem;
   }
   #step3H2 span {
     text-align: center;
@@ -306,11 +342,6 @@ const SignupInputGroup = styled.div`
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
-
-  #step3Btn {
-    margin-top: 7rem;
-    margin-left: 5rem;
   }
 `;
 
@@ -335,11 +366,15 @@ const Input = styled.input`
   font-size: 0.875rem;
 `;
 
+const Error = styled.div`
+  color: red;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+`;
+
 const SubmitButton = styled.button`
   width: 13.1875rem;
   height: 2.9375rem;
-  margin-left: 3rem;
-  margin-bottom: 6.0625rem;
   border-radius: 0.625rem;
   background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
   border: none;
@@ -351,6 +386,46 @@ const SubmitButton = styled.button`
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
+  margin-top: 2.75rem;
+  margin-left: 3.5rem;
+`;
+
+const NextButton = styled.button`
+  width: 13.1875rem;
+  height: 2.9375rem;
+  border-radius: 0.625rem;
+  background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
+  border: none;
+  color: #fff;
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+  margin-top: 2.75rem;
+  margin-left: 3rem;
+`;
+
+const LinktoLogin = styled(Link)`
+  width: 13.1875rem;
+  height: 2.9375rem;
+  border-radius: 0.625rem;
+  background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
+  border: none;
+  color: #fff;
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+  margin-top: 5.31rem;
+  text-decoration: none;
+  padding-top: 0.7rem;
+  padding-left: 0.1rem;
 `;
 
 const HiddenFileInput = styled.input`
@@ -383,3 +458,5 @@ const ThumbnailPreview = styled.img`
   border-radius: 50%;
   object-fit: cover;
 `;
+
+const SignUpImgBox = styled.div``;
