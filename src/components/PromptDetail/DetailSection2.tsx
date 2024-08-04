@@ -5,7 +5,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-
 interface FormData {
   content: string;
   star: number;
@@ -13,21 +12,53 @@ interface FormData {
 }
 
 type Params = {
-  prompt_id?: string; // prompt_id가 선택적일 수 있으므로
+  prompt_id?: string;
 };
 
 export default function DetailSection2() {
   const { prompt_id } = useParams<Params>();
-  const [promptId, setPromptId] = useState<number | null>(null); 
-  const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
-  const [starRating, setStarRating] = useState<number>(0); // 별점 상태 추가
-  const { register, handleSubmit, reset, setValue } = useForm<FormData>();
+  const [promptId, setPromptId] = useState<number | null>(null);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
+  const [starRating, setStarRating] = useState<number>(0);
+  const [reviewCount, setReviewCount] = useState<number>(0);
+  const { register, handleSubmit, reset } = useForm<FormData>();
 
   useEffect(() => {
     if (prompt_id) {
       setPromptId(parseInt(prompt_id, 10));
+      fetchReviewCount(parseInt(prompt_id, 10));
     }
   }, [prompt_id]);
+
+  const fetchReviewCount = async (prompt_id: number) => {
+    try {
+      const response = await axios.get(`/api/v1/review/countReview/${prompt_id}`, {
+        headers: {
+          accept: "*/*",
+          "Content-Type": "application/json",
+          "X-AUTH-TOKEN": token || "",
+        }
+      });
+      
+      const reviewCountString = response.data; 
+      const reviewCount = parseInt(reviewCountString.replace(/[^0-9]/g, ''), 10); 
+      setReviewCount(isNaN(reviewCount) ? 0 : reviewCount); 
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404) {
+          console.warn(`404 Error: No reviews found for prompt_id ${prompt_id}`);
+          setReviewCount(0);
+        } else {
+          console.error(`Axios error fetching review count for prompt_id ${prompt_id}:`, error);
+          console.error(`Error details:`, error.response);
+        }
+      } else {
+        console.error(`Unexpected error fetching review count for prompt_id ${prompt_id}:`, error);
+      }
+    }
+  };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     if (promptId === null) {
@@ -39,9 +70,9 @@ export default function DetailSection2() {
       const response = await axios.post(
         "/api/v1/review/createReview",
         {
-          promptId: promptId, 
+          promptId: promptId,
           content: data.content,
-          star: starRating, 
+          star: starRating,
           title: data.title,
         },
         {
@@ -54,7 +85,8 @@ export default function DetailSection2() {
       console.log("Review submitted successfully:", response.data);
       alert("Review submitted successfully!");
       reset();
-      setStarRating(0); // 별점 상태 초기화
+      setStarRating(0);
+      fetchReviewCount(promptId); 
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Axios error:", error.response?.data);
@@ -68,7 +100,7 @@ export default function DetailSection2() {
   return (
     <DetailSection2Layout>
       <ReviewTitle>
-        사용자 리뷰 <span>58개</span>
+        사용자 리뷰 <span>{reviewCount}개</span>
       </ReviewTitle>
       <ReviewWrite>
         <p>리뷰 작성하기</p>
@@ -80,7 +112,7 @@ export default function DetailSection2() {
                 id="title"
                 {...register("title", { required: "Title is required" })}
                 type="text"
-                placeholder="Review Title"
+                placeholder="제목을 입력해주세요."
               />
             </InputWrapper>
             <InputWrapper>
@@ -89,7 +121,7 @@ export default function DetailSection2() {
                 id="content"
                 {...register("content", { required: "Content is required" })}
                 type="text"
-                placeholder="내용을 입력해주세요"
+                placeholder="내용을 입력해주세요."
               />
             </InputWrapper>
             <InputWrapper>
@@ -111,13 +143,16 @@ export default function DetailSection2() {
       <ReviewList>
         <PromptReview />
       </ReviewList>
-        <ReviewMore>리뷰 더보기</ReviewMore>
+      <ReviewMore>리뷰 더보기</ReviewMore>
     </DetailSection2Layout>
   );
 }
 
 const DetailSection2Layout = styled.div`
-  margin-top: 184px;
+  diplay: flex;
+  width: 80rem;
+  padding: 7rem;
+  margin-top: 20.31rem;
   margin-bottom: 98px;
 `;
 
@@ -140,12 +175,14 @@ const ReviewWrite = styled.div`
 `;
 
 const WriteBox = styled.div`
-  display: inline-block;
-  width: 883px;
-  border-radius: 16px;
-  background: rgba(66, 208, 159, 0.2);
+  display: flex;
+  width: 835px;
   margin-top: 22px;
-  margin-bottom: 62px;
+  border-radius: 1rem;
+  border: 1px solid #42d09f;
+  background: #fff;
+  box-shadow: 4px 3px 10px 1px #ececec;
+  padding: 1rem;
 `;
 
 const InputWrapper = styled.div`
@@ -157,15 +194,17 @@ const InputWrapper = styled.div`
     font-size: 16px;
   }
   input {
-    width: 100%;
+    width: 50.1875rem;
+    height: 3.75rem;
+    flex-shrink: 0;
     border: none;
-    border-radius: 16px;
-    background: none;
+    border-radius: 1rem;
+    background: rgba(66, 208, 159, 0.2);
     color: #7e7e7e;
     font-family: "Noto Sans KR";
-    font-size: 16px;
+    font-size: 0.8rem;
     padding: 0.5rem;
-    height: 2.5rem; 
+    height: 2.5rem;
   }
 `;
 
@@ -196,13 +235,17 @@ const Star = styled.div<{ filled: boolean }>`
 const WriteButton = styled.button`
   width: 106px;
   height: 43px;
-  margin-left: 15px;
+  margin-left: 43.3rem;
   border: 1px solid #42d09f;
   border-radius: 16px;
   background: none;
   text-align: center;
   font-family: "Noto Sans KR";
   font-size: 14px;
+  &:hover {
+    background: linear-gradient(90deg, #42d09f 0%, #2cc1bf 100%);
+    cursor: pointer;
+  }
 `;
 
 const ReviewList = styled.div`

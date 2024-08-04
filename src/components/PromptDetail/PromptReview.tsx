@@ -24,7 +24,7 @@ export default function PromptReview() {
       }
 
       try {
-        console.log(`Fetching reviews for prompt_id: ${prompt_id}`); // Debug log
+        console.log(`Fetching reviews for prompt_id: ${prompt_id}`); 
         const response = await axios.get<{ items: Review[] }>(
           `/api/v1/review/getTop4ReviewList/${prompt_id}`,
           {
@@ -34,7 +34,7 @@ export default function PromptReview() {
             },
           }
         );
-        console.log(response.data); // Debug log
+        console.log(response.data); 
         setReviews(response.data.items);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -48,10 +48,10 @@ export default function PromptReview() {
     };
 
     fetchReviews();
-  }, [prompt_id, token]); // Ensure useEffect runs when prompt_id changes
+  }, [prompt_id, token]); 
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>리뷰를 불러오고 있어요.</div>;
   }
 
   if (error) {
@@ -59,7 +59,7 @@ export default function PromptReview() {
   }
 
   if (reviews.length === 0) {
-    return <div>No reviews available</div>;
+    return <div>작성된 리뷰가 없어요. 첫 리뷰어가 되어주세요!</div>;
   }
 
   return (

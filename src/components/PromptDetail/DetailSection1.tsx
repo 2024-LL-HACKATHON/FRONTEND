@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { PromptData } from "./types";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 type Params = Record<string, string | undefined>;
 
@@ -12,13 +12,13 @@ export default function DetailSection1() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")|| null
+    localStorage.getItem("token") || null
   );
 
   useEffect(() => {
     const fetchPromptData = async () => {
       if (!prompt_id) {
-        setError('Invalid prompt ID.');
+        setError("Invalid prompt ID.");
         setLoading(false);
         return;
       }
@@ -68,23 +68,24 @@ export default function DetailSection1() {
         </PromptExplanation>
         <PromptShow>
           <Title>프롬프트</Title>
-          <Content2>
-          {prompt.content}
-          </Content2>
+          <Content2>{prompt.content}</Content2>
         </PromptShow>
         <PromptExample>
           <Title>프롬프트 사용 예시</Title>
           <Content3>
-          {prompt.output}
+            {prompt.output}
+            <div id="imgBox">
+              <img id="promptImg" src={prompt.image} alt={prompt.title} />
+            </div>
           </Content3>
         </PromptExample>
       </LayoutLeft>
       <LayoutRight>
         <PromptTry>
-          “{prompt.title}” <br />
+          "{prompt.title}" <br />
           프롬프트 사용해보기!
         </PromptTry>
-        <PromptTryButton>사용하러 가기</PromptTryButton>
+        <PromptTryButton to="/main">사용하러 가기</PromptTryButton>
       </LayoutRight>
     </DetailSection1Layout>
   );
@@ -93,8 +94,8 @@ export default function DetailSection1() {
 const DetailSection1Layout = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 1280px;
-  padding: 20px;
+  width: 80rem;
+  padding: 7rem;
 `;
 
 const LayoutLeft = styled.div`
@@ -141,18 +142,31 @@ const PromptExample = styled.div`
 `;
 
 const Content3 = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 712px;
   height: 141px;
   border-top: 1px solid #2cc1bf;
   font-family: "Gmarket Sans TTF";
   font-size: 14px;
   padding: 22px 27px;
+  gap: 3rem;
+  #imgBox {
+    display: flex;
+    justify-content: left;
+  }
+  #promptImg {
+    max-width: 27.75rem;
+    max-height: 18.27231rem;
+    object-fit: contain;
+  }
 `;
 
-/* 오른쪽 */
 const LayoutRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   float: right;
-  margin-right: 119px;
   margin-top: 145px;
   width: 221px;
   height: 257px;
@@ -161,28 +175,35 @@ const LayoutRight = styled.div`
   background: #fff;
   box-shadow: 4px 3px 10px 1px #ececec;
   font-weight: 400;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 const PromptTry = styled.div`
-  font-family: "Noto Sans";
-  font-size: 14px;
+  color: #000;
   text-align: center;
-  margin-top: 98px;
-  margin-bottom: 50px;
+  font-family: "Noto Sans KR";
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.2rem;
+  margin-top: 6rem;
+  margin-bottom: 2rem;
 `;
 
-const PromptTryButton = styled.button`
+const PromptTryButton = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 142.08px;
   height: 55.937px;
-  font-family: "Noto Sans";
+  font-family: "Noto Sans KR";
   font-size: 14px;
   border-radius: 16px;
-  border: 1px solid #42D09F;
+  border: 1px solid #42d09f;
   cursor: pointer;
-  background: linear-gradient(90deg, #72D49B 0%, #2CC1BF 100%);
-  color: #FFF;
+  background: #fff;
+  color: #000;
+  text-decoration: none;
+  &:hover {
+    background: linear-gradient(90deg, #42d09f 0%, #2cc1bf 100%);
   }
 `;

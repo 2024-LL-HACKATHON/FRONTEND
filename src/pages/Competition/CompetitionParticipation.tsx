@@ -8,6 +8,7 @@ import CompetitionDetail from "../../components/CompetitionComponent/Competition
 import ParticipationSwitchButtonComponent from "../../components/CompetitionComponent/ParticipationSwitchButtonComponent";
 import Footer from "../../components/Footer/Footer";
 import { ReactComponent as ParticipateImg } from "../../assets/images/ParticipateImg.svg";
+import Modal from "../../components/Modal/Modal";
 
 interface FormData {
   title: string;
@@ -27,6 +28,7 @@ function CompetitionParticipation() {
     localStorage.getItem("token")
   );
   const [preview, setPreview] = React.useState<string | null>(null);
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false); // State for modal visibility
   const navigate = useNavigate();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -37,7 +39,6 @@ function CompetitionParticipation() {
       const file = files[0];
       const fileUrl = URL.createObjectURL(file);
       setPreview(fileUrl);
-      
 
       try {
         const fileData = new FormData();
@@ -87,9 +88,16 @@ function CompetitionParticipation() {
       );
 
       console.log(response.data);
+      setModalOpen(true);
     } catch (error: unknown) {
       console.error(error);
+      setError("등록 중 오류가 발생했습니다.");
     }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    navigate("/competitionlist");
   };
 
   React.useEffect(() => {
@@ -118,19 +126,23 @@ function CompetitionParticipation() {
       />
       <ParticipateForm onSubmit={handleSubmit(onSubmit)}>
         <div id="formdiv">
-          <div id="titleGroup">
-            <label htmlFor="title">제목</label>
-            <input
-              id="title"
-              type="text"
-              {...register("title", { required: "제목을 입력해주세요" })}
-            />
+          <div id="titlebox">
+            <div id="titleGroup">
+              <label htmlFor="title">제목</label>
+              <input
+                id="title"
+                type="text"
+                {...register("title", { required: "제목을 입력해주세요" })}
+              />
+            </div>
+            {errors.title && (
+              <ErrorMessage>{errors.title.message}</ErrorMessage>
+            )}
           </div>
-          {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
           <div id="imageGroup">
             <div id="imgLabel">OUTPUT</div>
             <label id="imageLabel" htmlFor="image">
-              {!preview && <ParticipateImg />} 
+              {!preview && <ParticipateImg />}
               {preview && <PreviewImage src={preview} alt="미리보기" />}
             </label>
             <input
@@ -148,16 +160,23 @@ function CompetitionParticipation() {
               id="content"
               {...register("content", { required: "내용을 입력해주세요" })}
             />
+
+            {errors.content && (
+              <ErrorMessage>{errors.content.message}</ErrorMessage>
+            )}
           </div>
-          {errors.content && (
-            <ErrorMessage>{errors.content.message}</ErrorMessage>
-          )}
         </div>
         <ParticipateStroke />
         <SubmitButton type="submit">등록하기</SubmitButton>
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </ParticipateForm>
       <Footer />
+      <Modal
+        isOpen={modalOpen}
+        onClose={handleCloseModal}
+        message="경진대회 등록이 완료되었습니다!"
+        linkto="확인"
+      />
     </>
   );
 }
@@ -245,11 +264,14 @@ const ParticipateForm = styled.form`
     align-items: center;
     cursor: pointer;
   }
+  #titlebox {
+    margin-bottom: 2.75rem;
+  }
+
   #titleGroup {
     display: flex;
     align-items: center;
     gap: 1.43rem;
-    margin-bottom: 2.75rem;
     margin-top: 1.81rem;
   }
   #imageGroup {
@@ -301,9 +323,13 @@ const PreviewImage = styled.img`
   border-radius: 1rem;
 `;
 
-const ErrorMessage = styled.p`
+const ErrorMessage = styled.div`
+  display: flex;
+  text-align: left;
   color: red;
   font-size: 0.875rem;
+  margin-top: 0.2rem;
+  margin-left: 0.5rem;
 `;
 
 const SubmitButton = styled.button`
