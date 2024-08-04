@@ -13,10 +13,11 @@ interface FormData {
   output: string;
   summary: string;
   title: string;
+  createdAt: string;
 }
 
 function PromptRegister() {
-  const { control, handleSubmit, setValue } = useForm<FormData>();
+  const { control, handleSubmit, setValue,  formState: { errors, isSubmitting }, } = useForm<FormData>();
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false); // Modal state
@@ -51,6 +52,9 @@ function PromptRegister() {
     }
   };
 
+  const hasErrors = Object.keys(errors).length > 0 && isSubmitting;
+
+
   const onSubmit = async (data: FormData) => {
     try {
       const formData = new FormData();
@@ -61,6 +65,7 @@ function PromptRegister() {
       formData.append("condition", data.condition);
       formData.append("output", data.output);
       formData.append("summary", data.summary);
+      formData.append("createdAt", data.createdAt);
 
       const response = await axios.post("/api/v1/main/createPrompt", formData, {
         headers: {
@@ -69,7 +74,7 @@ function PromptRegister() {
         },
       });
       console.log(response.data);
-      setModalOpen(true); // Open modal on successful submission
+      setModalOpen(true); 
     } catch (error: unknown) {
       console.error(error);
       setError("등록 중 오류가 발생했습니다.");
@@ -78,7 +83,7 @@ function PromptRegister() {
 
   const handleCloseModal = () => {
     setModalOpen(false);
-    navigate("/main"); // Navigate to /main when the modal is closed
+    navigate("/main");
   };
 
   React.useEffect(() => {
@@ -105,6 +110,7 @@ function PromptRegister() {
             <Controller
               name="title"
               control={control}
+              rules={{ required: "제목을 입력해주세요." }}
               render={({ field }) => (
                 <input type="text" id="title" {...field} />
               )}
@@ -128,6 +134,7 @@ function PromptRegister() {
           <Controller
             name="summary"
             control={control}
+            rules={{ required: "설명을 입력해주세요." }}
             render={({ field }) => (
               <input
                 type="text"
@@ -154,6 +161,7 @@ function PromptRegister() {
           <Controller
             name="content"
             control={control}
+            rules={{ required: "프롬프트를 입력해주세요." }}
             render={({ field }) => (
               <StyledTextareaContent
                 id="content"
@@ -167,6 +175,7 @@ function PromptRegister() {
           <Controller
             name="output"
             control={control}
+            rules={{ required: "결과를 입력해주세요." }}
             render={({ field }) => (
               <StyledTextareaOutput
                 id="output"
@@ -190,6 +199,7 @@ function PromptRegister() {
             }}
           />
           <RegisterButton type="submit">등록하기</RegisterButton>
+          {hasErrors && <Error>빈칸이 있습니다.</Error>}
         </RegisterForm>
       </RegisterFormLayout>
       <Modal
@@ -203,6 +213,12 @@ function PromptRegister() {
 }
 
 export default PromptRegister;
+
+const Error = styled.div`
+  color: red;
+  font-size: 0.75rem;
+  margin-top: 1rem;
+`;
 
 const Title = styled.div`
   margin-top: 6.25rem;

@@ -12,7 +12,7 @@ interface FormData {
 }
 
 type Params = {
-  prompt_id?: string; // prompt_id가 선택적일 수 있으므로
+  prompt_id?: string;
 };
 
 export default function DetailSection2() {
@@ -21,14 +21,44 @@ export default function DetailSection2() {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
-  const [starRating, setStarRating] = useState<number>(0); // 별점 상태 추가
-  const { register, handleSubmit, reset, setValue } = useForm<FormData>();
+  const [starRating, setStarRating] = useState<number>(0);
+  const [reviewCount, setReviewCount] = useState<number>(0);
+  const { register, handleSubmit, reset } = useForm<FormData>();
 
   useEffect(() => {
     if (prompt_id) {
       setPromptId(parseInt(prompt_id, 10));
+      fetchReviewCount(parseInt(prompt_id, 10));
     }
   }, [prompt_id]);
+
+  const fetchReviewCount = async (prompt_id: number) => {
+    try {
+      const response = await axios.get(`/api/v1/review/countReview/${prompt_id}`, {
+        headers: {
+          accept: "*/*",
+          "Content-Type": "application/json",
+          "X-AUTH-TOKEN": token || "",
+        }
+      });
+      
+      const reviewCountString = response.data; 
+      const reviewCount = parseInt(reviewCountString.replace(/[^0-9]/g, ''), 10); 
+      setReviewCount(isNaN(reviewCount) ? 0 : reviewCount); 
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404) {
+          console.warn(`404 Error: No reviews found for prompt_id ${prompt_id}`);
+          setReviewCount(0);
+        } else {
+          console.error(`Axios error fetching review count for prompt_id ${prompt_id}:`, error);
+          console.error(`Error details:`, error.response);
+        }
+      } else {
+        console.error(`Unexpected error fetching review count for prompt_id ${prompt_id}:`, error);
+      }
+    }
+  };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     if (promptId === null) {
@@ -56,6 +86,7 @@ export default function DetailSection2() {
       alert("Review submitted successfully!");
       reset();
       setStarRating(0);
+      fetchReviewCount(promptId); 
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Axios error:", error.response?.data);
@@ -69,7 +100,7 @@ export default function DetailSection2() {
   return (
     <DetailSection2Layout>
       <ReviewTitle>
-        사용자 리뷰 <span>58개</span>
+        사용자 리뷰 <span>{reviewCount}개</span>
       </ReviewTitle>
       <ReviewWrite>
         <p>리뷰 작성하기</p>

@@ -19,11 +19,7 @@ interface PromptItem {
   prompt_writer: string;
   summary: string;
   title: string;
-  review?: number; 
-}
-
-interface ReviewCount {
-  review: number; 
+  review?: number; // 리뷰 수를 선택적 속성으로 추가
 }
 
 type Params = {
@@ -38,6 +34,10 @@ const MainSection3: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
   const itemsToShow = 9;
+
+  useEffect(() => {
+    fetchPromptItems();
+  }, [selectedButton, currentPage, paramPromptId]);
 
   const fetchPromptItems = async () => {
     setLoading(true);
@@ -54,6 +54,7 @@ const MainSection3: React.FC = () => {
       });
 
       const prompts = response.data.content;
+
       const promptsWithReviews = await Promise.all(
         prompts.map(async (prompt: PromptItem) => {
           if (prompt.prompt_id === undefined || prompt.prompt_id === null) {
@@ -62,14 +63,21 @@ const MainSection3: React.FC = () => {
           }
 
           try {
-            const reviewResponse = await axios.get<ReviewCount>(`/api/v1/review/countReview/${prompt.prompt_id}`, {
+            const reviewResponse = await axios.get(`/api/v1/review/countReview/${prompt.prompt_id}`, {
               headers: {
                 accept: "*/*",
                 "Content-Type": "application/json",
                 "X-AUTH-TOKEN": token || "",
               }
             });
-            return { ...prompt, review: Number(reviewResponse.data.review) || 0 };
+
+            // 리뷰 수 문자열로 변환 및 숫자 추출
+            const reviewCountString = reviewResponse.data;
+            const reviewCount = typeof reviewCountString === 'string'
+              ? parseInt(reviewCountString.replace(/[^0-9]/g, ''), 10)
+              : 0;
+
+            return { ...prompt, review: isNaN(reviewCount) ? 0 : reviewCount };
           } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 404) {
               console.warn(`리뷰 수를 가져오는 중 prompt_id ${prompt.prompt_id}에 대해 404 에러 발생`);
@@ -89,10 +97,6 @@ const MainSection3: React.FC = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchPromptItems();
-  }, [selectedButton, currentPage]);
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
@@ -176,6 +180,8 @@ const MainSection3: React.FC = () => {
 };
 
 export default MainSection3;
+
+
 
 const Img = styled.div`
   display: flex;

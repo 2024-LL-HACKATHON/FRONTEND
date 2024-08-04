@@ -4,23 +4,32 @@ import Header from "../../components/Header/Header";
 import axios from "axios";
 import { ReactComponent as SignUpImg } from "../../assets/images/SignUpImg.svg";
 import { Link } from "react-router-dom";
+import { useForm, Controller } from "react-hook-form";
 
 export default function Signup() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    account: "",
-    password: "",
-    nickname: "",
-    thumbnail: "",
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    trigger,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      account: "",
+      password: "",
+      nickname: "",
+      thumbnail: "",
+    },
   });
-
   const [step, setStep] = useState(1);
 
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, files } = e.target;
-    if (type === "file" && files) {
+  const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    if (files && files.length > 0) {
       const file = files[0];
       try {
         const fileData = new FormData();
@@ -33,35 +42,39 @@ export default function Signup() {
         });
 
         const fileUrl = uploadResponse.data;
-        setFormData((prevData) => ({
-          ...prevData,
-          thumbnail: fileUrl,
-        }));
+        setValue("thumbnail", fileUrl);
       } catch (error) {
         console.error("파일 업로드 에러", error);
       }
-    } else {
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
   };
 
-  const handleNext = () => {
-    setStep((prevStep) => prevStep + 1);
+  const handleNext = async () => {
+    if (step === 1) {
+      // Step 1의 필수 입력 필드 검증
+      const result = await trigger([
+        "name",
+        "email",
+        "phone",
+        "account",
+        "password",
+        "nickname",
+      ]);
+      if (result) {
+        setStep(2);
+      }
+    } else if (step === 2) {
+      setStep(3);
+    }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async (data: any) => {
     try {
-      const response = await axios.post(
-        "/sign-api/sign-up?roles=ADMIN",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post("/sign-api/sign-up?roles=ADMIN", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       console.log(response.data);
       setStep(3);
     } catch (error) {
@@ -73,7 +86,7 @@ export default function Signup() {
     <>
       <Header isLoggedIn={false} fixed={false} />
       <SignupLayout>
-        <SignupForm onSubmit={handleSubmit}>
+        <SignupForm onSubmit={handleSubmit(onSubmit)}>
           {step === 1 && (
             <SlideIn>
               <SignupTitle>
@@ -83,63 +96,87 @@ export default function Signup() {
               <SignupInputGroup>
                 <div>
                   <SignupSectionTitle>회원정보</SignupSectionTitle>
-                  <label>
-                    이름
-                    <Input
-                      name="name"
-                      type="text"
-                      value={formData.name}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label>
-                    이메일
-                    <Input
-                      name="email"
-                      type="text"
-                      value={formData.email}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label>
-                    전화번호
-                    <Input
-                      name="phone"
-                      type="text"
-                      value={formData.phone}
-                      onChange={handleChange}
-                    />
-                  </label>
+                  <Controller
+                    name="name"
+                    control={control}
+                    rules={{ required: "이름은 필수 입력 사항입니다." }}
+                    render={({ field }) => (
+                      <label>
+                        이름
+                        <Input {...field} />
+                        {errors.name && <Error>{errors.name.message}</Error>}
+                      </label>
+                    )}
+                  />
+                  <Controller
+                    name="email"
+                    control={control}
+                    rules={{ required: "이메일은 필수 입력 사항입니다." }}
+                    render={({ field }) => (
+                      <label>
+                        이메일
+                        <Input {...field} />
+                        {errors.email && <Error>{errors.email.message}</Error>}
+                      </label>
+                    )}
+                  />
+                  <Controller
+                    name="phone"
+                    control={control}
+                    rules={{ required: "전화번호는 필수 입력 사항입니다." }}
+                    render={({ field }) => (
+                      <label>
+                        전화번호
+                        <Input {...field} />
+                        {errors.phone && <Error>{errors.phone.message}</Error>}
+                      </label>
+                    )}
+                  />
                 </div>
                 <div>
                   <SignupSectionTitle>회원가입</SignupSectionTitle>
-                  <label>
-                    아이디
-                    <Input
-                      name="account"
-                      type="text"
-                      value={formData.account}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label>
-                    패스워드
-                    <Input
-                      name="password"
-                      type="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label>
-                    닉네임
-                    <Input
-                      name="nickname"
-                      type="text"
-                      value={formData.nickname}
-                      onChange={handleChange}
-                    />
-                  </label>
+                  <Controller
+                    name="account"
+                    control={control}
+                    rules={{ required: "아이디는 필수 입력 사항입니다." }}
+                    render={({ field }) => (
+                      <label>
+                        아이디
+                        <Input {...field} />
+                        {errors.account && (
+                          <Error>{errors.account.message}</Error>
+                        )}
+                      </label>
+                    )}
+                  />
+                  <Controller
+                    name="password"
+                    control={control}
+                    rules={{ required: "패스워드는 필수 입력 사항입니다." }}
+                    render={({ field }) => (
+                      <label>
+                        패스워드
+                        <Input type="password" {...field} />
+                        {errors.password && (
+                          <Error>{errors.password.message}</Error>
+                        )}
+                      </label>
+                    )}
+                  />
+                  <Controller
+                    name="nickname"
+                    control={control}
+                    rules={{ required: "닉네임은 필수 입력 사항입니다." }}
+                    render={({ field }) => (
+                      <label>
+                        닉네임
+                        <Input {...field} />
+                        {errors.nickname && (
+                          <Error>{errors.nickname.message}</Error>
+                        )}
+                      </label>
+                    )}
+                  />
                 </div>
                 <NextButton type="button" onClick={handleNext}>
                   다음
@@ -157,12 +194,12 @@ export default function Signup() {
                   <HiddenFileInput
                     name="thumbnail"
                     type="file"
-                    onChange={handleChange}
+                    onChange={handleChangeFile}
                   />
                   <ThumbnailButton>
-                    {formData.thumbnail ? (
+                    {watch("thumbnail") ? (
                       <ThumbnailPreview
-                        src={formData.thumbnail}
+                        src={watch("thumbnail")}
                         alt="Thumbnail Preview"
                       />
                     ) : (
@@ -182,7 +219,7 @@ export default function Signup() {
                 </SignUpImgBox>
                 <h1 id="step3H1">가입을 축하드립니다</h1>
                 <h2 id="step3H2">
-                  <span>{formData.name}</span>님
+                  <span>{watch("name")}</span>님
                 </h2>
                 <LinktoLogin to="/login">로그인 하러가기</LinktoLogin>
               </div>
@@ -244,9 +281,9 @@ const SignupTitle = styled.div`
 const SignupInputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  justify: content: center;
+  justify-content: center;
   margin-bottom: 2.375rem;
-
+  
   div {
     display: flex;
     flex-direction: column;
@@ -329,6 +366,12 @@ const Input = styled.input`
   font-size: 0.875rem;
 `;
 
+const Error = styled.div`
+  color: red;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+`;
+
 const SubmitButton = styled.button`
   width: 13.1875rem;
   height: 2.9375rem;
@@ -364,6 +407,7 @@ const NextButton = styled.button`
   margin-top: 2.75rem;
   margin-left: 3rem;
 `;
+
 const LinktoLogin = styled(Link)`
   width: 13.1875rem;
   height: 2.9375rem;

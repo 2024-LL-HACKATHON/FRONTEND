@@ -8,7 +8,7 @@ import CompetitionDetail from "../../components/CompetitionComponent/Competition
 import ParticipationSwitchButtonComponent from "../../components/CompetitionComponent/ParticipationSwitchButtonComponent";
 import Footer from "../../components/Footer/Footer";
 import { ReactComponent as ParticipateImg } from "../../assets/images/ParticipateImg.svg";
-import Modal from "../../components/Modal/Modal"; 
+import Modal from "../../components/Modal/Modal";
 
 interface FormData {
   title: string;
@@ -88,7 +88,7 @@ function CompetitionParticipation() {
       );
 
       console.log(response.data);
-      setModalOpen(true); 
+      setModalOpen(true);
     } catch (error: unknown) {
       console.error(error);
       setError("등록 중 오류가 발생했습니다.");
@@ -97,7 +97,7 @@ function CompetitionParticipation() {
 
   const handleCloseModal = () => {
     setModalOpen(false);
-    navigate("/competitionlist"); 
+    navigate("/competitionlist");
   };
 
   React.useEffect(() => {
@@ -126,15 +126,19 @@ function CompetitionParticipation() {
       />
       <ParticipateForm onSubmit={handleSubmit(onSubmit)}>
         <div id="formdiv">
-          <div id="titleGroup">
-            <label htmlFor="title">제목</label>
-            <input
-              id="title"
-              type="text"
-              {...register("title", { required: "제목을 입력해주세요" })}
-            />
+          <div id="titlebox">
+            <div id="titleGroup">
+              <label htmlFor="title">제목</label>
+              <input
+                id="title"
+                type="text"
+                {...register("title", { required: "제목을 입력해주세요" })}
+              />
+            </div>
+            {errors.title && (
+              <ErrorMessage>{errors.title.message}</ErrorMessage>
+            )}
           </div>
-          {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
           <div id="imageGroup">
             <div id="imgLabel">OUTPUT</div>
             <label id="imageLabel" htmlFor="image">
@@ -156,10 +160,11 @@ function CompetitionParticipation() {
               id="content"
               {...register("content", { required: "내용을 입력해주세요" })}
             />
+
+            {errors.content && (
+              <ErrorMessage>{errors.content.message}</ErrorMessage>
+            )}
           </div>
-          {errors.content && (
-            <ErrorMessage>{errors.content.message}</ErrorMessage>
-          )}
         </div>
         <ParticipateStroke />
         <SubmitButton type="submit">등록하기</SubmitButton>
@@ -259,11 +264,14 @@ const ParticipateForm = styled.form`
     align-items: center;
     cursor: pointer;
   }
+  #titlebox {
+    margin-bottom: 2.75rem;
+  }
+
   #titleGroup {
     display: flex;
     align-items: center;
     gap: 1.43rem;
-    margin-bottom: 2.75rem;
     margin-top: 1.81rem;
   }
   #imageGroup {
@@ -315,9 +323,13 @@ const PreviewImage = styled.img`
   border-radius: 1rem;
 `;
 
-const ErrorMessage = styled.p`
+const ErrorMessage = styled.div`
+  display: flex;
+  text-align: left;
   color: red;
   font-size: 0.875rem;
+  margin-top: 0.2rem;
+  margin-left: 0.5rem;
 `;
 
 const SubmitButton = styled.button`

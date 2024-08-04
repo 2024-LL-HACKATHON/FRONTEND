@@ -24,7 +24,7 @@ export default function PromptReview() {
       }
 
       try {
-        console.log(`Fetching reviews for prompt_id: ${prompt_id}`); // Debug log
+        console.log(`Fetching reviews for prompt_id: ${prompt_id}`); 
         const response = await axios.get<{ items: Review[] }>(
           `/api/v1/review/getTop4ReviewList/${prompt_id}`,
           {
