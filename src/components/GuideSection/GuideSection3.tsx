@@ -1,20 +1,30 @@
 import styled from 'styled-components';
 import { ReactComponent as Task } from "../../assets/images/Task.svg";
 import { ReactComponent as Context } from "../../assets/images/Context.svg";
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const GuideSection3 = () => {
-  return (
-    <Page3>
-        <ContentRight>
-          <Tip>명령 [task]</Tip>
-          <br />
-          '명령'은 꼭 포함되어야 해요. <br />
-          '~작성해줘', '~해줘', '찾아봐 줘'처럼 서술어로 기술해주세요. <br />
-          자세한 답변을 원한다면 한 번에 한 가지 명령만 주는 게 좋아요.
-        </ContentRight>
-        {/*명령 이미지*/}
-        <TaskImg />
+  const { ref, inView } = useInView({
+    triggerOnce: false,  // 요소가 한 번만 애니메이션되도록 설정
+    threshold: 0.1,     // 요소의 10%가 화면에 보일 때 애니메이션 시작
+  });
 
+  return (
+    <Page3 ref={ref}>
+      <ContentRight>
+        <Tip>명령 [task]</Tip>
+        <br />
+        '명령'은 꼭 포함되어야 해요. <br />
+        '~작성해줘', '~해줘', '찾아봐 줘'처럼 서술어로 기술해주세요. <br />
+        자세한 답변을 원한다면 한 번에 한 가지 명령만 주는 게 좋아요.
+      </ContentRight>
+      {/*명령 이미지*/}
+      <AnimatedTaskImg 
+        initial={{ x: '100vw', opacity: 0 }}
+        animate={{ x: inView ? 0 : '100vw', opacity: inView ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1 }}
+      />
       <ContentLeft>
         <Tip>맥락 [context]</Tip>
         <br />
@@ -24,7 +34,11 @@ const GuideSection3 = () => {
         이해하기 쉬워져서 좋은 답변을 해줄 거예요.
       </ContentLeft>
       {/*맥락 이미지*/}
-      <ContextImg />
+      <AnimatedContextImg 
+        initial={{ x: '-100vw', opacity: 0 }}
+        animate={{ x: inView ? 0 : '-100vw', opacity: inView ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1 }}
+      />
     </Page3>
   );
 };
@@ -40,7 +54,6 @@ const Page3 = styled.div`
   position: relative;
 `;
 
-
 const Tip = styled.div`
   font-family: "Gmarket Sans TTF";
   font-size: 40px;
@@ -55,11 +68,10 @@ const ContentRight = styled.div`
   align-items: flex-start;
   margin-top: 122px;
   margin-left: 110px;
-
 `;
 
 // 명령 이미지
-const TaskImg = styled(Task)`
+const AnimatedTaskImg = styled(motion(Task))`
   position: absolute;
   top: 80px;
   right: 160px;
@@ -73,7 +85,7 @@ const ContentLeft = styled.div`
 `;
 
 // 맥락 이미지
-const ContextImg = styled(Context)`
+const AnimatedContextImg = styled(motion(Context))`
   position: absolute;
   bottom: 80px;
   left: 160px;

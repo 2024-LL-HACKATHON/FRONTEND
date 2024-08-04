@@ -64,4 +64,5 @@ const StyledDownicon = styled(Down_icon)`
   top: 605px;
   left: 50%;
   transform: translateX(-50%);
+  
 `;

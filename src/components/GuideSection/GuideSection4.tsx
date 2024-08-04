@@ -1,10 +1,17 @@
 import styled from 'styled-components';
 import { ReactComponent as Persona } from "../../assets/images/Persona.svg";
 import { ReactComponent as Example } from "../../assets/images/Example.svg";
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const GuideSection4 = () => {
+  const { ref, inView } = useInView({
+    triggerOnce: false,  // 요소가 한 번만 애니메이션되도록 설정
+    threshold: 0.1,     // 요소의 10%가 화면에 보일 때 애니메이션 시작
+  });
+
   return (
-    <Page4>
+    <Page4 ref={ref}>
 
       <ContentLeft>
         <Tip>페르소나 [persona]</Tip>
@@ -16,7 +23,11 @@ const GuideSection4 = () => {
         페르소나가 구체적일수록 전문영역에 가까운 답을 제공해줘요.
       </ContentLeft>
       {/*페르소나 이미지*/}
-      <PersonaImg />
+      <AnimatedPersonaImg
+        initial={{ x: '100vw', opacity: 0 }}
+        animate={{ x: inView ? 0 : '100vw', opacity: inView ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1 }} 
+      />
 
       <ContentRight>
         <Tip>예시 [example]</Tip>
@@ -26,7 +37,11 @@ const GuideSection4 = () => {
         답변을 작성해요.
       </ContentRight>
       {/*예시 이미지*/}
-      <ExampleImg />
+      <AnimatedExampleImg 
+        initial={{ x: '-100vw', opacity: 0 }}
+        animate={{ x: inView ? 0 : '-100vw', opacity: inView ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1 }}
+      />
     </Page4>
   );
 };
@@ -57,10 +72,10 @@ const ContentLeft = styled.div`
 `;
 
 // 페르소나 이미지
-const PersonaImg = styled(Persona)`
+const AnimatedPersonaImg = styled(motion(Persona))`
   position: absolute;
   top: 80px;
-  right: 160px;
+  right: 250px;
 `;
 
 const ContentRight = styled.div`
@@ -71,8 +86,8 @@ const ContentRight = styled.div`
 `;
 
 // 예시 이미지
-const ExampleImg = styled(Example)`
+const AnimatedExampleImg = styled(motion(Example))`
   position: absolute;
   bottom: 80px;
-  left: 160px;
+  left: 250px;
 `;

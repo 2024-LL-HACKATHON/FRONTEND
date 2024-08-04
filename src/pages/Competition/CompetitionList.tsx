@@ -55,13 +55,11 @@ const CompetitionList: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        const reversedPage = totalPages - currentPage + 1;
         const response = await axios.get(
-          `/api/v1/competition/getCompetitionByList?page=${reversedPage}`
+          `/api/v1/competition/getCompetitionByList?page=${currentPage}`
         );
         const itemsData = response.data.items;
-        const sortedItems = itemsData.reverse();
-        const likesPromises = sortedItems.map((item: any) =>
+        const likesPromises = itemsData.map((item: any) =>
           axios.get(`/api/v1/like/countLike/${item.com_id}`)
         );
         const likesResponses = await Promise.all(likesPromises);

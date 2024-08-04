@@ -1,10 +1,17 @@
 import styled from 'styled-components';
 import { ReactComponent as Format } from "../../assets/images/Format.svg";
 import { ReactComponent as Tone } from "../../assets/images/Tone.svg";
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const GuideSection5 = () => {
+  const { ref, inView } = useInView({
+    triggerOnce: false,
+    threshold: 0.1, 
+  });
+
   return (
-    <Page5>
+    <Page5 ref={ref}>
       <ContentLeft>
         <Tip>포맷 [format]</Tip>
         <br />
@@ -13,7 +20,11 @@ const GuideSection5 = () => {
         아웃라인을 주면서 어떤 식으로 구성하라고 말해주는 거죠.
       </ContentLeft>
       {/*포맷 이미지*/}
-      <FormatImg />
+      <FormatImg 
+        initial={{ x: '100vw', opacity: 0 }}
+        animate={{ x: inView ? 0 : '100vw', opacity: inView ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1 }}
+      />
 
       <ContentRight>
         <Tip>어조 [tone]</Tip>
@@ -24,7 +35,11 @@ const GuideSection5 = () => {
         따라하라고 하면 돼요.
       </ContentRight>
       {/*어조 이미지*/}
-      <ToneImg />
+      <ToneImg
+        initial={{ x: '-100vw', opacity: 0 }}
+        animate={{ x: inView ? 0 : '-100vw', opacity: inView ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1 }} 
+      />
     </Page5>
   );
 };
@@ -53,7 +68,7 @@ const ContentLeft = styled.div`
 `;
 
 // 포맷 이미지
-const FormatImg = styled(Format)`
+const FormatImg = styled(motion(Format))`
   position: absolute;
   top: 80px;
   right: 160px;
@@ -67,7 +82,7 @@ const ContentRight = styled.div`
 `;
 
 // 어조 이미지
-const ToneImg = styled(Tone)`
+const ToneImg = styled(motion(Tone))`
   position: absolute;
   bottom: 80px;
   left: 160px;
