@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import styled, { keyframes } from "styled-components";
 import { SideButtonProps } from "./types";
 import { ReactComponent as Content1Img } from "../../assets/images/Content1Img.svg";
 import { ReactComponent as Content2Img } from "../../assets/images/Content2Img.svg";
@@ -8,6 +8,11 @@ import { ReactComponent as Content4Img } from "../../assets/images/Content4Img.s
 
 export default function LandingSection3() {
   const [selectedContent, setSelectedContent] = useState("content1");
+  const [animationKey, setAnimationKey] = useState(Date.now());
+
+  useEffect(() => {
+    setAnimationKey(Date.now()); // Trigger animation on content change
+  }, [selectedContent]);
 
   const renderContent = () => {
     switch (selectedContent) {
@@ -18,7 +23,6 @@ export default function LandingSection3() {
             <ContentTitle>
               프롬프트
               <ContentTitleSpan>
-                {" "}
                 공유 <Dot>•</Dot> 검색
               </ContentTitleSpan>
             </ContentTitle>
@@ -149,7 +153,7 @@ export default function LandingSection3() {
             04 프롬프트 작성 가이드
           </SideButton>
         </LandingSection3SideBox>
-        <ContentContainer>{renderContent()}</ContentContainer>
+        <ContentContainer key={animationKey}>{renderContent()}</ContentContainer>
       </MainContent>
     </LandingSection3Container>
   );
@@ -253,17 +257,29 @@ const SideButton = styled.button<SideButtonProps>`
     padding-left: 1.25rem; // 20px
   }
 `;
+const slideInFromRight = keyframes`
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
 
 const ContentContainer = styled.div`
   width: calc(100% - 21.1875rem); // 100% - 339px
   margin-left: 4.1875rem; // 67px
   margin-top: 12.125rem; // 194px
   position: relative;
+  animation: ${slideInFromRight} 0.9s ease-out forwards; 
 
   @media (max-width: 768px) {
     width: 100%;
     margin-left: 0;
     margin-top: 2rem; // 32px
+    animation: none; // Disable animation on small screens if needed
   }
 `;
 
@@ -329,7 +345,7 @@ const ContentText = styled.div`
 
 const ContentImgBox = styled.div<{ height?: string }>`
   position: absolute;
-  height: ${(props) => props.height || "33.866rem"}; // 541.855px
+  height: ${(props) => props.height || "33.866rem"};
   flex-shrink: 0;
   right: 0;
   bottom: 0;

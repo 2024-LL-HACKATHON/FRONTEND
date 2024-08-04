@@ -33,7 +33,6 @@ const CompetitionList: React.FC = () => {
   const endDate = "2024-08-15T23:59:00";
   const itemsPerPage = 5;
 
-  // 생성된 데이터의 개수로 totalpage 결정
   useEffect(() => {
     const fetchTotalPages = async () => {
       try {
@@ -448,7 +447,7 @@ const Content = styled.div`
   }
   img {
     max-width: 100%;
-    height: auto;
+    max-height: 28rem;
     border-radius: 0.5rem;
   }
   button {
