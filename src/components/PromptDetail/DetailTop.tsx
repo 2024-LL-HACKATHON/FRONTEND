@@ -8,8 +8,9 @@ import { useParams } from "react-router-dom";
 type Params = Record<string, string | undefined>;
 
 export default function PromptDetailTop() {
-  const { prompt_id } = useParams<Params>(); // 수정된 Params 타입을 사용
+  const { prompt_id } = useParams<Params>();
   const [prompt, setPrompt] = useState<PromptData | null>(null);
+  const [reviewCount, setReviewCount] = useState<number>(0); // State for review count
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [token, setToken] = useState<string | null>(
@@ -25,16 +26,27 @@ export default function PromptDetailTop() {
       }
 
       try {
-        const response = await axios.get<PromptData>(
-          `/api/v1/main/getPrompt/${prompt_id}`,
-          {
+        const [promptResponse, reviewResponse] = await Promise.all([
+          axios.get<PromptData>(`/api/v1/main/getPrompt/${prompt_id}`, {
             headers: {
               accept: "*/*",
               "X-AUTH-TOKEN": token || "",
             },
-          }
-        );
-        setPrompt(response.data);
+          }),
+          axios.get<string>(`/api/v1/review/countReview/${prompt_id}`, {
+            headers: {
+              accept: "*/*",
+              "X-AUTH-TOKEN": token || "",
+            },
+          })
+        ]);
+
+        setPrompt(promptResponse.data);
+        const reviewCountString = reviewResponse.data;
+        const reviewCount = typeof reviewCountString === 'string'
+          ? parseInt(reviewCountString.replace(/[^0-9]/g, ''), 10)
+          : reviewCountString; // Directly use if it's already a number
+        setReviewCount(isNaN(reviewCount) ? 0 : reviewCount);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setError("Server error: Unable to fetch data.");
@@ -71,7 +83,7 @@ export default function PromptDetailTop() {
         <CategoryLayout>
           <Category>{prompt.condition}</Category>
           <Category>{prompt.category}</Category>
-          <Category>리뷰</Category>
+          <Category>리뷰 {reviewCount}개</Category> 
         </CategoryLayout>
         <Writer>작성자 {prompt.prompt_writer}</Writer>
       </TitleLayout>
