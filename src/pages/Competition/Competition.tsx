@@ -7,30 +7,39 @@ import { ReactComponent as CompetitionImgExample } from "../../assets/images/Com
 import Footer from "../../components/Footer/Footer";
 import { Link } from "react-router-dom";
 
+import CompetitionImg1 from "../../assets/images/Competition_Img1.svg";
+import CompetitionImg2 from "../../assets/images/Competition_Img2.svg";
+import CompetitionImg3 from "../../assets/images/Competition_Img3.svg";
+
 interface CompetitionData {
   title: string;
   participants: number;
   dateRange: string;
+  img: string;
 }
 
 const currentCompetitionData: CompetitionData = {
   title: "미래 도시 설계",
   participants: 0,
   dateRange: "2024.08.01~2024.08.15",
+  img:""
 };
 
 const pastCompetitions: CompetitionData[] = [
   {
+    img: CompetitionImg1,
     title: "스타트업 대표의 운영방식",
     participants: 33,
     dateRange: "2024.07.10~2024.07.20"
   },
   {
+    img: CompetitionImg2,
     title: "AI 혁신 아이디어 공모전",
     participants: 40,
     dateRange: "2024.06.15~2024.06.25"
   },
   {
+    img: CompetitionImg3,
     title: "스마트 홈 해커톤",
     participants: 28,
     dateRange: "2024.05.01~2024.05.10"
@@ -101,7 +110,7 @@ export default function Competition() {
         <CompetitionPastImgContainer>
           {pastCompetitions.map((competition, index) => (
             <CompetitionPast key={index}>
-              <CompetitionPastImgBox />
+              <CompetitionPastImgBox img={competition.img}></CompetitionPastImgBox>
               <IsProceed isProceeding={!isProceeding} past />
               <h2>{competition.title}</h2>
               <div id="competitionPastStroke" />
@@ -336,9 +345,12 @@ const CompetitionPastImgContainer = styled.div`
   gap: 2.56rem;
 `;
 
-const CompetitionPastImgBox = styled.div`
+const CompetitionPastImgBox = styled.div<{ img: string }>`
   width: 20.3125rem;
   height: 12.8125rem;
   border-radius: 1rem;
   background: rgba(114, 212, 155, 0.2);
+  background-image: url(${props => props.img}); // 가져온 이미지를 배경으로 설정
+  background-size: cover;
+  background-position: center;
 `;
