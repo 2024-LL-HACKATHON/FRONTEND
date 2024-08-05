@@ -220,7 +220,7 @@ export default function LandingSection3() {
 
 const LandingSection3Container = styled.div`
   max-width: 80rem;
-  height: 50rem;
+  height: 100vh;
   background: rgba(114, 212, 155, 0.05);
   position: relative;
   margin: 0 auto;

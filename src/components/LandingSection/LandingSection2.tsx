@@ -32,6 +32,15 @@ export default function LandingSection2() {
 
   return (
     <Container>
+      <Div405>
+        <Div405Title>프롬프트?</Div405Title>
+        <Div405Stroke />
+        <Div405Content>
+          AI가 최상의 답을 할 수 있도록 훈련 시키고 AI로
+          <br />
+          부터 최상의 답을 이끌어내는 도구
+        </Div405Content>
+      </Div405>
       <Title>
         <TitleSpan>
           <Character className="character">프</Character>
@@ -55,18 +64,76 @@ export default function LandingSection2() {
 
 const Container = styled.section`
   max-width: 80rem;
-  height: 20rem;
+  height: 100vh;
   text-align: center;
   margin: 0 auto;
-  margin-bottom: 12.56rem;
+`;
+const Div405 = styled.div`
+  display: flex;
+  width: 100%;
+  max-width: 80rem;
+  height: 14.0625rem;
+  background: linear-gradient(90deg, #42d09f 0%, #2cc1bf 100%);
+  align-items: center;
+  padding: 0 1rem;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+    padding: 2rem 1rem;
+  }
 `;
 
+const Div405Title = styled.h2`
+  font-family: "Gmarket Sans TTF";
+  font-weight: 700;
+  color: #fff;
+  font-size: 4rem;
+  margin-left: 16.6875rem;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    text-align: center;
+    font-size: 2rem;
+  }
+`;
+
+const Div405Stroke = styled.div`
+  width: 0.09375rem;
+  height: 8.59375rem;
+  background: #fff;
+  flex-shrink: 0;
+  margin-left: 3.875rem;
+
+  @media (max-width: 768px) {
+    width: 80%;
+    height: 0.09375rem;
+    margin: 1rem 0;
+  }
+`;
+
+const Div405Content = styled.p`
+  color: #fff;
+  text-align: justify;
+  font-family: "Noto Sans KR";
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.44858;
+  margin-left: 3.875rem;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    text-align: center;
+    font-size: 0.875rem;
+  }
+`;
 const Title = styled.h2`
   color: #000;
   font-family: "Gmarket Sans TTF";
   font-size: 2.25rem;
   font-weight: 300;
-  margin-top: 15.56rem;
+  margin-top: 7.56rem;
 
   @media (max-width: 768px) {
     font-size: 1.5rem;
