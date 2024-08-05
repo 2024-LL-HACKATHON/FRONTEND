@@ -7,6 +7,8 @@ import { ReactComponent as ServiceImg2 } from "../../assets/images/MainSection1_
 import { ReactComponent as ServiceImg3 } from "../../assets/images/MainSection1_Icon3.svg";
 import { ReactComponent as BackCircle } from "../../assets/images/MainSection1_BackCircle.svg";
 import { Link } from "react-router-dom";
+import userDefault from "../../assets/images/userdefault.png";
+
 
 interface User {
   name: string;
@@ -26,12 +28,6 @@ const MainSection1: React.FC = () => {
 
   const handleSearch = async () => {
     const token = localStorage.getItem("authToken");
-    if (!token) {
-      setOutput("로그인해주세요.");
-      return;
-    }
-    setLoading(true);
-    setError(null);
     try {
       axios.defaults.headers.common["X-AUTH-TOKEN"] = token;
       const response = await axios.get(
@@ -41,6 +37,7 @@ const MainSection1: React.FC = () => {
     } catch (error) {
       setOutput("Error");
       setError("프롬프트 전송 중 오류 발생");
+      console.error("프롬프트 전송 중 오류 발생", error);
     } finally {
       setLoading(false);
     }
@@ -49,7 +46,9 @@ const MainSection1: React.FC = () => {
   const fetchUserInfo = async () => {
     const token = localStorage.getItem("authToken");
     if (!token) {
-      setOutput("로그인해주세요.");
+      setUserName("");
+      setUserImage("");
+      setUserNickname("");
       return;
     }
     setLoading(true);
@@ -63,6 +62,9 @@ const MainSection1: React.FC = () => {
       setUserNickname(nickname);
     } catch (error) {
       setError("사용자 정보 가져오기 실패");
+      setUserName("");
+      setUserImage("");
+      setUserNickname("");
       console.error("사용자 정보 가져오기 실패", error);
     } finally {
       setLoading(false);
@@ -86,7 +88,6 @@ const MainSection1: React.FC = () => {
           해당 입력란을 통해 프롬프렌이 제공한 프롬프트를 바로 사용해 볼 수
           있어요!
         </Text2>
-
         <Search>
           <input
             type="text"
@@ -96,7 +97,6 @@ const MainSection1: React.FC = () => {
           />
           <SearchIcon onClick={handleSearch} />
         </Search>
-
         <Category>
           <p>맞춤형 카테고리</p>
           <CategoryHash>#프롬프렌이 제공하는</CategoryHash>
@@ -106,35 +106,48 @@ const MainSection1: React.FC = () => {
           <CategoryHash>#여기에서!</CategoryHash>
         </Category>
         <Output>{output}</Output>
-
+        {loading && <Loading>로딩 중...</Loading>} {/* 로딩 상태 표시 */}
+        {error && <Error>{error}</Error>} {/* 에러 메시지 표시 */}
         <InfoContainer>
           <ServiceInfo>
             편리하고 안전한 프롬프트를 제공하는 <span>프롬프렌 서비스</span>
             <ServiceList>
               <Service>
-                <StyledImg1 />
+                <StyledLink to="/prompt_register">
+                  <StyledImg1 />
+                </StyledLink>
                 <p>프롬프트 작성</p>
               </Service>
               <Service>
-                <StyledImg2 />
+                <StyledLink to="/competitionlist">
+                  <StyledImg2 />
+                </StyledLink>
                 <p>경진대회 참가</p>
               </Service>
               <Service>
-                <StyledImg3 />
+                <StyledLink to="/guide">
+                  <StyledImg3 />
+                </StyledLink>
                 <p>작성 가이드</p>
               </Service>
             </ServiceList>
           </ServiceInfo>
           <UserInfo>
             <UserInfoLeft>
-              <p>
-                <span>{userName}</span>회원님 반갑습니다!
-              </p>
-              <UserImage src={userImage} alt="User profile" />
+              {userName && (
+                <p>
+                  <span>{userName}</span>님 반갑습니다!
+                </p>
+              )}
+              {userImage ? (
+                <UserImage src={userImage} alt="User profile" />
+              ) : (
+                <UserImage src={userDefault} alt="Default profile" /> // 기본 이미지 사용
+              )}
             </UserInfoLeft>
             <UserInfoRight>
               <p>
-                프롬프렌 닉네임: <span>{userNickname}</span>
+                프롬프렌 닉네임: <span>{userNickname || "로그인 필요"}</span>
               </p>
               <div id="userinfostroke" />
               <StyledLink to="/prompt_register">
@@ -150,6 +163,8 @@ const MainSection1: React.FC = () => {
 
 export default MainSection1;
 
+const Loading = styled.div``; // 로딩 상태 표시
+const Error = styled.div``; // 에러 상태 표시
 const StyledLink = styled(Link)``;
 const Section1 = styled.div`
   background: rgba(205, 240, 220, 0.05);

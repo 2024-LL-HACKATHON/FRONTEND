@@ -93,8 +93,8 @@ export default function Competition() {
             현재<span>{currentCompetition.participants}명</span>참여중 !
           </p>
           <p>{currentCompetition.dateRange}</p>
-          <StyledLink to="/competitionParticipation">
-            <ParticipationButton>참여하기</ParticipationButton>
+          <StyledLink to="/competitionlist">
+            <ParticipationButton>바로가기</ParticipationButton>
           </StyledLink>
         </CompetitionProceedingBox>
         <CompetitionImgBox>

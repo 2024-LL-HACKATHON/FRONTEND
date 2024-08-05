@@ -401,4 +401,5 @@ const RegisterButton = styled.button`
   margin-top: 10.19rem;
   margin-left: 24.12rem;
   border: none;
+  cursor: pointer;
 `;

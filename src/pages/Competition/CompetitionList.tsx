@@ -48,7 +48,6 @@ const CompetitionList: React.FC = () => {
     fetchTotalPages();
   }, []);
 
-  // 페이지 설정
   useEffect(() => {
     const fetchItems = async () => {
       setLoading(true);
@@ -62,15 +61,21 @@ const CompetitionList: React.FC = () => {
           axios.get(`/api/v1/like/countLike/${item.com_id}`)
         );
         const likesResponses = await Promise.all(likesPromises);
-  
+
         const itemsWithLikes = itemsData.map((item: any, index: number) => ({
           ...item,
-          likes: likesResponses[index].data, // API에서 가져온 likes 값으로 업데이트
+          likes: likesResponses[index].data,
           isLiked: false,
         }));
-  
-        setItems(itemsWithLikes);
-  
+
+        const likedItems = JSON.parse(localStorage.getItem('likedItems') || '{}');
+        const itemsWithLikeStatus = itemsWithLikes.map((item: { com_id: string | number; }) => ({
+          ...item,
+          isLiked: likedItems[item.com_id] || false,
+        }));
+
+        setItems(itemsWithLikeStatus);
+
         if (response.data.totalPages) {
           setTotalPages(response.data.totalPages);
         }
@@ -82,7 +87,7 @@ const CompetitionList: React.FC = () => {
     };
     fetchItems();
   }, [currentPage, totalPages]);
-  
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const formatter = new Intl.DateTimeFormat("ko-KR", {
@@ -110,18 +115,25 @@ const CompetitionList: React.FC = () => {
         }
       );
 
-      // Fetch updated like count
       const response = await axios.get(`/api/v1/like/countLike/${itemId}`);
       const updatedLikes = response.data;
 
-      // Update items state
-      setItems((prevItems) =>
-        prevItems.map((item) =>
+      setItems((prevItems) => {
+        const updatedItems = prevItems.map((item) =>
           item.com_id === itemId
             ? { ...item, likes: updatedLikes, isLiked: !isLiked }
             : item
-        )
-      );
+        );
+
+        const likedItems = updatedItems.reduce((acc, item) => {
+          acc[item.com_id] = item.isLiked;
+          return acc;
+        }, {} as Record<number, boolean>);
+
+        localStorage.setItem('likedItems', JSON.stringify(likedItems));
+
+        return updatedItems;
+      });
     } catch (error) {
       console.error("Error updating like status", error);
     }

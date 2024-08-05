@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useForm, FieldError } from "react-hook-form";
 import axios from "axios";
@@ -13,11 +13,13 @@ type LoginFormInputs = {
 };
 
 const Login = () => {
+  const [serverError, setServerError] = useState<string | null>(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const location = useLocation();
 
-  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || "/";
+  const from =
+    (location.state as { from?: { pathname: string } })?.from?.pathname || "/";
 
   const {
     register,
@@ -27,33 +29,35 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      const response = await axios.post(
-        "/sign-api/sign-in",
-        null,
-        {
-          params: {
-            account: data.account,
-            password: data.password,
-          },
-        }
-      );
+      const response = await axios.post("/sign-api/sign-in", null, {
+        params: {
+          account: data.account,
+          password: data.password,
+        },
+      });
       const token = response.data.token;
-      // 토큰을 로컬 스토리지에 저장
+      const user = response.data.user;
       localStorage.setItem("authToken", token);
-      // Axios 기본 헤더에 토큰 추가
-      axios.defaults.headers.common["Authorization"] = `${token}`;
-      dispatch(login(token));
-      navigate(from);  // 원래 접근하려 했던 페이지로 리디렉션
-      
-      console.log(response.data);
-
+      localStorage.setItem("user", JSON.stringify(user));
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      dispatch(login({ token, user }));
+      console.log("Redirecting to:", from); 
+      navigate(from, { replace: true });
+      setServerError(null); 
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        console.error("Axios 오류:", error.response?.data || error.message);
+        if (error.response?.status === 400) {
+          setServerError("아이디/비밀번호를 다시 확인해주세요.");
+        } else {
+          console.error("Axios 오류:", error.response?.data || error.message);
+          setServerError("로그인 중 오류가 발생했습니다. 다시 시도해주세요.");
+        }
       } else if (error instanceof Error) {
         console.error("네트워크 오류:", error);
+        setServerError("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
       } else {
         console.error("알 수 없는 오류:", error);
+        setServerError("알 수 없는 오류가 발생했습니다.");
       }
     }
   };
@@ -86,6 +90,7 @@ const Login = () => {
             {errors.password && (
               <Error>{(errors.password as FieldError).message}</Error>
             )}
+            {serverError && <ServerError>{serverError}</ServerError>}
             <SubmitButton type="submit">시작하기</SubmitButton>
           </InputGroup>
         </LoginForm>
@@ -168,4 +173,11 @@ const Error = styled.span`
   font-size: 12px;
   margin-top: -10px;
   margin-bottom: 10px;
+`;
+
+const ServerError = styled.div`
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  font-weight: 500;
 `;
