@@ -1,12 +1,22 @@
 import styled from 'styled-components';
 import { ReactComponent as Persona } from "../../assets/images/Persona.svg";
 import { ReactComponent as Example } from "../../assets/images/Example.svg";
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const GuideSection4 = () => {
-  return (
-    <Page4>
+  const { ref, inView } = useInView({
+    triggerOnce: false,  // 요소가 한 번만 애니메이션되도록 설정
+    threshold: 0.2,     // 요소의 10%가 화면에 보일 때 애니메이션 시작
+  });
 
-      <ContentLeft>
+  return (
+    <Page4 ref={ref}>
+      <AnimatedContentLeft
+        initial={{ y: '100vw', opacity: 0 }} // 아래에서 올라오는 애니메이션
+        animate={{ y: inView ? 0 : '70px', opacity: inView ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1 }}
+      >
         <Tip>페르소나 [persona]</Tip>
         <br />
         해당 문제를 가장 잘 해결할 수 있을 만한 사람이 누구인지 가정하고, <br />
@@ -14,19 +24,31 @@ const GuideSection4 = () => {
         예를 들어 '회계사 입장에서 답변해줘'라고 하면 <br/>
         회계 전문 용어로 답변해줄 거예요. <br/>
         페르소나가 구체적일수록 전문영역에 가까운 답을 제공해줘요.
-      </ContentLeft>
-      {/*페르소나 이미지*/}
-      <PersonaImg />
+      </AnimatedContentLeft>
+      {/* 페르소나 이미지 */}
+      <AnimatedPersonaImg
+        initial={{ x: '100vw', opacity: 0 }}
+        animate={{ x: inView ? 0 : '100vw', opacity: inView ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1 }}
+      />
 
-      <ContentRight>
+      <AnimatedContentRight
+        initial={{ y: '100px', opacity: 0 }} // 아래에서 올라오는 애니메이션
+        animate={{ y: inView ? 0 : '70px', opacity: inView ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 5 }}
+      >
         <Tip>예시 [example]</Tip>
         <br />
         문제와 관련된 예시를 1-2개 정도 프롬프트에  <br />
         넣어주면 생성형 ai가 예시를 기반으로  <br />
         답변을 작성해요.
-      </ContentRight>
-      {/*예시 이미지*/}
-      <ExampleImg />
+      </AnimatedContentRight>
+      {/* 예시 이미지 */}
+      <AnimatedExampleImg
+        initial={{ x: '-100vw', opacity: 0 }}
+        animate={{ x: inView ? 0 : '-100vw', opacity: inView ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1 }}
+      />
     </Page4>
   );
 };
@@ -49,30 +71,30 @@ const Tip = styled.div`
   font-weight: 700;
 `;
 
-const ContentLeft = styled.div`
+const AnimatedContentLeft = styled(motion.div)`
   margin-top: 122px;
   margin-left: 110px;
   font-size: 16px;
   font-weight: 300;
 `;
 
-// 페르소나 이미지
-const PersonaImg = styled(Persona)`
-  position: absolute;
-  top: 80px;
-  right: 160px;
-`;
-
-const ContentRight = styled.div`
+const AnimatedContentRight = styled(motion.div)`
   margin-bottom: 122px;
   margin-left: 750px;
   font-size: 16px;
   font-weight: 300;
 `;
 
+// 페르소나 이미지
+const AnimatedPersonaImg = styled(motion(Persona))`
+  position: absolute;
+  top: 80px;
+  right: 250px;
+`;
+
 // 예시 이미지
-const ExampleImg = styled(Example)`
+const AnimatedExampleImg = styled(motion(Example))`
   position: absolute;
   bottom: 80px;
-  left: 160px;
+  left: 250px;
 `;
