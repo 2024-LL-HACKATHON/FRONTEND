@@ -22,6 +22,7 @@ export default function LandingSection4() {
 
     const observer = new IntersectionObserver(handleScroll, { threshold: 0.5 });
 
+
     boxes.forEach((box) => {
       observer.observe(box);
     });
@@ -177,7 +178,6 @@ const LandingSection4BoxContainer = styled.div`
   }
 `;
 
-
 const LandingSection4Box = styled.div<BoxProps>`
   width: 13.875rem;
   height: 22.625rem;
@@ -194,6 +194,7 @@ const LandingSection4Box = styled.div<BoxProps>`
   transition: transform 0.3s ease; 
   &:hover {
     transform: scale(1.25); 
+
   }
 `;
 

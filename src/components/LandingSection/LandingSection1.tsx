@@ -172,5 +172,3 @@ const Img1Styled = styled(LandingImg1)`
     margin: 0 auto;
   }
 `;
-
-

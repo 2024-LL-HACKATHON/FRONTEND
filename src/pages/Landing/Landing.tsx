@@ -13,7 +13,6 @@ import { FullPage, Slide } from "react-full-page";
 interface StyledSlideProps {
   height?: string;
 }
-
 const Landing = () => {
   return (
     <StyledFullPage>
@@ -73,3 +72,4 @@ const StyledSlide = styled.div<StyledSlideProps>`
   box-sizing: border-box;
   position: relative;
 `;
+
