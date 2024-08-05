@@ -6,6 +6,7 @@ import GuideSection3 from "../../components/GuideSection/GuideSection3";
 import GuideSection5 from "../../components/GuideSection/GuideSection5";
 import GuideSection4 from "../../components/GuideSection/GuideSection4";
 import GuideSection6 from "../../components/GuideSection/GuideSection6";
+import { FullPage, Slide } from "react-full-page";
 
 import { ReactComponent as Guide_Circle1 } from "../../assets/images/Guide_Circle1.svg";
 import { ReactComponent as Guide_Circle2 } from "../../assets/images/Guide_Circle2.svg";
@@ -22,30 +23,45 @@ export default function Guide() {
         </Background>
 
         {/*가이드 페이지 슬라이드*/}
+        <FullPage>
+          <Slide>
         <StyledSlide>
           <Header isLoggedIn={false} fixed={false}/>
           <GuideSection1 />
         </StyledSlide>
+        </Slide>
 
+        <Slide>
         <StyledSlide>
           <GuideSection2 />
         </StyledSlide>
+        </Slide>
 
+        <Slide>
         <StyledSlide>
           <GuideSection3 />
         </StyledSlide>
+        </Slide>
 
+        <Slide>
         <StyledSlide>
           <GuideSection4 />
         </StyledSlide>
+        </Slide>
 
+        <Slide>
         <StyledSlide>
           <GuideSection5 />
         </StyledSlide>
+        </Slide>
         
+        <Slide>
         <StyledSlide>
           <GuideSection6 />
         </StyledSlide>
+        </Slide>
+
+        </FullPage>
       </StyledFullPage>
   );
 }
@@ -62,7 +78,6 @@ const StyledSlide = styled.div`
   height: 880px;
   box-sizing: border-box;
   position: relative;
-
 `;
 
 const Background = styled.div`
