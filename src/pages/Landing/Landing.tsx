@@ -8,40 +8,68 @@ import LandingSection4 from "../../components/LandingSection/LandingSection4";
 import LandingSection5 from "../../components/LandingSection/LandingSection5";
 import LandingSection6 from "../../components/LandingSection/LandingSection6";
 import Header from "../../components/Header/Header";
+import { FullPage, Slide } from "react-full-page";
 
+interface StyledSlideProps {
+  height?: string;
+}
 const Landing = () => {
   return (
-    <LandingContainer>
+    <StyledFullPage>
       <Header isLoggedIn={false} fixed={true} />
-      <ContentWrapper>
-        <section className="section">
-          <LandingSection1 />
-        </section>
-        <section className="section">
-          <LandingSection2 />
-        </section>
-        <section className="section">
-          <LandingSection3 />
-        </section>
-        <section className="section">
-          <LandingSection4 />
-        </section>
-        <section className="section">
-          <LandingSection5 />
-        </section>
-        <section className="section">
-          <LandingSection6 />
-        </section>
-        <section className="section footer-section">
+      <FullPage>
+        <Slide>
+          <StyledSlide height="">
+            <LandingSection1 />
+          </StyledSlide>
+        </Slide>
+        <Slide>
+          <StyledSlide height="">
+            <LandingSection2 />
+          </StyledSlide>
+        </Slide>
+        <Slide>
+          <StyledSlide height="">
+            <LandingSection3 />
+          </StyledSlide>
+        </Slide>
+        <Slide>
+          <StyledSlide height="">
+            <LandingSection4 />
+          </StyledSlide>
+        </Slide>
+        <Slide>
+          <StyledSlide height="">
+            <LandingSection5 />
+          </StyledSlide>
+        </Slide>
+        <Slide>
+          <StyledSlide height="">
+            <LandingSection6 />
+          </StyledSlide>
+        </Slide>
+        <Slide>
           <Footer />
-        </section>
-      </ContentWrapper>
-    </LandingContainer>
+        </Slide>
+      </FullPage>
+    </StyledFullPage>
   );
 };
 
 export default Landing;
 
-const LandingContainer = styled.div``;
+const StyledFullPage = styled.div`
+  position: relative;
+  font-family: "Noto Sans KR";
+  width: 100%;
+  height: 100vh;
+`;
 
-const ContentWrapper = styled.div``;
+const StyledSlide = styled.div<StyledSlideProps>`
+  max-width: 80rem;
+  height: 100vh;
+  height: ${(props) => props.height || "auto"};
+  box-sizing: border-box;
+  position: relative;
+`;
+

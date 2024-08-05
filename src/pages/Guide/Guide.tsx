@@ -16,10 +16,10 @@ export default function Guide() {
       <StyledFullPage >
         {/*배경의 반원*/}
         <Background>
-          <StyledGuide_Circle1 />
-          <StyledGuide_Circle2 />
-          <StyledGuide_Circle3 />
-          <StyledGuide_Circle4 />
+          <StyledGuideCircle1 />
+          <StyledGuideCircle2 />
+          <StyledGuideCircle3 />
+          <StyledGuideCircle4 />
         </Background>
 
         {/*가이드 페이지 슬라이드*/}
@@ -66,7 +66,7 @@ export default function Guide() {
   );
 }
 
-const StyledFullPage = styled.div`
+ const StyledFullPage = styled.div`
   position: relative;
   font-family: "Noto Sans KR";
   width: 100%;
@@ -92,14 +92,14 @@ const Background = styled.div`
 `;
 
 /*작은 반원 두 개*/
-const StyledGuide_Circle1 = styled(Guide_Circle1)`
+const StyledGuideCircle1 = styled(Guide_Circle1)`
   position: absolute;
   top: 443px;
 
   right: 0;
   z-index: 1;
 `;
-const StyledGuide_Circle3 = styled(Guide_Circle1)`
+const StyledGuideCircle3 = styled(Guide_Circle1)`
   position: absolute;
   top: 2577px;
 
@@ -107,14 +107,14 @@ const StyledGuide_Circle3 = styled(Guide_Circle1)`
   z-index: 1;
 `;
 /*큰 반원*/
-const StyledGuide_Circle2 = styled(Guide_Circle2)`
+const StyledGuideCircle2 = styled(Guide_Circle2)`
   position: absolute;
   top: 1073px;
 
   left: -100%;
   z-index: 1;
 `
-const StyledGuide_Circle4 = styled(Guide_Circle2)`
+const StyledGuideCircle4 = styled(Guide_Circle2)`
   position: absolute;
   top: 3352px;
 
