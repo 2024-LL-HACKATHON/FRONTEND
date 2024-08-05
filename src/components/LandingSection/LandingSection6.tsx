@@ -14,7 +14,9 @@ export default function LandingSection6() {
         <LandingSection6TextContainer>
           <LandingSection6Sub>생성형 AI의 무한한 가능성</LandingSection6Sub>
           <LandingSection6Title>
-            <LandingSection6Span>“프롬프렌”</LandingSection6Span>과 함께!
+            <BounceSpan>“</BounceSpan>
+            <BounceSpan>프롬프렌</BounceSpan>
+            <BounceSpan>”</BounceSpan>과 함께!
           </LandingSection6Title>
         </LandingSection6TextContainer>
       </LandingSection6Container>
@@ -32,7 +34,7 @@ export default function LandingSection6() {
 
 const LandingSection6Box = styled.div`
   width: 80rem;
-  height: 40rem;
+  height: 100vh;
   margin: 0 auto;
 `;
 
@@ -72,16 +74,72 @@ const LandingSection6Title = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 3.6875rem; // 59px
-  margin-top: 0.875rem; // 14px
+  margin-top: 2rem; // 14px
 `;
 
-const LandingSection6Span = styled.span`
+const bounce = keyframes`
+  0% {
+    transform: translateY(0);
+    text-shadow: 0 1px 0 #EEEEEE,
+                 0 2px 0 #EEEEEE,
+                 0 3px 0 #EEEEEE,
+                 0 4px 0 #EEEEEE,
+                 0 5px 0 #EEEEEE,
+                 0 6px 0 transparent,
+                 0 7px 0 transparent,
+                 0 8px 0 transparent,
+                 0 9px 0 transparent,
+                 0 10px 10px rgba(0, 0, 0, .2);
+  }
+  100% {
+    transform: translateY(-20px);
+    text-shadow: 0 1px 0 #EEEEEE,
+                 0 2px 0 #EEEEEE,
+                 0 3px 0 #EEEEEE,
+                 0 4px 0 #EEEEEE,
+                 0 5px 0 #EEEEEE,
+                 0 6px 0 #EEEEEE,
+                 0 7px 0 #EEEEEE,
+                 0 8px 0 #EEEEEE,
+                 0 9px 0 #EEEEEE,
+                 0 50px 25px rgba(0, 0, 0, .2);
+  }
+`;
+
+const BounceSpan = styled.span`
+  display: inline-block;
   color: #42d09f;
   font-family: "Gmarket Sans TTF";
-  font-size: 4rem; // 64px
+  font-size: 4rem;
   font-style: normal;
   font-weight: 700;
-  line-height: 3.6875rem; // 59px
+  line-height: 3.6875rem; /* 92.188% */
+  animation: ${bounce} 0.3s ease infinite alternate;
+  text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
+    0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+    0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
+
+  &:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  &:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  &:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+  &:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+  &:nth-child(6) {
+    animation-delay: 0.5s;
+  }
+  &:nth-child(7) {
+    animation-delay: 0.6s;
+  }
+  &:nth-child(8) {
+    animation-delay: 0.7s;
+  }
 `;
 
 const LandingSection6BottomContainer = styled.div`

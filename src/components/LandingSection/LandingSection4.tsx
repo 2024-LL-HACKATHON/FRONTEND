@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import { throttle } from "lodash";
 import { BoxProps } from "./types";
 import { ReactComponent as LandingSection4Img1 } from "../../assets/images/LandingSection4Img1.svg";
 import { ReactComponent as LandingSection4Img2 } from "../../assets/images/LandingSection4Img2.svg";
 import { ReactComponent as LandingSection4Img3 } from "../../assets/images/LandingSection4Img3.svg";
 import { ReactComponent as LandingSection4Img4 } from "../../assets/images/LandingSection4Img4.svg";
+import { throttle } from "lodash";
 
 export default function LandingSection4() {
   useEffect(() => {
@@ -15,12 +15,13 @@ export default function LandingSection4() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("animate");
-          observer.unobserve(entry.target); 
+          observer.unobserve(entry.target);
         }
       });
-    }, 300); 
-    
-    const observer = new IntersectionObserver(handleScroll, { threshold: 0.1 });
+    }, 300);
+
+    const observer = new IntersectionObserver(handleScroll, { threshold: 0.5 });
+
 
     boxes.forEach((box) => {
       observer.observe(box);
@@ -114,13 +115,14 @@ export default function LandingSection4() {
 
 const LandingSection4Container = styled.div`
   width: 80rem;
-  height: 50rem;
+  height: 100vh;
   background: linear-gradient(
     180deg,
     rgba(217, 217, 217, 0) 30%,
     rgba(114, 212, 155, 0.35) 80%
   );
   margin: 0 auto;
+  
 `;
 
 const LandingSection4Sub = styled.div`
@@ -155,13 +157,6 @@ const LandingSection4Span = styled.span`
   line-height: normal;
 `;
 
-const LandingSection4BoxContainer = styled.div`
-  display: flex;
-  gap: 2.0625rem;
-  margin-top: 4.4375rem;
-  justify-content: center;
-`;
-
 const slideDown = keyframes`
   0% {
     transform: translateY(-3rem);
@@ -170,6 +165,16 @@ const slideDown = keyframes`
   100% {
     transform: translateY(0);
     opacity: 1;
+  }
+`;
+
+const LandingSection4BoxContainer = styled.div`
+  display: flex;
+  gap: 2.0625rem;
+  margin-top: 4.4375rem;
+  justify-content: center;
+    &.animate {
+    animation: ${slideDown} 0.6s ease-out forwards;
   }
 `;
 
@@ -186,10 +191,13 @@ const LandingSection4Box = styled.div<BoxProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  &.animate {
-    animation: ${slideDown} 0.6s ease-out forwards;
+  transition: transform 0.3s ease; 
+  &:hover {
+    transform: scale(1.25); 
+
   }
 `;
+
 
 const LandingSection4ContentSub = styled.div<BoxProps>`
   color: ${(props) => props.subjectColor || "#000"};
