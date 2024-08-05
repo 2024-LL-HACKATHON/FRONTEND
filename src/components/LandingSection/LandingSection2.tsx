@@ -1,17 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { ReactComponent as LandingSection2ImgSVG } from "../../assets/images/LandingSection2Img.svg";
 import circleImageURL from "../../assets/images/LandingSection2Circle.svg";
 
 export default function LandingSection2() {
+  useEffect(() => {
+    const characters = document.querySelectorAll(".character");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate");
+            observer.unobserve(entry.target); // Optional: stop observing after the animation
+          }
+        });
+      },
+      { threshold: 0.5 } // Adjust as needed
+    );
+
+    characters.forEach((character) => {
+      observer.observe(character);
+    });
+
+    return () => {
+      characters.forEach((character) => {
+        observer.unobserve(character);
+      });
+    };
+  }, []);
+
   return (
     <Container>
       <Title>
         <TitleSpan>
-          <Character>프</Character>
-          <Character>롬</Character>
-          <Character>프</Character>
-          <Character>렌</Character>
+          <Character className="character">프</Character>
+          <Character className="character">롬</Character>
+          <Character className="character">프</Character>
+          <Character className="character">렌</Character>
         </TitleSpan>
         은 효과적인
         <TitleSpan>AI 사용</TitleSpan>을 도와줍니다
@@ -62,10 +88,22 @@ const TitleSpan = styled.span`
   }
 `;
 
+const dropAnimation = keyframes`
+  0% {
+    transform: translateY(-3rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
 const Character = styled.span`
   position: relative;
   display: inline-block;
   margin: 0 0.125rem;
+  opacity: 0;
 
   &::before {
     content: "";
@@ -83,6 +121,23 @@ const Character = styled.span`
       width: 0.375rem;
       height: 0.375rem;
     }
+  }
+
+  &.animate {
+    animation: ${dropAnimation} 0.5s ease-out forwards;
+  }
+
+  &.character:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  &.character:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  &.character:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  &.character:nth-child(4) {
+    animation-delay: 0.4s;
   }
 `;
 

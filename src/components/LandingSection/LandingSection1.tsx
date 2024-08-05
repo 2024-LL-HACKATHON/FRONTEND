@@ -134,7 +134,7 @@ const SideText = styled.p`
   height: 2.625rem;
   text-align: center;
   color: #7e7e7e;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Noto Sans KR";
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.5;
@@ -230,7 +230,7 @@ const Div405Stroke = styled.div`
 const Div405Content = styled.p`
   color: #fff;
   text-align: justify;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Noto Sans KR";
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.44858;
