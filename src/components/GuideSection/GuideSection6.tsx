@@ -1,11 +1,20 @@
 import styled from 'styled-components';
+import Typewritter from 'typewriter-effect';
 
 
 const GuideSection6 = () => {
   return (
     <Page6>
       <Content>
-        <span>프롬프렌</span>과 함께 건강한 <span>프롬포팅 생활</span>을 즐겨보아요
+        <span>프롬프렌</span>과 함께 건강한
+        <span className="typewriter-text">
+          <Typewritter
+            options={{
+            strings: ["프롬포팅 생활"],
+            autoStart: true,
+            loop: true,
+          }} />
+        </span>을 즐겨보아요
       </Content>
     </Page6>
   );
@@ -31,5 +40,9 @@ const Content = styled.div`
         color: #42D09F;
         font-size: 36px;
         font-weight: 700;
+        display: inline-block;
+    }
+    .typewriter-text {
+        margin-left: 10px; // 텍스트와 타이핑 효과 사이의 여백을 조정
     }
 `;
