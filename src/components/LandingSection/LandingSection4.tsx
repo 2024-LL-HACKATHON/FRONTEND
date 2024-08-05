@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import { throttle } from "lodash";
 import { BoxProps } from "./types";
+import { throttle } from 'lodash';
 import { ReactComponent as LandingSection4Img1 } from "../../assets/images/LandingSection4Img1.svg";
 import { ReactComponent as LandingSection4Img2 } from "../../assets/images/LandingSection4Img2.svg";
 import { ReactComponent as LandingSection4Img3 } from "../../assets/images/LandingSection4Img3.svg";
