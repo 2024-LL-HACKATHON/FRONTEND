@@ -1,7 +1,7 @@
 import React from "react";
 import { ReactComponent as LandingSection6Logo } from "../../assets/images/LandingSection6Logo.svg";
 import { ReactComponent as LandingSection6Togo } from "../../assets/images/LandingSection6Togo.svg";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
 
 export default function LandingSection6() {
@@ -103,6 +103,19 @@ const LandingSection6Bottom = styled.div`
   cursor: pointer;
 `;
 
+const moveHorizontally = keyframes`
+  0% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(-10px);
+  }
+`;
+
 const LandingSection6TogoLayout = styled.div`
-  margin-left: 1.25rem; // 20px
+  margin-left: 0.5rem; // 20px
+  animation: ${moveHorizontally} 2s infinite;
 `;

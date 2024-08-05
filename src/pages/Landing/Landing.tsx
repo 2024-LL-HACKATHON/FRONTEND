@@ -1,29 +1,47 @@
+import React from "react";
 import styled from "styled-components";
 import Footer from "../../components/Footer/Footer";
-import LandingFramer from "../../components/LandingSection/LandingFramer";
+import LandingSection1 from "../../components/LandingSection/LandingSection1";
+import LandingSection2 from "../../components/LandingSection/LandingSection2";
+import LandingSection3 from "../../components/LandingSection/LandingSection3";
+import LandingSection4 from "../../components/LandingSection/LandingSection4";
+import LandingSection5 from "../../components/LandingSection/LandingSection5";
+import LandingSection6 from "../../components/LandingSection/LandingSection6";
 import Header from "../../components/Header/Header";
 
-export default function Landing() {
+const Landing = () => {
   return (
     <LandingContainer>
       <Header isLoggedIn={false} fixed={true} />
       <ContentWrapper>
-        <LandingFramer />
+        <section className="section">
+          <LandingSection1 />
+        </section>
+        <section className="section">
+          <LandingSection2 />
+        </section>
+        <section className="section">
+          <LandingSection3 />
+        </section>
+        <section className="section">
+          <LandingSection4 />
+        </section>
+        <section className="section">
+          <LandingSection5 />
+        </section>
+        <section className="section">
+          <LandingSection6 />
+        </section>
+        <section className="section footer-section">
+          <Footer />
+        </section>
       </ContentWrapper>
-      <Footer />
     </LandingContainer>
   );
-}
+};
 
-const LandingContainer = styled.div`
-  width: 100%;
-  min-height: 100vh; 
-  display: flex;
-  flex-direction: column;
-`;
+export default Landing;
 
-const ContentWrapper = styled.div`
-  flex: 1;
-  overflow-y: hidden; 
-  overflow-x: hidden;
-`;
+const LandingContainer = styled.div``;
+
+const ContentWrapper = styled.div``;

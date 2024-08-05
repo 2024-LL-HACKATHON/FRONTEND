@@ -13,6 +13,9 @@ export default function Footer() {
         강남대학교 멋쟁이 사자처럼 12기 팀 라이베어
         <br /> 경기도 용인시 기흥구 강남로 40(구갈동) 후생관 B103
       </FooterText>
+      <FooterText>
+        Contact : support@promfren.com
+      </FooterText>
     </FooterDiv>
   );
 }

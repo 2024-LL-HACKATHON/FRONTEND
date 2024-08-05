@@ -49,7 +49,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 1280px;
+    max-width: 1920px;
   }
   html {
   scroll-behavior: smooth;
