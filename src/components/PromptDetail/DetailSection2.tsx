@@ -4,6 +4,7 @@ import PromptReview from "./PromptReview";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Modal from "../Modal/Modal";
 
 interface FormData {
   content: string;
@@ -23,6 +24,7 @@ export default function DetailSection2() {
   );
   const [starRating, setStarRating] = useState<number>(0);
   const [reviewCount, setReviewCount] = useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 모달 열림 상태를 관리하는 상태 변수
   const { register, handleSubmit, reset } = useForm<FormData>();
 
   useEffect(() => {
@@ -67,7 +69,7 @@ export default function DetailSection2() {
     }
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "/api/v1/review/createReview",
         {
           promptId: promptId,
@@ -82,11 +84,16 @@ export default function DetailSection2() {
           },
         }
       );
-      console.log("Review submitted successfully:", response.data);
-      alert("Review submitted successfully!");
+      
+      setIsModalOpen(true); // 리뷰 제출 성공 시 모달을 열어줍니다.
       reset();
       setStarRating(0);
       fetchReviewCount(promptId); 
+
+      // 페이지를 새로 고침합니다.
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000); // 모달이 잠시 보일 수 있도록 2초 지연 후 페이지 새로 고침
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Axios error:", error.response?.data);
@@ -95,6 +102,10 @@ export default function DetailSection2() {
       }
       alert("Failed to submit review. Please try again.");
     }
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -144,6 +155,12 @@ export default function DetailSection2() {
         <PromptReview />
       </ReviewList>
       <ReviewMore>리뷰 더보기</ReviewMore>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        message="리뷰 등록이 완료되었습니다!"
+        linkto="확인"
+      />
     </DetailSection2Layout>
   );
 }
