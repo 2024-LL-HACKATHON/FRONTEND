@@ -169,7 +169,7 @@ const DetailSection2Layout = styled.div`
   diplay: flex;
   width: 80rem;
   padding: 7rem;
-  margin-top: 20.31rem;
+  margin-top: 5.31rem;
   margin-bottom: 98px;
 `;
 
