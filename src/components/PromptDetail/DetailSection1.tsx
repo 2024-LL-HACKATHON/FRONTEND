@@ -144,8 +144,8 @@ const PromptExample = styled.div`
 const Content3 = styled.div`
   display: flex;
   flex-direction: column;
+  white-space: pre-wrap;
   width: 712px;
-  height: 141px;
   border-top: 1px solid #2cc1bf;
   font-family: "Gmarket Sans TTF";
   font-size: 14px;
