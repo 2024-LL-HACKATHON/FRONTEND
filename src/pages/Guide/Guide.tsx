@@ -7,66 +7,56 @@ import GuideSection5 from "../../components/GuideSection/GuideSection5";
 import GuideSection4 from "../../components/GuideSection/GuideSection4";
 import GuideSection6 from "../../components/GuideSection/GuideSection6";
 import { FullPage, Slide } from "react-full-page";
-
 import { ReactComponent as Guide_Circle1 } from "../../assets/images/Guide_Circle1.svg";
 import { ReactComponent as Guide_Circle2 } from "../../assets/images/Guide_Circle2.svg";
 
 export default function Guide() {
   return (
-      <StyledFullPage >
-        {/*배경의 반원*/}
-        <Background>
-          <StyledGuideCircle1 />
-          <StyledGuideCircle2 />
-          <StyledGuideCircle3 />
-          <StyledGuideCircle4 />
-        </Background>
-
-        {/*가이드 페이지 슬라이드*/}
-        <FullPage>
-          <Slide>
-        <StyledSlide>
-          <Header isLoggedIn={false} fixed={false}/>
-          <GuideSection1 />
-        </StyledSlide>
-        </Slide>
-
+    <StyledFullPage>
+      <Background>
+        <StyledGuideCircle1 />
+        <StyledGuideCircle2 />
+        <StyledGuideCircle3 />
+        <StyledGuideCircle4 />
+      </Background>
+      <FullPage>
         <Slide>
-        <StyledSlide>
-          <GuideSection2 />
-        </StyledSlide>
+          <StyledSlide>
+            <Header isLoggedIn={false} fixed={false} />
+            <GuideSection1 />
+          </StyledSlide>
         </Slide>
-
         <Slide>
-        <StyledSlide>
-          <GuideSection3 />
-        </StyledSlide>
+          <StyledSlide>
+            <GuideSection2 />
+          </StyledSlide>
         </Slide>
-
         <Slide>
-        <StyledSlide>
-          <GuideSection4 />
-        </StyledSlide>
+          <StyledSlide>
+            <GuideSection3 />
+          </StyledSlide>
         </Slide>
-
         <Slide>
-        <StyledSlide>
-          <GuideSection5 />
-        </StyledSlide>
+          <StyledSlide>
+            <GuideSection4 />
+          </StyledSlide>
         </Slide>
-        
         <Slide>
-        <StyledSlide>
-          <GuideSection6 />
-        </StyledSlide>
+          <StyledSlide>
+            <GuideSection5 />
+          </StyledSlide>
         </Slide>
-
-        </FullPage>
-      </StyledFullPage>
+        <Slide>
+          <StyledSlide>
+            <GuideSection6 />
+          </StyledSlide>
+        </Slide>
+      </FullPage>
+    </StyledFullPage>
   );
 }
 
- const StyledFullPage = styled.div`
+const StyledFullPage = styled.div`
   position: relative;
   font-family: "Noto Sans KR";
   width: 100%;
@@ -113,11 +103,11 @@ const StyledGuideCircle2 = styled(Guide_Circle2)`
 
   left: -100%;
   z-index: 1;
-`
+`;
 const StyledGuideCircle4 = styled(Guide_Circle2)`
   position: absolute;
   top: 3352px;
 
   left: -100%;
   z-index: 1;
-`
+`;
