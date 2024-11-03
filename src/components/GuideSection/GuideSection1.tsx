@@ -62,6 +62,6 @@ const StyledIcon = styled(Guide_Main)`
   z-index: 1;
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: 7rem;
   animation: ${bounce} 2s ease infinite;
 `;
