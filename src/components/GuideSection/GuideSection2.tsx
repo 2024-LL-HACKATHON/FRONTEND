@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { ReactComponent as PencilImg } from "../../assets/images/GuidePencil.svg";
 import NotoSans14px from "../text/Text";
@@ -15,8 +15,45 @@ import { ReactComponent as PointBlue3 } from "../../assets/images/GuideBlue15.sv
 import { ReactComponent as PointBlueGreen1 } from "../../assets/images/GuideBlueGreen15.svg";
 import { ReactComponent as PointBlueGreen2 } from "../../assets/images/GuideBlueGreen16.svg";
 import { ReactComponent as PointGreen1 } from "../../assets/images/GuideGreen11.svg";
+import axios from "axios";
 
 const GuideSection2 = () => {
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
+  const [prompt, setPrompt] = useState("");
+  const [response, setResponse] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPrompt(e.target.value);
+  };
+
+  const handleSubmit = async () => {
+    if (!prompt) return;
+
+    setLoading(true);
+    try {
+      const url = "/api/v1/main/makeCorrection";
+      const params = { requestGuideDto: encodeURIComponent(prompt) };
+      const headers = {
+        accept: "*/*",
+        "X-AUTH-TOKEN": token || "",
+      };
+
+      const result = await axios.post(url, {}, { params, headers });
+
+      setResponse(result.data);
+      console.log("Response body:", result.data);
+
+      alert(JSON.stringify(result.data));
+    } catch (error) {
+      console.error("Error making request:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Page2>
       <StyledPencil />
@@ -33,8 +70,12 @@ const GuideSection2 = () => {
           더욱 효과적으로 AI를 활용해보세요.
         </NotoSans14px>
         <InputBoxContainer>
-          <InputBox placeholder="프롬프트를 입력하세요" />
-          <SubmitButton>결과 보러가기</SubmitButton>
+          <InputBox
+            placeholder="프롬프트를 입력하세요"
+            value={prompt}
+            onChange={handleInputChange}
+          />
+          <SubmitButton onClick={handleSubmit}>결과 보러가기</SubmitButton>
         </InputBoxContainer>
       </Title>
       <>
@@ -91,7 +132,7 @@ const BoldText = styled.span`
 `;
 
 const UnderlinedText = styled(BoldText)`
-   position: relative;
+  position: relative;
   &::after {
     content: "";
     position: absolute;
@@ -153,6 +194,7 @@ const SubmitButton = styled.button`
   cursor: pointer;
   flex-shrink: 0;
   margin-top: 1.5rem;
+  z-index: 1;
 `;
 
 const bounceAnimation = keyframes`
