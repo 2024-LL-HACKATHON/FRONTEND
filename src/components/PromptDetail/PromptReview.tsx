@@ -75,6 +75,7 @@ export default function PromptReview() {
           <ReviewContent>
             <Quote>{review.title}</Quote>
             <ReviewText>{review.content}</ReviewText>
+            <ReviewStar>⭐{review.star}</ReviewStar>
           </ReviewContent>
         </PromptReviewLayout>
       ))}
@@ -149,3 +150,7 @@ const ReviewText = styled.p`
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 `;
+
+const ReviewStar = styled.div`
+
+`

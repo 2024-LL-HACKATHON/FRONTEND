@@ -1,39 +1,99 @@
-import styled from 'styled-components';
-import { ReactComponent as Down_icon } from "../../assets/images/Down_icon.svg";
-import { motion } from 'framer-motion';
+import React, { useState } from "react";
+import styled, { keyframes } from "styled-components";
+import { ReactComponent as PencilImg } from "../../assets/images/GuidePencil.svg";
+import NotoSans14px from "../text/Text";
+import { ReactComponent as PointImg1 } from "../../assets/images/GuidePoint1.svg";
+import { ReactComponent as PointImg2 } from "../../assets/images/GuidePoint2.svg";
+import { ReactComponent as PointImg3 } from "../../assets/images/GuidePoint3.svg";
+import { ReactComponent as PointPurple1 } from "../../assets/images/GuidePurple11.svg";
+import { ReactComponent as PointPurple2 } from "../../assets/images/GuidePurple12.svg";
+import { ReactComponent as PointPurple3 } from "../../assets/images/GuidePurple14.svg";
+import { ReactComponent as PointPurple4 } from "../../assets/images/GuidePurple15.svg";
+import { ReactComponent as PointBlue1 } from "../../assets/images/GuideBlue11.svg";
+import { ReactComponent as PointBlue2 } from "../../assets/images/GuideBlue12.svg";
+import { ReactComponent as PointBlue3 } from "../../assets/images/GuideBlue15.svg";
+import { ReactComponent as PointBlueGreen1 } from "../../assets/images/GuideBlueGreen15.svg";
+import { ReactComponent as PointBlueGreen2 } from "../../assets/images/GuideBlueGreen16.svg";
+import { ReactComponent as PointGreen1 } from "../../assets/images/GuideGreen11.svg";
+import axios from "axios";
 
 const GuideSection2 = () => {
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
+  const [prompt, setPrompt] = useState("");
+  const [response, setResponse] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPrompt(e.target.value);
+  };
+
+  const handleSubmit = async () => {
+    if (!prompt) return;
+
+    setLoading(true);
+    try {
+      const url = "/api/v1/main/makeCorrection";
+      const params = { requestGuideDto: encodeURIComponent(prompt) };
+      const headers = {
+        accept: "*/*",
+        "X-AUTH-TOKEN": token || "",
+      };
+
+      const result = await axios.post(url, {}, { params, headers });
+
+      setResponse(result.data);
+      console.log("Response body:", result.data);
+
+      alert(JSON.stringify(result.data));
+    } catch (error) {
+      console.error("Error making request:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Page2>
-      <AnimatedContent
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1 }}
-      >
-        <PulseSpan>
-          생성형 AI
-        </PulseSpan>에게 상황을 잘 설명하고 전문성을 이끌어내려면 <br />
-        <Span2>
-          <ColorChangingSpan>
-            프롬프트
-          </ColorChangingSpan>
-        </Span2>를 잘 구성해야돼요 <br />
-      </AnimatedContent>
-
-      <AnimatedSubContent
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1 }}
-      >
-        아래 소개할 6가지 구성요소를 잘 활용하면 AI가 문제를 이해하기 쉬워지고 <br />
-        좋은 결과를 얻을 수 있어요.
-      </AnimatedSubContent>
-      
-      <StyledDownicon 
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1, rotate: [0, 360] }}
-        transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1, repeat: Infinity, ease: "linear" }}
-      />
+      <StyledPencil />
+      <Title>
+        <TitleText>
+          <BoldText>AI 첨삭</BoldText>을 통해 내가 쓴{" "}
+          <UnderlinedText>프롬프트</UnderlinedText>를 <BoldText>확인</BoldText>
+          해보세요.
+        </TitleText>
+        <NotoSans14px>
+          6가지 구성요소를 잘 활용하면 AI가 문제를 쉽게 이해하고 더 나은 결과를
+          얻을 수 있습니다. <br />
+          프롬프트 작성 시 부족한 부분을 자동으로 첨삭해주는 서비스를 이용해
+          더욱 효과적으로 AI를 활용해보세요.
+        </NotoSans14px>
+        <InputBoxContainer>
+          <InputBox
+            placeholder="프롬프트를 입력하세요"
+            value={prompt}
+            onChange={handleInputChange}
+          />
+          <SubmitButton onClick={handleSubmit}>결과 보러가기</SubmitButton>
+        </InputBoxContainer>
+      </Title>
+      <>
+        <Point1 />
+        <Point2 />
+        <Point3 />
+        <Purple1 />
+        <Purple2 />
+        <Purple3 />
+        <Purple4 />
+        <Blue1 />
+        <Blue2 />
+        <Blue3 />
+        <BlueGreen1 />
+        <BlueGreen2 />
+        <Green1 />
+        <Green2 />
+      </>
     </Page2>
   );
 };
@@ -48,70 +108,207 @@ const Page2 = styled.div`
   position: relative;
 `;
 
-const AnimatedContent = styled(motion.div)`
-  width: 1075px;
-  height: 116px;
-  margin: auto;
-  padding-top: 338px;
-  font-family: "Gmarket Sans TTF";
-  font-size: 30px;
+const StyledPencil = styled(PencilImg)`
+  align-items: center;
+  margin-top: 2.44rem;
+`;
+
+const Title = styled.div`
+  text-align: center;
+  margin-top: 1.56rem;
+`;
+
+const TitleText = styled.div`
+  color: #000;
+  font-family: "Gmarket Sans TTF Light";
+  font-size: 1.875rem;
   font-weight: 300;
-  font-style: normal;
-  line-height: 50px;
+  margin-bottom: 2.19rem;
 `;
 
-const PulseSpan = styled(motion.span)`
-  font-weight: 700;
-  background: linear-gradient(to top, rgba(66, 208, 159, 0.39) 50%, transparent 50%);
-  display: inline-block;
-  animation: pulse 2s infinite;
+const BoldText = styled.span`
+  font-family: "Gmarket Sans TTF";
+  font-weight: 500 !important;
+`;
 
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.1);
-    }
-    100% {
-      transform: scale(1);
-    }
+const UnderlinedText = styled(BoldText)`
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0.2rem;
+    width: 100%;
+    height: 1.8125rem;
+    background: rgba(66, 208, 159, 0.39);
+    z-index: -1;
   }
 `;
 
-const ColorChangingSpan = styled(motion.span)`
-  font-weight: 700;
-  background: linear-gradient(to top, rgba(66, 208, 159, 0.39) 50%, transparent 50%);
-  display: inline-block;
-  animation: colorChange 2s infinite;
+const InputBoxContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+`;
 
-  @keyframes colorChange {
-    0% {
-      color: black;
-    }
-    50% {
-      color: #42D09F;
-    }
-    100% {
-      color: black;
-    }
+const InputBox = styled.textarea`
+  width: 52.125rem;
+  height: 15.5rem;
+  flex-shrink: 0;
+  border-radius: 1rem;
+  border: 1px solid #2cc1bf;
+  background: #fff;
+  box-shadow: 15px 13px 1.5px 0px rgba(97, 220, 132, 0.25);
+  padding: 1rem;
+  font-size: 1rem;
+  z-index: 1;
+  resize: none;
+
+  &::placeholder {
+    color: #c4c4c4;
+    font-family: "Noto Sans";
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.4375rem;
+    text-align: left;
+  }
+
+  &:focus {
+    border: 2px solid #2cc1bf;
+    outline: none;
   }
 `;
 
-const Span2 = styled.span`
-  text-emphasis: filled #42D09F;
+const SubmitButton = styled.button`
+  width: 13.1875rem;
+  height: 2.9375rem;
+  border-radius: 0.625rem;
+  background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 1.5rem;
+  z-index: 1;
 `;
 
-const AnimatedSubContent = styled(motion.div)`
-  height: 85px;
-  margin: auto;
-  margin-top: 150px;
-  font-size: 14px;
-  font-weight: 400;
+const bounceAnimation = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1rem);
+  }
 `;
 
-const StyledDownicon = styled(motion(Down_icon))`
+const Point1 = styled(PointImg1)`
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 36.13rem;
+  left: 3.13rem;
+  z-index: 1;
+  width: 3.1875rem;
+  height: 3rem;
+  animation: ${bounceAnimation} 2s infinite;
+`;
+
+const Point2 = styled(PointImg2)`
+  position: absolute;
+  top: 4.88rem;
+  left: 13.93rem;
+  z-index: 1;
+  width: 2.25rem;
+  height: 2.1875rem;
+  animation: ${bounceAnimation} 2s infinite;
+`;
+
+const Point3 = styled(PointImg3)`
+  position: absolute;
+  top: 19.19rem;
+  left: 69.44rem;
+  z-index: 1;
+  width: 2.5rem;
+  height: 1.9375rem;
+  animation: ${bounceAnimation} 2s infinite;
+`;
+
+const Purple1 = styled(PointPurple1)`
+  position: absolute;
+  top: 40.56rem;
+  left: 11.69rem;
+  z-index: 1;
+`;
+
+const Purple2 = styled(PointPurple2)`
+  position: absolute;
+  top: 40.5rem;
+  left: 63.38rem;
+  z-index: 1;
+`;
+
+const Purple3 = styled(PointPurple3)`
+  position: absolute;
+  top: 3.13rem;
+  left: 19.56rem;
+  z-index: 1;
+`;
+
+const Purple4 = styled(PointPurple4)`
+  position: absolute;
+  top: 11.13rem;
+  left: 65.13rem;
+  z-index: 1;
+`;
+
+const Blue1 = styled(PointBlue1)`
+  position: absolute;
+  top: 22.13rem;
+  left: 6.13rem;
+  z-index: 1;
+`;
+
+const Blue2 = styled(PointBlue2)`
+  position: absolute;
+  top: 5.13rem;
+  left: 4.13rem;
+  z-index: 1;
+`;
+
+const Blue3 = styled(PointBlue3)`
+  position: absolute;
+  top: 2.13rem;
+  left: 73.13rem;
+  z-index: 1;
+`;
+
+const BlueGreen1 = styled(PointBlueGreen1)`
+  position: absolute;
+  top: 29rem;
+  left: 75rem;
+  z-index: 1;
+`;
+
+const BlueGreen2 = styled(PointBlueGreen2)`
+  position: absolute;
+  top: 3rem;
+  left: 61rem;
+  z-index: 1;
+`;
+
+const Green1 = styled(PointGreen1)`
+  position: absolute;
+  top: 16.13rem;
+  left: 13rem;
+  z-index: 1;
+`;
+
+const Green2 = styled(PointGreen1)`
+  position: absolute;
+  top: 41rem;
+  left: 73rem;
+  z-index: 1;
 `;

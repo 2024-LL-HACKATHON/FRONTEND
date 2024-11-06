@@ -17,13 +17,20 @@ interface FormData {
 }
 
 function PromptRegister() {
-  const { control, handleSubmit, setValue,  formState: { errors, isSubmitting }, } = useForm<FormData>();
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>();
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false); // Modal state
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -54,7 +61,6 @@ function PromptRegister() {
 
   const hasErrors = Object.keys(errors).length > 0 && isSubmitting;
 
-
   const onSubmit = async (data: FormData) => {
     try {
       const formData = new FormData();
@@ -74,7 +80,7 @@ function PromptRegister() {
         },
       });
       console.log(response.data);
-      setModalOpen(true); 
+      setModalOpen(true);
     } catch (error: unknown) {
       console.error(error);
       setError("등록 중 오류가 발생했습니다.");
@@ -295,6 +301,9 @@ const RegisterForm = styled.form`
     margin-left: 1.625rem;
     margin-right: 4.75rem;
     margin-bottom: 2.8125rem;
+    font-family: "Noto Sans KR";
+    font-size: 1rem;
+
   }
   #condition {
     width: 18.6875rem;
@@ -305,12 +314,16 @@ const RegisterForm = styled.form`
     background: #d9f6ec;
     text-align: center;
     color: #626260;
+    font-family: "Noto Sans KR";
+    font-size: 1rem;
   }
   #summary {
     width: 61.125rem;
     height: 4.625rem;
     margin-top: 1.125rem;
     margin-bottom: 2.875rem;
+    font-family: "Noto Sans KR";
+    font-size: 1rem;
   }
   #contentcategory {
     display: flex;
@@ -325,6 +338,8 @@ const RegisterForm = styled.form`
     color: #626260;
     margin-left: 1.625rem;
     margin-bottom: 1.125rem;
+    font-family: "Noto Sans KR";
+    font-size: 1rem;
   }
   #imglabel {
     display: flex;
@@ -342,7 +357,6 @@ const RegisterForm = styled.form`
     font-weight: 400;
     line-height: normal;
   }
- 
 `;
 const StyledTextareaContent = styled.textarea`
   border-radius: 0.875rem;
@@ -363,6 +377,8 @@ const StyledTextareaOutput = styled.textarea`
   height: 9.625rem;
   margin-top: 1.25rem;
   padding: 0.875rem 1.375rem;
+  font-family: "Noto Sans KR";
+  font-size: 1rem;
   border: none;
   border-radius: 1rem;
   background: rgba(66, 208, 159, 0.06);
@@ -401,4 +417,5 @@ const RegisterButton = styled.button`
   margin-top: 10.19rem;
   margin-left: 24.12rem;
   border: none;
+  cursor: pointer;
 `;

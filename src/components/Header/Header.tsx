@@ -1,20 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../../assets/images/Logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { HeaderProps } from "./types";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { logout } from "../../services/authSlice";
+import axios from "axios";
 
 const Header: React.FC<HeaderProps> = ({ fixed = true }) => {
   const isLoggedIn = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logout()); 
+    delete axios.defaults.headers.common["X-AUTH-TOKEN"]; 
+    localStorage.removeItem('authToken'); 
+    navigate('/login', { state: { from: location.pathname } });
   };
 
   return (

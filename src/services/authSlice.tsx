@@ -1,43 +1,74 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-// 인증 상태 인터페이스 정의
-interface AuthState {
-  token: string | null; // 인증 토큰
-  isAuthenticated: boolean; // 인증 여부
+interface User {
+  account: string;
+  email: string;
+  name: string;
+  nickname: string;
+  phone: string;
+  thumbnail: string;
+  uid: number;
 }
 
-// 초기 상태 설정
-const initialState: AuthState = {
-  token: localStorage.getItem('token') || null, // 로컬 스토리지에서 초기화 (토큰이 없으면 null)
-  isAuthenticated: !!localStorage.getItem('token'), // 토큰이 있으면 인증된 상태 (true)
+interface AuthState {
+  token: string | null;
+  isAuthenticated: boolean;
+  user: User | null;
+}
+
+const getUserFromLocalStorage = (): User | null => {
+  const userString = localStorage.getItem('user');
+  if (!userString) return null;
+  try {
+    return JSON.parse(userString);
+  } catch (e) {
+    console.error('Failed to parse user from localStorage', e);
+    return null;
+  }
 };
 
-// auth 슬라이스 생성
+const initialState: AuthState = {
+  token: localStorage.getItem('token') || null,
+  isAuthenticated: !!localStorage.getItem('token'),
+  user: getUserFromLocalStorage(),
+};
+
 const authSlice = createSlice({
-  name: 'auth', // 슬라이스 이름
-  initialState, // 초기 상태
+  name: 'auth',
+  initialState,
   reducers: {
-    // 로그인 액션
-    login(state, action: PayloadAction<string>) {
-      state.token = action.payload; // 상태에 토큰 설정
-      state.isAuthenticated = true; // 인증 상태를 true로 변경
-      localStorage.setItem('token', action.payload); // 토큰을 로컬 스토리지에 저장
+    login(state, action: PayloadAction<{ token: string; user: User }>) {
+      state.token = action.payload.token;
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      localStorage.setItem('token', action.payload.token);
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
     },
-    // 로그아웃 액션
     logout(state) {
-      state.token = null; // 상태에서 토큰 제거
-      state.isAuthenticated = false; // 인증 상태를 false로 변경
-      localStorage.removeItem('token'); // 로컬 스토리지에서 토큰 제거
+      state.token = null;
+      state.isAuthenticated = false;
+      state.user = null;
+      localStorage.removeItem('token');
+      localStorage.removeItem('user'); 
+      delete axios.defaults.headers.common["X-AUTH-TOKEN"];
     },
-    // 토큰 설정 액션
     setToken(state, action: PayloadAction<string | null>) {
-      state.token = action.payload; // 상태에 토큰 설정 (null일 수도 있음)
-      state.isAuthenticated = action.payload !== null; // 토큰이 있으면 인증된 상태로 설정
+      state.token = action.payload;
+      state.isAuthenticated = !!action.payload;
+      if (!action.payload) {
+        state.user = null;
+        localStorage.removeItem('user');
+      }
+    },
+    setUser(state, action: PayloadAction<User>) {
+      state.user = action.payload;
+      localStorage.setItem('user', JSON.stringify(action.payload));
     }
   },
 });
 
-// 액션과 리듀서 내보내기
-export const { login, logout, setToken } = authSlice.actions;
+
+export const { login, logout, setToken, setUser } = authSlice.actions;
 
 export default authSlice.reducer;
