@@ -16,6 +16,7 @@ import { ReactComponent as PointBlueGreen1 } from "../../assets/images/GuideBlue
 import { ReactComponent as PointBlueGreen2 } from "../../assets/images/GuideBlueGreen16.svg";
 import { ReactComponent as PointGreen1 } from "../../assets/images/GuideGreen11.svg";
 import axios from "axios";
+import GuideModal from "../Modal/GuideModal";
 
 const GuideSection2 = () => {
   const [token, setToken] = useState<string | null>(
@@ -45,8 +46,6 @@ const GuideSection2 = () => {
 
       setResponse(result.data);
       console.log("Response body:", result.data);
-
-      alert(JSON.stringify(result.data));
     } catch (error) {
       console.error("Error making request:", error);
     } finally {
@@ -78,6 +77,7 @@ const GuideSection2 = () => {
           <SubmitButton onClick={handleSubmit}>결과 보러가기</SubmitButton>
         </InputBoxContainer>
       </Title>
+      {response && <GuideModal response={response} />}
       <>
         <Point1 />
         <Point2 />
