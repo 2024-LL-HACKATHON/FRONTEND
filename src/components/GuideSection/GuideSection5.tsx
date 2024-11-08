@@ -3,12 +3,25 @@ import { ReactComponent as Format } from "../../assets/images/Format.svg";
 import { ReactComponent as Tone } from "../../assets/images/Tone.svg";
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import React, { useContext, useEffect, useState } from "react";
+import { ResponseContext } from '../../pages/Guide/Guide';
 
 const GuideSection5 = () => {
+  const { response } = useContext(ResponseContext);
+  const [highlightFormat, setHighlightCommand] = useState(false);
+  const [highlightTone, setHighlightContext] = useState(false);
+
   const { ref, inView } = useInView({
     triggerOnce: false,
     threshold: 0.2, 
   });
+
+  useEffect(() => {
+    if (response) {
+      setHighlightCommand(response.includes("포맷"));
+      setHighlightContext(response.includes("어조"));
+    }
+  }, [response]);
 
   return (
     <Page5 ref={ref}>
@@ -17,7 +30,7 @@ const GuideSection5 = () => {
         animate={{ y: inView ? 0 : '70px', opacity: inView ? 1 : 0 }}
         transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 1 }}
       >
-        <Tip>포맷 [format]</Tip>
+        <Tip highlighted={highlightFormat}>포맷 [format]</Tip>
         <br />
         결과물의 형식이나 분량, 내용 구성을 미리 지정해주면 좋아요. <br />
         표 형식으로 정리해달라거나, 마크다운으로 작성하라고 하거나, <br />
@@ -35,7 +48,7 @@ const GuideSection5 = () => {
           animate={{ y: inView ? 0 : '70px', opacity: inView ? 1 : 0 }}
           transition={{ type: 'spring', stiffness: 70, damping: 20, duration: 5 }}
       >
-        <Tip>어조 [tone]</Tip>
+        <Tip highlighted={highlightTone}>어조 [tone]</Tip>
         <br />
         결과물의 어조도 정할 수 있어요. <br />
         '간단명료하게', '친근한 말투로' 같은  <br />
@@ -62,10 +75,20 @@ const Page5 = styled.div`
   height: 100%;
 `;
 
-const Tip = styled.div`
+const Tip = styled.div<{ highlighted: boolean }>`
   font-family: "Gmarket Sans TTF";
   font-size: 40px;
   font-weight: 700;
+  color: ${({ highlighted }) => (highlighted ? "red" : "black")};
+  transition: color 0.3s ease, transform 0.3s ease;
+
+  ${({ highlighted }) =>
+    highlighted &&
+    `animation: shake 0.5s ease-in-out infinite alternate;`}
+  @keyframes shake {
+    0% {transform: translateY(-5px);}
+    100% {transform: translateY(5px);}
+  }
 `;
 
 const AnimatedContentLeft = styled(motion.div)`

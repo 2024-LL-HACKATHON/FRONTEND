@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
+import React, { useContext, useState } from "react";
+import styled, { keyframes } from "styled-components"; // keyframes 추가
 import { ReactComponent as PencilImg } from "../../assets/images/GuidePencil.svg";
 import NotoSans14px from "../text/Text";
 import { ReactComponent as PointImg1 } from "../../assets/images/GuidePoint1.svg";
@@ -17,13 +17,12 @@ import { ReactComponent as PointBlueGreen2 } from "../../assets/images/GuideBlue
 import { ReactComponent as PointGreen1 } from "../../assets/images/GuideGreen11.svg";
 import axios from "axios";
 import GuideModal from "../Modal/GuideModal";
+import { ResponseContext } from "../../pages/Guide/Guide";
 
 const GuideSection2 = () => {
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
-  );
+  const { response, setResponse } = useContext(ResponseContext);
+  const [token] = useState(localStorage.getItem("token"));
   const [prompt, setPrompt] = useState("");
-  const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -43,7 +42,6 @@ const GuideSection2 = () => {
       };
 
       const result = await axios.post(url, {}, { params, headers });
-
       setResponse(result.data);
       console.log("Response body:", result.data);
     } catch (error) {
