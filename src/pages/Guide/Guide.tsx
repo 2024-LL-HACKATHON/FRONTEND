@@ -9,50 +9,65 @@ import GuideSection6 from "../../components/GuideSection/GuideSection6";
 import { FullPage, Slide } from "react-full-page";
 import { ReactComponent as Guide_Circle1 } from "../../assets/images/Guide_Circle1.svg";
 import { ReactComponent as Guide_Circle2 } from "../../assets/images/Guide_Circle2.svg";
+import React, { createContext, useState, ReactNode } from "react";
+
+// Context 타입
+type ResponseContextType = {
+  response: string | null;
+  setResponse: React.Dispatch<React.SetStateAction<string | null>>;
+};
+export const ResponseContext = createContext<ResponseContextType>({
+  response: null,
+  setResponse: () => {},
+});
 
 export default function Guide() {
+  const [response, setResponse] = useState<string | null>(null);
+
   return (
-    <StyledFullPage>
+    <ResponseContext.Provider value={{ response, setResponse }}>
+      <StyledFullPage>
       <Background>
         <StyledGuideCircle1 />
         <StyledGuideCircle2 />
         <StyledGuideCircle3 />
         <StyledGuideCircle4 />
       </Background>
-      <FullPage>
-        <Slide>
-          <StyledSlide>
-            <Header isLoggedIn={false} fixed={false} />
-            <GuideSection1 />
-          </StyledSlide>
-        </Slide>
-        <Slide>
-          <StyledSlide>
-            <GuideSection2 />
-          </StyledSlide>
-        </Slide>
-        <Slide>
-          <StyledSlide>
-            <GuideSection3 />
-          </StyledSlide>
-        </Slide>
-        <Slide>
-          <StyledSlide>
-            <GuideSection4 />
-          </StyledSlide>
-        </Slide>
-        <Slide>
-          <StyledSlide>
-            <GuideSection5 />
-          </StyledSlide>
-        </Slide>
-        <Slide>
-          <StyledSlide>
-            <GuideSection6 />
-          </StyledSlide>
-        </Slide>
-      </FullPage>
-    </StyledFullPage>
+        <FullPage>
+          <Slide>
+            <StyledSlide>
+              <Header isLoggedIn={false} fixed={false} />
+              <GuideSection1 />
+            </StyledSlide>
+          </Slide>
+          <Slide>
+            <StyledSlide>
+              <GuideSection2 />
+            </StyledSlide>
+          </Slide>
+          <Slide>
+            <StyledSlide>
+              <GuideSection3 />
+            </StyledSlide>
+          </Slide>
+          <Slide>
+            <StyledSlide>
+              <GuideSection4 />
+            </StyledSlide>
+          </Slide>
+          <Slide>
+            <StyledSlide>
+              <GuideSection5 />
+            </StyledSlide>
+          </Slide>
+          <Slide>
+            <StyledSlide>
+              <GuideSection6 />
+            </StyledSlide>
+          </Slide>
+        </FullPage>
+      </StyledFullPage>
+    </ResponseContext.Provider>
   );
 }
 
