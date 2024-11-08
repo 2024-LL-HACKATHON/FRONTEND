@@ -58,6 +58,5 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.17.7"
-  },
-  "proxy": "http://3.36.67.189:8080"
+  }
 }
