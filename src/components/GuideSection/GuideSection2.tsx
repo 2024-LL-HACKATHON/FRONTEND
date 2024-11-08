@@ -160,7 +160,12 @@ const InputBox = styled.textarea`
   background: #fff;
   box-shadow: 15px 13px 1.5px 0px rgba(97, 220, 132, 0.25);
   padding: 1rem;
-  font-size: 1rem;
+  color: #000;
+  font-family: "Noto Sans";
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.4375rem;
   z-index: 1;
   resize: none;
 
