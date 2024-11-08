@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { PromptData } from "./types";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import apiClient from "../../api/clientapi";
 
 type Params = Record<string, string | undefined>;
 
@@ -24,7 +25,7 @@ export default function DetailSection1() {
       }
 
       try {
-        const response = await axios.get<PromptData>(
+        const response = await apiClient.get<PromptData>(
           `/api/v1/main/getPrompt/${prompt_id}`,
           {
             headers: {

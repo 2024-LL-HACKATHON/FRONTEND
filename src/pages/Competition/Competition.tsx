@@ -62,7 +62,7 @@ const calculateDaysRemaining = (deadline: Date): string => {
 export default function Competition() {
   const [currentCompetition, setCurrentCompetition] = useState<CompetitionData>(currentCompetitionData);
   const [isProceeding] = useState<boolean>(true);
-  const deadline = new Date("2024-08-15T23:59:59");
+  const deadline = new Date("2024-11-15T23:59:59");
   const daysRemaining = calculateDaysRemaining(deadline);
 
   useEffect(() => {

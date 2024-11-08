@@ -11,7 +11,9 @@ type LoginFormInputs = {
   account: string;
   password: string;
 };
-
+const apiClient = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
+});
 const Login = () => {
   const [serverError, setServerError] = useState<string | null>(null);
   const dispatch = useDispatch();
@@ -29,7 +31,7 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      const response = await axios.post("/sign-api/sign-in", null, {
+      const response = await apiClient.post("/sign-api/sign-in", null, {
         params: {
           account: data.account,
           password: data.password,
