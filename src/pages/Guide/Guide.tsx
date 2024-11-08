@@ -9,7 +9,7 @@ import GuideSection6 from "../../components/GuideSection/GuideSection6";
 import { FullPage, Slide } from "react-full-page";
 import { ReactComponent as Guide_Circle1 } from "../../assets/images/Guide_Circle1.svg";
 import { ReactComponent as Guide_Circle2 } from "../../assets/images/Guide_Circle2.svg";
-import React, { createContext, useState, ReactNode } from "react";
+import React, { createContext, useState, useEffect, useRef } from "react";
 
 // Context 타입
 type ResponseContextType = {
@@ -23,17 +23,30 @@ export const ResponseContext = createContext<ResponseContextType>({
 
 export default function Guide() {
   const [response, setResponse] = useState<string | null>(null);
+  const fullPageRef = useRef<any>(null); // FullPage 인스턴스를 참조
+
+  useEffect(() => {
+    if (!response || !fullPageRef.current) return;
+
+    if (response.includes("맥락") || response.includes("명령")) {
+      fullPageRef.current.scrollToSlide(2);
+    } else if (response.includes("페르소나") || response.includes("예시")) {
+      fullPageRef.current.scrollToSlide(3);
+    } else if (response.includes("포맷") || response.includes("어조")) {
+      fullPageRef.current.scrollToSlide(4); 
+    }
+  }, [response]);
 
   return (
     <ResponseContext.Provider value={{ response, setResponse }}>
       <StyledFullPage>
-      <Background>
-        <StyledGuideCircle1 />
-        <StyledGuideCircle2 />
-        <StyledGuideCircle3 />
-        <StyledGuideCircle4 />
-      </Background>
-        <FullPage>
+        <Background>
+          <StyledGuideCircle1 />
+          <StyledGuideCircle2 />
+          <StyledGuideCircle3 />
+          <StyledGuideCircle4 />
+        </Background>
+        <FullPage ref={fullPageRef}>
           <Slide>
             <StyledSlide>
               <Header isLoggedIn={false} fixed={false} />
@@ -70,7 +83,6 @@ export default function Guide() {
     </ResponseContext.Provider>
   );
 }
-
 const StyledFullPage = styled.div`
   position: relative;
   font-family: "Noto Sans KR";
