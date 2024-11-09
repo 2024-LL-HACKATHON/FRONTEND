@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
+import apiClient from '../api/clientapi';
 
 interface User {
   account: string;
@@ -51,7 +51,7 @@ const authSlice = createSlice({
       state.user = null;
       localStorage.removeItem('token');
       localStorage.removeItem('user'); 
-      delete axios.defaults.headers.common["X-AUTH-TOKEN"];
+      delete apiClient.defaults.headers.common["X-AUTH-TOKEN"];
     },
     setToken(state, action: PayloadAction<string | null>) {
       state.token = action.payload;

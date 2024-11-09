@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import PromptReview from "./PromptReview";
 import { useForm, SubmitHandler } from "react-hook-form";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import Modal from "../Modal/Modal";
+import apiClient from "../../api/clientapi";
+import axios from "axios";
+
 
 interface FormData {
   content: string;
@@ -36,7 +38,7 @@ export default function DetailSection2() {
 
   const fetchReviewCount = async (prompt_id: number) => {
     try {
-      const response = await axios.get(`/api/v1/review/countReview/${prompt_id}`, {
+      const response = await apiClient.get(`/api/v1/review/countReview/${prompt_id}`, {
         headers: {
           accept: "*/*",
           "Content-Type": "application/json",
@@ -69,7 +71,7 @@ export default function DetailSection2() {
     }
 
     try {
-      await axios.post(
+      await apiClient.post(
         "/api/v1/review/createReview",
         {
           promptId: promptId,
@@ -166,7 +168,7 @@ export default function DetailSection2() {
 }
 
 const DetailSection2Layout = styled.div`
-  diplay: flex;
+  display: flex;
   width: 80rem;
   padding: 7rem;
   margin-top: 5.31rem;
