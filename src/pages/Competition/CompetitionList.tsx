@@ -8,6 +8,7 @@ import CompetitionDetail from "../../components/CompetitionComponent/Competition
 import ParticipationSwitchButtonComponent from "../../components/CompetitionComponent/ParticipationSwitchButtonComponent";
 import Footer from "../../components/Footer/Footer";
 import { ReactComponent as LikedImg } from "../../assets/images/LikedImg.svg";
+import apiClient from "../../api/clientapi";
 
 interface Item {
   com_id: number;
@@ -36,7 +37,9 @@ const CompetitionList: React.FC = () => {
   useEffect(() => {
     const fetchTotalPages = async () => {
       try {
-        const response = await axios.get("/api/v1/competition/countCompetitions");
+        const response = await apiClient.get(
+          "/api/v1/competition/countCompetitions"
+        );
         const totalItems = response.data;
         const pages = Math.ceil(totalItems / itemsPerPage);
         setTotalPages(pages);
@@ -53,12 +56,12 @@ const CompetitionList: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(
+        const response = await apiClient.get(
           `/api/v1/competition/getCompetitionByList?page=${currentPage}`
         );
         const itemsData = response.data.items;
         const likesPromises = itemsData.map((item: any) =>
-          axios.get(`/api/v1/like/countLike/${item.com_id}`)
+          apiClient.get(`/api/v1/like/countLike/${item.com_id}`)
         );
         const likesResponses = await Promise.all(likesPromises);
 
@@ -68,11 +71,15 @@ const CompetitionList: React.FC = () => {
           isLiked: false,
         }));
 
-        const likedItems = JSON.parse(localStorage.getItem('likedItems') || '{}');
-        const itemsWithLikeStatus = itemsWithLikes.map((item: { com_id: string | number; }) => ({
-          ...item,
-          isLiked: likedItems[item.com_id] || false,
-        }));
+        const likedItems = JSON.parse(
+          localStorage.getItem("likedItems") || "{}"
+        );
+        const itemsWithLikeStatus = itemsWithLikes.map(
+          (item: { com_id: string | number }) => ({
+            ...item,
+            isLiked: likedItems[item.com_id] || false,
+          })
+        );
 
         setItems(itemsWithLikeStatus);
 
@@ -107,7 +114,7 @@ const CompetitionList: React.FC = () => {
   const updateLikeStatus = async (itemId: number, isLiked: boolean) => {
     const token = localStorage.getItem("token");
     try {
-      await axios.post(
+      await apiClient.post(
         "/api/v1/like/createLike",
         { comId: itemId },
         {
@@ -115,7 +122,7 @@ const CompetitionList: React.FC = () => {
         }
       );
 
-      const response = await axios.get(`/api/v1/like/countLike/${itemId}`);
+      const response = await apiClient.get(`/api/v1/like/countLike/${itemId}`);
       const updatedLikes = response.data;
 
       setItems((prevItems) => {
@@ -130,7 +137,7 @@ const CompetitionList: React.FC = () => {
           return acc;
         }, {} as Record<number, boolean>);
 
-        localStorage.setItem('likedItems', JSON.stringify(likedItems));
+        localStorage.setItem("likedItems", JSON.stringify(likedItems));
 
         return updatedItems;
       });
@@ -155,7 +162,7 @@ const CompetitionList: React.FC = () => {
   const expandedItem = items.find((item) => item.com_id === openItemId);
 
   return (
-    <>
+    <CompetitionListLayer>
       <CompetitionListHead>
         <Header isLoggedIn={false} fixed={false} />
         <CompetitionGlassWrapper>
@@ -273,14 +280,17 @@ const CompetitionList: React.FC = () => {
           </>
         )}
       </CompetitionListContainer>
-    </>
+    </CompetitionListLayer>
   );
 };
 
 export default CompetitionList;
 
+const CompetitionListLayer = styled.div`
+  max-width: 100%;
+`;
 const CompetitionListHead = styled.div`
-  width: 80rem;
+  max-width: 100%;
   height: 18.25rem;
   flex-shrink: 0;
   background: rgba(114, 212, 155, 0.3);

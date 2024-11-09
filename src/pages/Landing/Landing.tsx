@@ -13,7 +13,7 @@ import { FullPage, Slide } from "react-full-page";
 interface StyledSlideProps {
   height?: string;
 }
-const Landing = () => {
+const Landing = React.memo(() => {
   return (
     <StyledFullPage>
       <Header isLoggedIn={false} fixed={true} />
@@ -54,7 +54,7 @@ const Landing = () => {
       </FullPage>
     </StyledFullPage>
   );
-};
+});
 
 export default Landing;
 
@@ -66,7 +66,7 @@ const StyledFullPage = styled.div`
 `;
 
 const StyledSlide = styled.div<StyledSlideProps>`
-  max-width: 80rem;
+  max-width: 100%;
   height: 100vh;
   height: ${(props) => props.height || "auto"};
   box-sizing: border-box;

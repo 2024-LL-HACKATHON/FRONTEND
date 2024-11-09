@@ -43,9 +43,9 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(user));
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       dispatch(login({ token, user }));
-      console.log("Redirecting to:", from); 
+      console.log("Redirecting to:", from);
       navigate(from, { replace: true });
-      setServerError(null); 
+      setServerError(null);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 400) {
@@ -65,7 +65,7 @@ const Login = () => {
   };
 
   return (
-    <>
+    <LoginLayer>
       <Header isLoggedIn={false} fixed={false} />
       <LoginLayout>
         <Title>
@@ -97,12 +97,15 @@ const Login = () => {
           </InputGroup>
         </LoginForm>
       </LoginLayout>
-    </>
+    </LoginLayer>
   );
 };
 
 export default Login;
 
+const LoginLayer = styled.div`
+  max-width: 100%;
+`;
 const LoginLayout = styled.div`
   display: flex;
   flex-direction: column;

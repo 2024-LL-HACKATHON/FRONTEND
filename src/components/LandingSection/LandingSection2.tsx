@@ -63,7 +63,7 @@ export default function LandingSection2() {
 }
 
 const Container = styled.section`
-  max-width: 80rem;
+  max-width: 100%;
   height: 100vh;
   text-align: center;
   margin: 0 auto;
@@ -71,7 +71,6 @@ const Container = styled.section`
 const Div405 = styled.div`
   display: flex;
   width: 100%;
-  max-width: 80rem;
   height: 14.0625rem;
   background: linear-gradient(90deg, #42d09f 0%, #2cc1bf 100%);
   align-items: center;
