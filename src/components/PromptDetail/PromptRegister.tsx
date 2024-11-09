@@ -44,11 +44,15 @@ function PromptRegister() {
         const fileData = new FormData();
         fileData.append("file", file);
 
-        const uploadResponse = await apiClient.post("/api/files/upload", fileData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const uploadResponse = await apiClient.post(
+          "/api/files/upload",
+          fileData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
         const uploadedFileUrl = uploadResponse.data;
         setValue("image", uploadedFileUrl);
@@ -73,12 +77,16 @@ function PromptRegister() {
       formData.append("summary", data.summary);
       formData.append("createdAt", data.createdAt);
 
-      const response = await apiClient.post("/api/v1/main/createPrompt", formData, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-AUTH-TOKEN": token || "",
-        },
-      });
+      const response = await apiClient.post(
+        "/api/v1/main/createPrompt",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-AUTH-TOKEN": token || "",
+          },
+        }
+      );
       console.log(response.data);
       setModalOpen(true);
     } catch (error: unknown) {
@@ -303,7 +311,6 @@ const RegisterForm = styled.form`
     margin-bottom: 2.8125rem;
     font-family: "Noto Sans KR";
     font-size: 1rem;
-
   }
   #condition {
     width: 18.6875rem;

@@ -48,9 +48,9 @@ const GlobalStyle = createGlobalStyle`
 
   #root {
     display: flex;
+    max-width: 100%;
     justify-content: center;
     align-items: center;
-    max-width: 100%;
   }
 `;
 

@@ -36,14 +36,14 @@ const conditions = [
   { label: "생산적인", value: "PRODUCTIVE" },
   { label: "예술적인", value: "ARTISTIC" },
   { label: "상징적인", value: "SYMBOLIC" },
-  { label: "재미있는", value: "INTERESTING" }
+  { label: "재미있는", value: "INTERESTING" },
 ];
 
 // Section3에서 사용할 category
 const categories = [
   { label: "전체", value: "전체" },
   { label: "GPT", value: "gpt" },
-  { label: "DALL-E", value: "dalle" }
+  { label: "DALL-E", value: "dalle" },
 ];
 
 const MainSection3: React.FC = () => {
@@ -111,8 +111,7 @@ const MainSection3: React.FC = () => {
                 : 0;
 
             return { ...prompt, review: isNaN(reviewCount) ? 0 : reviewCount };
-          } catch (error) {
-          }
+          } catch (error) {}
         })
       );
 
@@ -160,11 +159,14 @@ const MainSection3: React.FC = () => {
 
         <Section2TypeList>
           {conditions.map(({ label, value }, index) => (
-            <Section2Type key={index} onClick={() => {
-              setSelectedCondition(value);
-              setSelectedCategory("전체");
-              setCurrentPage(1);
-            }}>
+            <Section2Type
+              key={index}
+              onClick={() => {
+                setSelectedCondition(value);
+                setSelectedCategory("전체");
+                setCurrentPage(1);
+              }}
+            >
               <Section2StyledImg>
                 {index === 0 && <ListImg1 />}
                 {index === 1 && <ListImg2 />}

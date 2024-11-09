@@ -168,7 +168,6 @@ export default function DetailSection2() {
 }
 
 const DetailSection2Layout = styled.div`
-  display: flex;
   width: 80rem;
   padding: 7rem;
   margin-top: 5.31rem;
