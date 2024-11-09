@@ -20,7 +20,7 @@ interface CompetitionData {
 const currentCompetitionData: CompetitionData = {
   title: "미래 도시 설계",
   participants: 0,
-  dateRange: "2024.08.01~2024.08.15",
+  dateRange: "2024.11.01~2024.11.15",
   img: "",
 };
 
@@ -93,7 +93,7 @@ export default function Competition() {
           <div id="stroke" />
           <h1>{currentCompetition.title}</h1>
           <p>
-            현재<span>{currentCompetition.participants}명</span>참여중 !
+            현재 <span>{currentCompetition.participants}명</span> 참여중 !
           </p>
           <p>{currentCompetition.dateRange}</p>
           <StyledLink to="/competitionlist">

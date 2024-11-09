@@ -49,7 +49,7 @@ const CompetitionDetail: React.FC<CompetitionDetailProps> = ({ endDate }) => {
             <CompetitionCalendarImg />
             <Tooltip>대회 진행 기간</Tooltip>
           </TooltipContainer>
-          <p>2024.08.01 ~ 2024.08.15 23:59</p>
+          <p>2024.11.01 ~ 2024.11.15 23:59</p>
         </InfoRow>
         <InfoRow>
           <TooltipContainer>
