@@ -15,9 +15,9 @@ import { ReactComponent as PointBlue3 } from "../../assets/images/GuideBlue15.sv
 import { ReactComponent as PointBlueGreen1 } from "../../assets/images/GuideBlueGreen15.svg";
 import { ReactComponent as PointBlueGreen2 } from "../../assets/images/GuideBlueGreen16.svg";
 import { ReactComponent as PointGreen1 } from "../../assets/images/GuideGreen11.svg";
-import axios from "axios";
 import GuideModal from "../Modal/GuideModal";
 import { ResponseContext } from "../../pages/Guide/Guide";
+import apiClient from "../../api/clientapi";
 
 const GuideSection2 = () => {
   const { response, setResponse } = useContext(ResponseContext);
@@ -41,7 +41,7 @@ const GuideSection2 = () => {
         "X-AUTH-TOKEN": token || "",
       };
 
-      const result = await axios.post(url, {}, { params, headers });
+      const result = await apiClient.post(url, {}, { params, headers });
       setResponse(result.data);
       console.log("Response body:", result.data);
     } catch (error) {

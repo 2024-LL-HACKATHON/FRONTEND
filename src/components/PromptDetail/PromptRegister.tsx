@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../components/Modal/Modal"; // Import the Modal component
+import apiClient from "../../api/clientapi";
 
 interface FormData {
   category: string;
@@ -44,7 +44,7 @@ function PromptRegister() {
         const fileData = new FormData();
         fileData.append("file", file);
 
-        const uploadResponse = await axios.post("/api/files/upload", fileData, {
+        const uploadResponse = await apiClient.post("/api/files/upload", fileData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -73,7 +73,7 @@ function PromptRegister() {
       formData.append("summary", data.summary);
       formData.append("createdAt", data.createdAt);
 
-      const response = await axios.post("/api/v1/main/createPrompt", formData, {
+      const response = await apiClient.post("/api/v1/main/createPrompt", formData, {
         headers: {
           "Content-Type": "application/json",
           "X-AUTH-TOKEN": token || "",

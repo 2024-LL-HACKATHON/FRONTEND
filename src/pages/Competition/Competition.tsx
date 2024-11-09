@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import CompetitionCarousel from "../../components/CompetitionComponent/CompetitionCarousel";
 import DDayCountdown from "../../components/CompetitionComponent/CompetitonDDay";
 import { ReactComponent as CompetitionImgExample } from "../../assets/images/CompetitionImgExample.svg";
 import Footer from "../../components/Footer/Footer";
 import { Link } from "react-router-dom";
-
 import CompetitionImg1 from "../../assets/images/Competition_Img1.svg";
 import CompetitionImg2 from "../../assets/images/Competition_Img2.svg";
 import CompetitionImg3 from "../../assets/images/Competition_Img3.svg";
 import apiClient from "../../api/clientapi";
-import Header from "../../components/Header/Header";
 
 interface CompetitionData {
   title: string;

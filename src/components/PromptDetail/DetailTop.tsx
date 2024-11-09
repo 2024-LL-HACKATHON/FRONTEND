@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import Header from "../Header/Header";
 import { PromptData } from "./types";
 import { useParams } from "react-router-dom";
+import apiClient from "../../api/clientapi";
+import axios from "axios";
 
 type Params = Record<string, string | undefined>;
 
@@ -27,13 +28,13 @@ export default function PromptDetailTop() {
 
       try {
         const [promptResponse, reviewResponse] = await Promise.all([
-          axios.get<PromptData>(`/api/v1/main/getPrompt/${prompt_id}`, {
+          apiClient.get<PromptData>(`/api/v1/main/getPrompt/${prompt_id}`, {
             headers: {
               accept: "*/*",
               "X-AUTH-TOKEN": token || "",
             },
           }),
-          axios.get<string>(`/api/v1/review/countReview/${prompt_id}`, {
+          apiClient.get<string>(`/api/v1/review/countReview/${prompt_id}`, {
             headers: {
               accept: "*/*",
               "X-AUTH-TOKEN": token || "",

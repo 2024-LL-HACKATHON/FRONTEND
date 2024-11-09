@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Review } from "./types";
+import apiClient from "../../api/clientapi";
+import axios from "axios";
 
 type Params = Record<string, string | undefined>;
 
@@ -25,7 +26,7 @@ export default function PromptReview() {
 
       try {
         console.log(`Fetching reviews for prompt_id: ${prompt_id}`); 
-        const response = await axios.get<{ items: Review[] }>(
+        const response = await apiClient.get<{ items: Review[] }>(
           `/api/v1/review/getTop4ReviewList/${prompt_id}`,
           {
             headers: {

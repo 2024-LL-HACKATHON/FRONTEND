@@ -7,9 +7,9 @@ import { ReactComponent as ListImg2 } from "../../assets/images/MainSection2_2.s
 import { ReactComponent as ListImg3 } from "../../assets/images/MainSection2_3.svg";
 import { ReactComponent as ListImg4 } from "../../assets/images/MainSection2_4.svg";
 import { ReactComponent as ListImg5 } from "../../assets/images/MainSection2_5.svg";
-import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import defaultImage from "../../assets/images/image-alt.svg";
+import apiClient from "../../api/clientapi";
 
 interface StyledButtonProps {
   isSelected: boolean;
@@ -73,7 +73,7 @@ const MainSection3: React.FC = () => {
           ? `/api/v1/main/getPromptByCategory?category=${selectedCategory}&page=${currentPage}&size=${itemsToShow}`
           : `/api/v1/main/getPromptByCategory?page=${currentPage}&size=${itemsToShow}`;
 
-      const response = await axios.get(url, {
+      const response = await apiClient.get(url, {
         headers: {
           "X-AUTH-TOKEN": token || "",
         },
@@ -93,7 +93,7 @@ const MainSection3: React.FC = () => {
           }
 
           try {
-            const reviewResponse = await axios.get(
+            const reviewResponse = await apiClient.get(
               `/api/v1/review/countReview/${prompt.prompt_id}`,
               {
                 headers: {
@@ -112,18 +112,6 @@ const MainSection3: React.FC = () => {
 
             return { ...prompt, review: isNaN(reviewCount) ? 0 : reviewCount };
           } catch (error) {
-            if (axios.isAxiosError(error) && error.response?.status === 404) {
-              console.warn(
-                `리뷰 수를 가져오는 중 prompt_id ${prompt.prompt_id}에 대해 404 에러 발생`
-              );
-              return { ...prompt, review: 0 };
-            } else {
-              console.error(
-                `리뷰 수를 가져오는 중 에러 발생 (prompt_id: ${prompt.prompt_id}):`,
-                error
-              );
-              return { ...prompt, review: 0 };
-            }
           }
         })
       );

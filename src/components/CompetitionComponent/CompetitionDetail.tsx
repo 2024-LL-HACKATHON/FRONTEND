@@ -4,7 +4,7 @@ import { ReactComponent as CompetitionExampleImg } from "../../assets/images/Com
 import { ReactComponent as CompetitionCalendarImg } from "../../assets/images/Competitioncalendar.svg";
 import { ReactComponent as CompetitionPeopleImg } from "../../assets/images/Competitionpeople.svg";
 import { ReactComponent as CompetitionStopwatchImg } from "../../assets/images/Competitionstopwatch.svg";
-import axios from "axios";
+import apiClient from "../../api/clientapi";
 
 interface TimeRemaining {
   days: number;
@@ -32,7 +32,7 @@ const CompetitionDetail: React.FC<CompetitionDetailProps> = ({ endDate }) => {
   }, [endDate]);
 
   useEffect(() => {
-    axios
+    apiClient
       .get<number>("/api/v1/competition/countCompetitions")
       .then((response) => {
         setParticipantCount(response.data);
