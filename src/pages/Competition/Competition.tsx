@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import CompetitionImg1 from "../../assets/images/Competition_Img1.svg";
 import CompetitionImg2 from "../../assets/images/Competition_Img2.svg";
 import CompetitionImg3 from "../../assets/images/Competition_Img3.svg";
+import apiClient from "../../api/clientapi";
+import Header from "../../components/Header/Header";
 
 interface CompetitionData {
   title: string;
@@ -22,7 +24,7 @@ const currentCompetitionData: CompetitionData = {
   title: "미래 도시 설계",
   participants: 0,
   dateRange: "2024.08.01~2024.08.15",
-  img:""
+  img: "",
 };
 
 const pastCompetitions: CompetitionData[] = [
@@ -30,20 +32,20 @@ const pastCompetitions: CompetitionData[] = [
     img: CompetitionImg1,
     title: "스타트업 대표의 운영방식",
     participants: 33,
-    dateRange: "2024.07.10~2024.07.20"
+    dateRange: "2024.07.10~2024.07.20",
   },
   {
     img: CompetitionImg2,
     title: "AI 혁신 아이디어 공모전",
     participants: 40,
-    dateRange: "2024.06.15~2024.06.25"
+    dateRange: "2024.06.15~2024.06.25",
   },
   {
     img: CompetitionImg3,
     title: "스마트 홈 해커톤",
     participants: 28,
-    dateRange: "2024.05.01~2024.05.10"
-  }
+    dateRange: "2024.05.01~2024.05.10",
+  },
 ];
 
 const calculateDaysRemaining = (deadline: Date): string => {
@@ -60,13 +62,15 @@ const calculateDaysRemaining = (deadline: Date): string => {
 };
 
 export default function Competition() {
-  const [currentCompetition, setCurrentCompetition] = useState<CompetitionData>(currentCompetitionData);
+  const [currentCompetition, setCurrentCompetition] = useState<CompetitionData>(
+    currentCompetitionData
+  );
   const [isProceeding] = useState<boolean>(true);
-  const deadline = new Date("2024-08-15T23:59:59");
+  const deadline = new Date("2024-11-15T23:59:59");
   const daysRemaining = calculateDaysRemaining(deadline);
 
   useEffect(() => {
-    axios
+    apiClient
       .get<number>("/api/v1/competition/countCompetitions")
       .then((response) => {
         setCurrentCompetition((prev) => ({
@@ -74,11 +78,13 @@ export default function Competition() {
           participants: response.data,
         }));
       })
-      .catch((error) => console.error("Error fetching participant count:", error));
+      .catch((error) =>
+        console.error("Error fetching participant count:", error)
+      );
   }, []);
 
   return (
-    <>
+    <CompetitionLayer>
       <CompetitionCarousel />
       <CompetitionTitle>도전! 프롬프렌</CompetitionTitle>
       <CompetitionContainer>
@@ -110,7 +116,9 @@ export default function Competition() {
         <CompetitionPastImgContainer>
           {pastCompetitions.map((competition, index) => (
             <CompetitionPast key={index}>
-              <CompetitionPastImgBox img={competition.img}></CompetitionPastImgBox>
+              <CompetitionPastImgBox
+                img={competition.img}
+              ></CompetitionPastImgBox>
               <IsProceed isProceeding={!isProceeding} past />
               <h2>{competition.title}</h2>
               <div id="competitionPastStroke" />
@@ -123,7 +131,7 @@ export default function Competition() {
         </CompetitionPastImgContainer>
       </CompetitionPastBox>
       <Footer />
-    </>
+    </CompetitionLayer>
   );
 }
 
@@ -154,8 +162,11 @@ const CompetitionTitle = styled.div`
   margin-top: 3.19rem;
 `;
 
+const CompetitionLayer = styled.div`
+  max-width: 100%;
+`;
 const CompetitionContainer = styled.div`
-  width: 80rem;
+  max-width: 100%;
   margin: 0 auto;
   margin-top: 3.44rem;
   position: relative;
@@ -350,7 +361,7 @@ const CompetitionPastImgBox = styled.div<{ img: string }>`
   height: 12.8125rem;
   border-radius: 1rem;
   background: rgba(114, 212, 155, 0.2);
-  background-image: url(${props => props.img}); // 가져온 이미지를 배경으로 설정
+  background-image: url(${(props) => props.img});
   background-size: cover;
   background-position: center;
 `;

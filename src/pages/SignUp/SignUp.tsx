@@ -83,7 +83,7 @@ export default function Signup() {
   };
 
   return (
-    <>
+    <SignUpLayer>
       <Header isLoggedIn={false} fixed={false} />
       <SignupLayout>
         <SignupForm onSubmit={handleSubmit(onSubmit)}>
@@ -227,7 +227,7 @@ export default function Signup() {
           )}
         </SignupForm>
       </SignupLayout>
-    </>
+    </SignUpLayer>
   );
 }
 
@@ -246,6 +246,9 @@ const SlideIn = styled.div`
   animation: ${slideIn} 0.5s ease-in-out;
 `;
 
+const SignUpLayer = styled.div`
+max-width: 100%;
+`;
 const SignupLayout = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   display: flex;
@@ -283,7 +286,7 @@ const SignupInputGroup = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-bottom: 2.375rem;
-  
+
   div {
     display: flex;
     flex-direction: column;

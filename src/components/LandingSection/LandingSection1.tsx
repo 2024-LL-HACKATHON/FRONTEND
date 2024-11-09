@@ -33,7 +33,7 @@ export default function LandingSection1() {
 }
 
 const Container = styled.section`
-  max-width: 80rem;
+  max-width: 100%;
   height: 100vh;
   margin: 0 auto;
 `;
@@ -89,7 +89,7 @@ const MainHeading = styled.h1`
     font-weight: 700;
     line-height: 118.07%;
   }
-    
+
   .letter {
     display: inline-block;
     animation: ${reveal} 1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
@@ -107,6 +107,13 @@ const MainHeading = styled.h1`
   .letter:nth-child(4) {
     animation-delay: 0.4s;
   }
+
+  // 모바일에서는 애니메이션을 비활성화하여 성능을 개선
+  @media (max-width: 768px) {
+    .letter {
+      animation: none;
+    }
+  }
 `;
 
 const swayAnimation = keyframes`
@@ -120,6 +127,7 @@ const swayAnimation = keyframes`
     transform: translateY(0);
   }
 `;
+
 const SideText = styled.p`
   width: 16.25rem;
   height: 2.625rem;
@@ -166,9 +174,11 @@ const Img1Styled = styled(LandingImg1)`
   z-index: 2;
   animation: ${swayAnimation} 4s ease-in-out infinite;
 
+  // 모바일에서는 애니메이션을 비활성화하여 성능을 개선
   @media (max-width: 768px) {
     margin-left: 0;
     display: block;
     margin: 0 auto;
+    animation: none;
   }
 `;
