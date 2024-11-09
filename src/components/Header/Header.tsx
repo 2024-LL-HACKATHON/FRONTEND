@@ -6,7 +6,7 @@ import { HeaderProps } from "./types";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { logout } from "../../services/authSlice";
-import axios from "axios";
+import apiClient from "../../api/clientapi";
 
 const Header: React.FC<HeaderProps> = ({ fixed = true }) => {
   const isLoggedIn = useSelector(
@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ fixed = true }) => {
 
   const handleLogout = () => {
     dispatch(logout()); 
-    delete axios.defaults.headers.common["X-AUTH-TOKEN"]; 
+    delete apiClient.defaults.headers.common["X-AUTH-TOKEN"]; 
     localStorage.removeItem('authToken'); 
     navigate('/login', { state: { from: location.pathname } });
   };

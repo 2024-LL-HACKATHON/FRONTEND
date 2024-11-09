@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import Header from "../../components/Header/Header";
-import axios from "axios";
 import { ReactComponent as SignUpImg } from "../../assets/images/SignUpImg.svg";
 import { Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
+import apiClient from "../../api/clientapi";
 
 export default function Signup() {
   const {
@@ -35,7 +35,7 @@ export default function Signup() {
         const fileData = new FormData();
         fileData.append("file", file);
 
-        const uploadResponse = await axios.post("/api/files/upload", fileData, {
+        const uploadResponse = await apiClient.post("/api/files/upload", fileData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -70,7 +70,7 @@ export default function Signup() {
 
   const onSubmit = async (data: any) => {
     try {
-      const response = await axios.post("/sign-api/sign-up?roles=ADMIN", data, {
+      const response = await apiClient.post("/sign-api/sign-up?roles=ADMIN", data, {
         headers: {
           "Content-Type": "application/json",
         },

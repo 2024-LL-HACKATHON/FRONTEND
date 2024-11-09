@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import styled from "styled-components";
 import { ReactComponent as SearchImg } from "../../assets/images/SearchIcon.svg";
 import { ReactComponent as ServiceImg1 } from "../../assets/images/MainSection1_Icon1.svg";
@@ -8,6 +7,7 @@ import { ReactComponent as ServiceImg3 } from "../../assets/images/MainSection1_
 import { ReactComponent as BackCircle } from "../../assets/images/MainSection1_BackCircle.svg";
 import { Link } from "react-router-dom";
 import userDefault from "../../assets/images/userdefault.png";
+import apiClient from "../../api/clientapi";
 
 
 interface User {
@@ -29,8 +29,8 @@ const MainSection1: React.FC = () => {
   const handleSearch = async () => {
     const token = localStorage.getItem("authToken");
     try {
-      axios.defaults.headers.common["X-AUTH-TOKEN"] = token;
-      const response = await axios.get(
+      apiClient.defaults.headers.common["X-AUTH-TOKEN"] = token;
+      const response = await apiClient.get(
         `/api/v1/main/getGptApi?prompt=${searchText}`
       );
       setOutput(response.data || "결과가 없습니다.");
@@ -54,8 +54,8 @@ const MainSection1: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      axios.defaults.headers.common["X-AUTH-TOKEN"] = token;
-      const response = await axios.get("/api/v1/user/getUser");
+      apiClient.defaults.headers.common["X-AUTH-TOKEN"] = token;
+      const response = await apiClient.get("/api/v1/user/getUser");
       const { name, nickname, thumbnail } = response.data;
       setUserName(name);
       setUserImage(thumbnail);
