@@ -44,11 +44,15 @@ function CompetitionParticipation() {
         const fileData = new FormData();
         fileData.append("file", file);
 
-        const uploadResponse = await apiClient.post("/api/files/upload", fileData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const uploadResponse = await apiClient.post(
+          "/api/files/upload",
+          fileData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
         const uploadedFileUrl = uploadResponse.data;
         setValue("image", uploadedFileUrl);
@@ -107,7 +111,7 @@ function CompetitionParticipation() {
   }, [token, navigate]);
 
   return (
-    <>
+    <ParticipateLayer>
       <Header isLoggedIn={!!token} fixed={false} />
       <ParticipationTitle>
         <h1>경진대회 참가 등록</h1>
@@ -177,11 +181,15 @@ function CompetitionParticipation() {
         message="경진대회 등록이 완료되었습니다!"
         linkto="확인"
       />
-    </>
+    </ParticipateLayer>
   );
 }
 
 export default CompetitionParticipation;
+
+const ParticipateLayer = styled.div`
+  max-width: 100%;
+`;
 
 const ParticipateStroke = styled.div`
   width: 68.31263rem;
