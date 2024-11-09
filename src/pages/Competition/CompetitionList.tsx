@@ -30,7 +30,7 @@ const CompetitionList: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(10);
 
   const pageRange: number = 3;
-  const endDate = "2024-08-15T23:59:00";
+  const endDate = "2024-11-15T23:59:00";
   const itemsPerPage = 5;
 
   useEffect(() => {

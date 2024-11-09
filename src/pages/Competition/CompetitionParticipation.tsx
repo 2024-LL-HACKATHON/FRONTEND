@@ -71,7 +71,7 @@ function CompetitionParticipation() {
     navigate("/competitionlist");
   };
 
-  const endDate = "2024-08-15T23:59:00";
+  const endDate = "2024-11-15T23:59:00";
 
   const onSubmit = async (data: FormData) => {
     try {
