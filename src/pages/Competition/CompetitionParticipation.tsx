@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import styled from "styled-components";
 import Header from "../../components/Header/Header";
 import { useForm } from "react-hook-form";
@@ -9,6 +8,7 @@ import ParticipationSwitchButtonComponent from "../../components/CompetitionComp
 import Footer from "../../components/Footer/Footer";
 import { ReactComponent as ParticipateImg } from "../../assets/images/ParticipateImg.svg";
 import Modal from "../../components/Modal/Modal";
+import apiClient from "../../api/clientapi";
 
 interface FormData {
   title: string;
@@ -44,7 +44,7 @@ function CompetitionParticipation() {
         const fileData = new FormData();
         fileData.append("file", file);
 
-        const uploadResponse = await axios.post("/api/files/upload", fileData, {
+        const uploadResponse = await apiClient.post("/api/files/upload", fileData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -76,7 +76,7 @@ function CompetitionParticipation() {
       formData.append("content", data.content);
       formData.append("image", data.image);
 
-      const response = await axios.post(
+      const response = await apiClient.post(
         "/api/v1/competition/createCompetition",
         formData,
         {

@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useForm, FieldError } from "react-hook-form";
-import axios from "axios";
 import { login } from "../../services/authSlice";
 import styled from "styled-components";
 import Header from "../../components/Header/Header";
 import { useLocation, useNavigate } from "react-router-dom";
+import apiClient from "../../api/clientapi";
+import axios from "axios";
 
 type LoginFormInputs = {
   account: string;
   password: string;
 };
-const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-});
+
 const Login = () => {
   const [serverError, setServerError] = useState<string | null>(null);
   const dispatch = useDispatch();
@@ -41,7 +40,7 @@ const Login = () => {
       const user = response.data.user;
       localStorage.setItem("authToken", token);
       localStorage.setItem("user", JSON.stringify(user));
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       dispatch(login({ token, user }));
       console.log("Redirecting to:", from);
       navigate(from, { replace: true });
