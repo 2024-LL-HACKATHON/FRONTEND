@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import userDefault from "../../assets/images/userdefault.png";
 import apiClient from "../../api/clientapi";
 
-
 interface User {
   name: string;
   nickname: string;
@@ -226,7 +225,6 @@ const SearchIcon = styled(SearchImg)`
   cursor: pointer;
 `;
 
-/*맞춤형 카테고리*/
 const Category = styled.div`
   font-family: "Noto Sans KR";
   font-size: 16px;
@@ -249,7 +247,6 @@ const CategoryHash = styled.div`
   border-radius: 16px;
 `;
 
-/*프롬프트 전송 결과물*/
 const Output = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   width: 1066px;
@@ -260,7 +257,6 @@ const Output = styled.div`
   margin-bottom: 26px;
 `;
 
-/*프롬프렌 서비스*/
 const InfoContainer = styled.div`
   display: flex;
   gap: 17px;
@@ -327,7 +323,6 @@ const StyledImg3 = styled(ServiceImg3)`
   border-radius: 50%;
 `;
 
-/*사용자 서비스*/
 const UserInfo = styled.div`
   width: 525px;
   height: 170px;
@@ -341,8 +336,9 @@ const UserInfo = styled.div`
   padding: 15px 0px;
 `;
 const UserImage = styled.img`
-  max-width: 10.125rem;
-  max-height: 6.8125rem;
+  width: 5.5rem;
+  height: 5.5rem;
+  object-fit: cover;
   border-radius: 1rem;
 `;
 const UserInfoLeft = styled.div`

@@ -19,13 +19,13 @@ export default function PromptReview() {
   useEffect(() => {
     const fetchReviews = async () => {
       if (!prompt_id) {
-        setError('Invalid prompt ID.');
+        setError("Invalid prompt ID.");
         setLoading(false);
         return;
       }
 
       try {
-        console.log(`Fetching reviews for prompt_id: ${prompt_id}`); 
+        console.log(`Fetching reviews for prompt_id: ${prompt_id}`);
         const response = await apiClient.get<{ items: Review[] }>(
           `/api/v1/review/getTop4ReviewList/${prompt_id}`,
           {
@@ -35,7 +35,7 @@ export default function PromptReview() {
             },
           }
         );
-        console.log(response.data); 
+        console.log(response.data);
         setReviews(response.data.items);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -49,7 +49,7 @@ export default function PromptReview() {
     };
 
     fetchReviews();
-  }, [prompt_id, token]); 
+  }, [prompt_id, token]);
 
   if (loading) {
     return <div>리뷰를 불러오고 있어요.</div>;
@@ -132,17 +132,19 @@ const UserName = styled.div`
 
 const ReviewContent = styled.div`
   flex: 1;
+  padding-top: 1rem;
+  padding-right: 1rem;
 `;
 
 const Quote = styled.p`
   font-family: "Noto Sans KR";
   font-size: 16px;
-  margin-bottom: 7px;
+  margin-bottom: 0.5rem;
 `;
 
 const ReviewText = styled.p`
   width: 331px;
-  height: 63px;
+  min-height: 50px;
   font-family: "Noto Sans KR";
   font-size: 12px;
   overflow: hidden;
@@ -152,6 +154,4 @@ const ReviewText = styled.p`
   -webkit-box-orient: vertical;
 `;
 
-const ReviewStar = styled.div`
-
-`
+const ReviewStar = styled.div``;
