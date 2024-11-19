@@ -22,7 +22,6 @@ export default function LandingSection4() {
 
     const observer = new IntersectionObserver(handleScroll, { threshold: 0.5 });
 
-
     boxes.forEach((box) => {
       observer.observe(box);
     });
@@ -114,7 +113,7 @@ export default function LandingSection4() {
 }
 
 const LandingSection4Container = styled.div`
-  width: 80rem;
+  max-width: 100%;
   height: 100vh;
   background: linear-gradient(
     180deg,
@@ -122,7 +121,6 @@ const LandingSection4Container = styled.div`
     rgba(114, 212, 155, 0.35) 80%
   );
   margin: 0 auto;
-  
 `;
 
 const LandingSection4Sub = styled.div`
@@ -144,7 +142,7 @@ const LandingSection4Title = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-top: 1.625rem;
+  margin-top: 1rem;
 `;
 
 const LandingSection4Span = styled.span`
@@ -171,9 +169,9 @@ const slideDown = keyframes`
 const LandingSection4BoxContainer = styled.div`
   display: flex;
   gap: 2.0625rem;
-  margin-top: 4.4375rem;
+  margin-top: 3rem;
   justify-content: center;
-    &.animate {
+  &.animate {
     animation: ${slideDown} 0.6s ease-out forwards;
   }
 `;
@@ -191,13 +189,11 @@ const LandingSection4Box = styled.div<BoxProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.3s ease; 
+  transition: transform 0.3s ease;
   &:hover {
-    transform: scale(1.25); 
-
+    transform: scale(1.25);
   }
 `;
-
 
 const LandingSection4ContentSub = styled.div<BoxProps>`
   color: ${(props) => props.subjectColor || "#000"};

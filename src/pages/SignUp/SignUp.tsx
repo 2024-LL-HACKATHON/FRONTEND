@@ -51,7 +51,6 @@ export default function Signup() {
 
   const handleNext = async () => {
     if (step === 1) {
-      // Step 1의 필수 입력 필드 검증
       const result = await trigger([
         "name",
         "email",

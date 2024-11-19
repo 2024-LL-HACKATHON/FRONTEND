@@ -36,19 +36,35 @@ const Container = styled.section`
   max-width: 100%;
   height: 100vh;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    height: auto;
+    padding: 1rem;
+  }
 `;
 
 const Content = styled.div`
   display: flex;
   height: 50rem;
   justify-content: space-between;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    height: auto;
+    justify-content: center;
+  }
 `;
 
 const Texts = styled.div`
   width: 31.25rem;
   height: 17.1875rem;
-  flex-shrink: 0;
-  margin-top: 17.63rem;
+
+  @media (max-width: 768px) {
+    width: 80%;
+    margin-top: 2rem;
+    text-align: center;
+  }
 `;
 
 const Slogan = styled.p`
@@ -57,6 +73,10 @@ const Slogan = styled.p`
   color: #7e7e7e;
   font-size: 1rem;
   margin-left: 13.4375rem;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
 `;
 
 const reveal = keyframes`
@@ -108,8 +128,10 @@ const MainHeading = styled.h1`
     animation-delay: 0.4s;
   }
 
-  // 모바일에서는 애니메이션을 비활성화하여 성능을 개선
   @media (max-width: 768px) {
+    margin-left: 0;
+    font-size: 3rem;
+
     .letter {
       animation: none;
     }
@@ -121,7 +143,7 @@ const swayAnimation = keyframes`
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-0.625rem); // -10px
+    transform: translateY(-0.625rem);
   }
   100% {
     transform: translateY(0);
@@ -142,6 +164,7 @@ const SideText = styled.p`
 
   @media (max-width: 768px) {
     margin-left: 0;
+    width: 100%;
   }
 `;
 
@@ -159,6 +182,7 @@ const ToMain = styled.div`
   @media (max-width: 768px) {
     margin-left: 0;
     justify-content: center;
+    margin-top: 2rem;
   }
 `;
 
@@ -167,18 +191,17 @@ const StyledLink = styled(Link)`
 `;
 
 const Img1Styled = styled(LandingImg1)`
-  width: 50.375rem;
-  height: 50.5625rem;
+  width: 45.375rem;
+  height: 45.5625rem;
   flex-shrink: 0;
   right: 0;
   z-index: 2;
   animation: ${swayAnimation} 4s ease-in-out infinite;
 
-  // 모바일에서는 애니메이션을 비활성화하여 성능을 개선
   @media (max-width: 768px) {
-    margin-left: 0;
-    display: block;
     margin: 0 auto;
+    width: 80%;
+    height: auto;
     animation: none;
   }
 `;

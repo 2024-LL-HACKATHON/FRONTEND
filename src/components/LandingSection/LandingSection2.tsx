@@ -12,11 +12,11 @@ export default function LandingSection2() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("animate");
-            observer.unobserve(entry.target); // Optional: stop observing after the animation
+            observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.5 } // Adjust as needed
+      { threshold: 0.5 }
     );
 
     characters.forEach((character) => {

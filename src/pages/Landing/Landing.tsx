@@ -48,9 +48,6 @@ const Landing = React.memo(() => {
             <LandingSection6 />
           </StyledSlide>
         </Slide>
-        <Slide>
-          <Footer />
-        </Slide>
       </FullPage>
     </StyledFullPage>
   );
@@ -61,7 +58,7 @@ export default Landing;
 const StyledFullPage = styled.div`
   position: relative;
   font-family: "Noto Sans KR";
-  width: 100%;
+  max-width: 100%;
   height: 100vh;
 `;
 
@@ -72,4 +69,3 @@ const StyledSlide = styled.div<StyledSlideProps>`
   box-sizing: border-box;
   position: relative;
 `;
-

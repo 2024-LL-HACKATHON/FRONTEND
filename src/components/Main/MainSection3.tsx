@@ -24,7 +24,7 @@ interface PromptItem {
   prompt_writer: string;
   summary: string;
   title: string;
-  review?: number; // 리뷰 수를 선택적 속성으로 추가
+  review?: number;
 }
 
 type Params = {
@@ -39,7 +39,6 @@ const conditions = [
   { label: "재미있는", value: "INTERESTING" },
 ];
 
-// Section3에서 사용할 category
 const categories = [
   { label: "전체", value: "전체" },
   { label: "GPT", value: "gpt" },
@@ -53,6 +52,7 @@ const MainSection3: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [promptItems, setPromptItems] = useState<PromptItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
@@ -64,8 +64,8 @@ const MainSection3: React.FC = () => {
 
   const fetchPromptItems = async () => {
     setLoading(true);
+    setError(false);
     try {
-      // Determine URL based on selected condition or category
       const url =
         selectedCondition !== "전체"
           ? `/api/v1/main/getPromptByCategory?condition=${selectedCondition}&page=${currentPage}&size=${itemsToShow}`
@@ -111,13 +111,15 @@ const MainSection3: React.FC = () => {
                 : 0;
 
             return { ...prompt, review: isNaN(reviewCount) ? 0 : reviewCount };
-          } catch (error) {}
+          } catch (error) {
+            return { ...prompt, review: 0 };
+          }
         })
       );
 
       setPromptItems(promptsWithReviews);
     } catch (error) {
-      console.error("프롬프트 데이터를 가져오는 중 에러 발생:", error);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -138,10 +140,6 @@ const MainSection3: React.FC = () => {
   ) => {
     event.currentTarget.src = defaultImage;
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <>
@@ -195,26 +193,37 @@ const MainSection3: React.FC = () => {
             </StyledButton>
           ))}
         </ButtonList>
-
         <PromptList>
-          {promptItems.map(
-            ({ prompt_id, title, image, review = 0, category }) => (
-              <Item key={prompt_id}>
-                <Img>
-                  <img
-                    id="imgbox"
-                    src={image || defaultImage}
-                    alt={title}
-                    onError={handleImageError}
-                  />
-                </Img>
-                <Title>{title}</Title>
-                <Review>리뷰 {review}</Review>
-                <Category>{category}</Category>
-                <StyledLink to={`/detail_page/${prompt_id}`}>
-                  <StyleButton>상세보기</StyleButton>
-                </StyledLink>
-              </Item>
+          {loading ? (
+            <div>
+              프롬프트를 가져오는 중입니다.
+              <br /> 잠시만 기다려주세요.
+            </div>
+          ) : error ? (
+            <div>
+              프롬프트를 가져올 수 없습니다. <br />
+              네트워크 상태를 다시 확인해주세요.
+            </div>
+          ) : (
+            promptItems.map(
+              ({ prompt_id, title, image, review = 0, category }) => (
+                <Item key={prompt_id}>
+                  <Img>
+                    <img
+                      id="imgbox"
+                      src={image || defaultImage}
+                      alt={title}
+                      onError={handleImageError}
+                    />
+                  </Img>
+                  <Title>{title}</Title>
+                  <Review>리뷰 {review}</Review>
+                  <Category>{category}</Category>
+                  <StyledLink to={`/detail_page/${prompt_id}`}>
+                    <StyleButton>상세보기</StyleButton>
+                  </StyledLink>
+                </Item>
+              )
             )
           )}
         </PromptList>
@@ -222,7 +231,6 @@ const MainSection3: React.FC = () => {
           <PageButton1 onClick={handlePreviousPage} />
           <PageButton2 onClick={handleNextPage} />
         </PageButton>
-        <ReviewList></ReviewList>
       </Section3>
     </>
   );
@@ -231,11 +239,18 @@ const MainSection3: React.FC = () => {
 export default MainSection3;
 
 const Section2Wrapper = styled.div`
+  max-width: 100%;
   height: 331px;
   background: linear-gradient(274deg, #3ec6b7 -5.6%, #6ad2a0 80.7%);
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    height: auto;
+    padding: 15px;
+  }
 `;
 
 const Section2Title = styled.div`
@@ -245,7 +260,6 @@ const Section2Title = styled.div`
   font-size: 32px;
   font-style: normal;
   font-weight: 300;
-  margin-top: 30px;
   margin-bottom: 20px;
 
   span {
@@ -253,6 +267,12 @@ const Section2Title = styled.div`
     display: inline-block;
     box-shadow: inset 0 -30px 0 #ffffff;
     text-emphasis: filled #ffffff;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 15px;
   }
 `;
 
@@ -265,7 +285,13 @@ const Section2TypeList = styled.div`
   justify-content: space-around;
   width: 100%;
   padding: 0 50px;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
 `;
+
 const Section2Type = styled.div`
   display: flex;
   flex-direction: column;
@@ -275,7 +301,12 @@ const Section2Type = styled.div`
   &:hover {
     transform: scale(1.25);
   }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
+
 const Section2StyledImg = styled.div`
   display: flex;
   align-items: center;
@@ -285,6 +316,12 @@ const Section2StyledImg = styled.div`
   border-radius: 113px;
   background: #fff;
   margin-bottom: 21px;
+
+  @media (max-width: 768px) {
+    width: 100px;
+    height: 104px;
+    margin-bottom: 15px;
+  }
 `;
 
 const Section2TypeText = styled.p`
@@ -295,6 +332,10 @@ const Section2TypeText = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 const Img = styled.div`
@@ -309,6 +350,11 @@ const Img = styled.div`
     max-width: 17.4375rem;
     max-height: 9.375rem;
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+  }
 `;
 
 const Title = styled.div`
@@ -317,6 +363,11 @@ const Title = styled.div`
   font-size: 20px;
   font-weight: 500;
   margin-top: 14px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    margin-top: 10px;
+  }
 `;
 
 const Review = styled.div`
@@ -325,6 +376,10 @@ const Review = styled.div`
   font-size: 12px;
   font-weight: 300;
   margin-top: 8px;
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
 `;
 
 const Category = styled.div`
@@ -334,6 +389,10 @@ const Category = styled.div`
   font-size: 14px;
   font-weight: 400;
   margin-top: 4px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -355,10 +414,16 @@ const StyleButton = styled.button`
   font-family: "Inter";
   font-size: 11px;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 60px;
+    height: 25px;
+    font-size: 10px;
+  }
 `;
 
 const Section3 = styled.div`
-  width: 100%;
+  max-width: 100%;
 `;
 
 const ButtonList = styled.div`
@@ -366,6 +431,10 @@ const ButtonList = styled.div`
   margin-top: 36px;
   margin-left: 106px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    margin-left: 20px;
+  }
 `;
 
 const StyledButton = styled.button<StyledButtonProps>`
@@ -382,6 +451,12 @@ const StyledButton = styled.button<StyledButtonProps>`
     background: #72d49b;
     color: #fff;
   }
+
+  @media (max-width: 768px) {
+    width: 70px;
+    height: 38px;
+    margin-right: 10px;
+  }
 `;
 
 const PromptList = styled.div`
@@ -391,6 +466,23 @@ const PromptList = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 35px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    margin-left: 10px;
+    margin-right: 10px;
+    gap: 20px;
+  }
+
+  .mention {
+    max-width: 20rem;
+  }
 `;
 
 const PageButton = styled.div`
@@ -409,11 +501,6 @@ const PageButton2 = styled(PageButtonRight)`
   cursor: pointer;
 `;
 
-const ReviewList = styled.div`
-  margin-bottom: 107px;
-  margin-left: 187px;
-`;
-
 const Item = styled.div`
   width: 20.3125rem;
   height: 18.625rem;
@@ -423,4 +510,9 @@ const Item = styled.div`
   border-radius: 0.6875rem;
   border: 1px solid #72d49b;
   background: #fff;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 15px;
+  }
 `;
