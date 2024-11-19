@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/promfren_front/static/css/main.7f9df2b3.css",
-    "main.js": "/promfren_front/static/js/main.b100a3ed.js",
+    "main.js": "/promfren_front/static/js/main.16f48cff.js",
     "static/js/453.2d47606e.chunk.js": "/promfren_front/static/js/453.2d47606e.chunk.js",
     "static/media/Persona.svg": "/promfren_front/static/media/Persona.38ad3a10fea0e3368381ce665201175b.svg",
     "static/media/MainSection2_1.svg": "/promfren_front/static/media/MainSection2_1.e6e2e7404d5ae7cc8db415a09a51c610.svg",
@@ -81,11 +81,11 @@
     "static/media/GuidePurple14.svg": "/promfren_front/static/media/GuidePurple14.75dec11a2e087e75e59ca9e4ce60efa4.svg",
     "static/media/LandingSection2Circle.svg": "/promfren_front/static/media/LandingSection2Circle.a0a208745a5bb348dad92950b292d1e8.svg",
     "main.7f9df2b3.css.map": "/promfren_front/static/css/main.7f9df2b3.css.map",
-    "main.b100a3ed.js.map": "/promfren_front/static/js/main.b100a3ed.js.map",
+    "main.16f48cff.js.map": "/promfren_front/static/js/main.16f48cff.js.map",
     "453.2d47606e.chunk.js.map": "/promfren_front/static/js/453.2d47606e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7f9df2b3.css",
-    "static/js/main.b100a3ed.js"
+    "static/js/main.16f48cff.js"
   ]
 }
