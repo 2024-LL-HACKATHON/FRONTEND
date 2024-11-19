@@ -1,7 +1,7 @@
 {
   "name": "promfren",
   "version": "0.1.0",
-  "homepage" : "https://paicearea.github.io/promfren_front",
+  "homepage" : "https://paicearea.github.io/promfren_front/",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.6",
