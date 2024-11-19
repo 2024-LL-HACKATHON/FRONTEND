@@ -12,53 +12,58 @@ import PrivateRoute from "../pages/Private";
 import PromptRegisterPage from "../pages/PromptDetail/PromptRegister";
 import Layout from "../components/Layout/Layout";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        {
+          path: "/",
+          element: <Landing />,
+        },
+        {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/signup",
+          element: <Signup />,
+        },
+        {
+          path: "/guide",
+          element: <Guide />,
+        },
+        {
+          path: "/main",
+          element: <Main />,
+        },
+        {
+          path: "/detail_page/:prompt_id",
+          element: <PromptDetail />,
+        },
+        {
+          path: "/competition",
+          element: <Competition />,
+        },
+        {
+          path: "/competitionparticipation",
+          element: <PrivateRoute element={<CompetitionParticipation />} />,
+        },
+        {
+          path: "/competitionlist",
+          element: <CompetitionList />,
+        },
+        {
+          path: "/prompt_register",
+          element: <PrivateRoute element={<PromptRegisterPage />} />,
+        },
+      ],
+    },
+  ],
   {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        path: "/",
-        element: <Landing />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/signup",
-        element: <Signup />,
-      },
-      {
-        path: "/guide",
-        element: <Guide />,
-      },
-      {
-        path: "/main",
-        element: <Main />,
-      },
-      {
-        path: "/detail_page/:prompt_id",
-        element: <PromptDetail />,
-      },
-      {
-        path: "/competition",
-        element: <Competition />,
-      },
-      {
-        path: "/competitionparticipation",
-        element: <PrivateRoute element={<CompetitionParticipation />} />,
-      },
-      {
-        path: "/competitionlist",
-        element: <CompetitionList />,
-      },
-      {
-        path: "/prompt_register",
-        element: <PrivateRoute element={<PromptRegisterPage />} />,
-      },
-    ],
-  },
-]);
+    basename: "/promfren_front",
+  }
+);
 
 export default router;
