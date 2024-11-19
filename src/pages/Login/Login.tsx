@@ -19,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from =
+  const redirectPath =
     (location.state as { from?: { pathname: string } })?.from?.pathname || "/";
 
   const {
@@ -30,36 +30,41 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      const response = await apiClient.post("/sign-api/sign-in", null, {
-        params: {
-          account: data.account,
-          password: data.password,
-        },
-      });
-      const token = response.data.token;
-      const user = response.data.user;
+      const { data: responseData } = await apiClient.post(
+        "/sign-api/sign-in",
+        null,
+        {
+          params: { account: data.account, password: data.password },
+        }
+      );
+
+      const { token, user } = responseData;
       localStorage.setItem("authToken", token);
       localStorage.setItem("user", JSON.stringify(user));
       apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
       dispatch(login({ token, user }));
-      console.log("Redirecting to:", from);
-      navigate(from, { replace: true });
+      navigate(redirectPath, { replace: true });
       setServerError(null);
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 400) {
-          setServerError("아이디/비밀번호를 다시 확인해주세요.");
-        } else {
-          console.error("Axios 오류:", error.response?.data || error.message);
-          setServerError("로그인 중 오류가 발생했습니다. 다시 시도해주세요.");
-        }
-      } else if (error instanceof Error) {
-        console.error("네트워크 오류:", error);
-        setServerError("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
-      } else {
-        console.error("알 수 없는 오류:", error);
-        setServerError("알 수 없는 오류가 발생했습니다.");
-      }
+      handleLoginError(error);
+    }
+  };
+
+  const handleLoginError = (error: unknown) => {
+    if (axios.isAxiosError(error)) {
+      setServerError(
+        error.response?.status === 400
+          ? "아이디/비밀번호를 다시 확인해주세요."
+          : "로그인 중 오류가 발생했습니다. 다시 시도해주세요."
+      );
+      console.error("Axios 오류:", error.response?.data || error.message);
+    } else if (error instanceof Error) {
+      setServerError("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+      console.error("네트워크 오류:", error);
+    } else {
+      setServerError("알 수 없는 오류가 발생했습니다.");
+      console.error("알 수 없는 오류:", error);
     }
   };
 
@@ -75,23 +80,32 @@ const Login = () => {
         </Title>
         <LoginForm onSubmit={handleSubmit(onSubmit)}>
           <InputGroup>
-            <Input
+            <StyledInput
               {...register("account", { required: "아이디를 입력해주세요" })}
               type="text"
               placeholder="아이디"
+              error={errors.account}
             />
             {errors.account && (
-              <Error>{(errors.account as FieldError).message}</Error>
+              <ErrorMessage>
+                {(errors.account as FieldError).message}
+              </ErrorMessage>
             )}
-            <Input
+
+            <StyledInput
               {...register("password", { required: "비밀번호를 입력해주세요" })}
               type="password"
               placeholder="비밀번호"
+              error={errors.password}
             />
             {errors.password && (
-              <Error>{(errors.password as FieldError).message}</Error>
+              <ErrorMessage>
+                {(errors.password as FieldError).message}
+              </ErrorMessage>
             )}
+
             {serverError && <ServerError>{serverError}</ServerError>}
+
             <SubmitButton type="submit">시작하기</SubmitButton>
           </InputGroup>
         </LoginForm>
@@ -113,7 +127,6 @@ const LoginLayout = styled.div`
   font-family: "Noto Sans KR";
   margin-top: 9.81rem;
 `;
-
 const Title = styled.div`
   h1 {
     width: 326px;
@@ -121,7 +134,6 @@ const Title = styled.div`
     font-size: 24px;
     font-weight: 700;
     font-family: "Gmarket Sans TTF";
-    font-style: normal;
     background: linear-gradient(90deg, #72d49b 0%, #2cc1bf 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -137,29 +149,25 @@ const Title = styled.div`
     font-weight: 700;
   }
 `;
-
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
   width: 319px;
   margin-top: 24px;
 `;
-
-const Input = styled.input`
+const StyledInput = styled.input<{ error?: FieldError }>`
   margin-bottom: 12px;
   height: 49px;
   padding-left: 18px;
-  border: 1px solid #d9d9d9;
+  border: 1px solid ${(props) => (props.error ? "red" : "#d9d9d9")};
   border-radius: 16px;
   font-size: 14px;
 `;
-
 const SubmitButton = styled.button`
   height: 52px;
   margin-top: 24px;
@@ -171,14 +179,12 @@ const SubmitButton = styled.button`
   font-weight: 700;
   cursor: pointer;
 `;
-
-const Error = styled.span`
+const ErrorMessage = styled.span`
   color: red;
   font-size: 12px;
   margin-top: -10px;
   margin-bottom: 10px;
 `;
-
 const ServerError = styled.div`
   color: red;
   font-size: 14px;

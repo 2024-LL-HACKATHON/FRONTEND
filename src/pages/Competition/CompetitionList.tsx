@@ -43,7 +43,7 @@ const CompetitionList: React.FC = () => {
         const pages = Math.ceil(totalItems / itemsPerPage);
         setTotalPages(pages);
       } catch (error) {
-        setError("Failed to fetch total number of competitions");
+        setError("네트워크 확인");
       }
     };
 
@@ -182,9 +182,15 @@ const CompetitionList: React.FC = () => {
       />
       <CompetitionListContainer>
         {loading ? (
-          <p>Loading...</p>
+          <div>
+            프롬프트를 가져오는 중입니다.
+            <br /> 잠시만 기다려주세요.
+          </div>
         ) : error ? (
-          <p>{error}</p>
+          <div>
+            프롬프트를 가져올 수 없습니다. <br />
+            네트워크 상태를 다시 확인해주세요.
+          </div>
         ) : (
           <>
             <ListBox>
@@ -208,7 +214,6 @@ const CompetitionList: React.FC = () => {
                 ))}
               </ListWrapper>
             </ListBox>
-
             {expandedItem && (
               <ExpandedContent>
                 <Content>
@@ -279,6 +284,7 @@ const CompetitionList: React.FC = () => {
           </>
         )}
       </CompetitionListContainer>
+      <Footer />
     </CompetitionListLayer>
   );
 };
@@ -325,6 +331,7 @@ const TextOverlay = styled.span`
 
 const CompetitionListContainer = styled.div`
   margin-top: 4.25rem;
+  margin-bottom: 2rem;
 `;
 
 const ListBox = styled.div`

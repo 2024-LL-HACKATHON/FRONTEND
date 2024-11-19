@@ -36,7 +36,6 @@ const GuideSection5 = () => {
         표 형식으로 정리해달라거나, 마크다운으로 작성하라고 하거나, <br />
         아웃라인을 주면서 어떤 식으로 구성하라고 말해주는 거죠.
       </AnimatedContentLeft>
-      {/*포맷 이미지*/}
       <FormatImg 
         initial={{ x: '100vw', opacity: 0 }}
         animate={{ x: inView ? 0 : '100vw', opacity: inView ? 1 : 0 }}
@@ -55,7 +54,6 @@ const GuideSection5 = () => {
         형용사를 주거나, 어떤 예시 텍스트의 어조를 <br />
         따라하라고 하면 돼요.
       </AnimatedContentRight>
-      {/*어조 이미지*/}
       <ToneImg
         initial={{ x: '-100vw', opacity: 0 }}
         animate={{ x: inView ? 0 : '-100vw', opacity: inView ? 1 : 0 }}
@@ -105,15 +103,12 @@ const AnimatedContentRight = styled(motion.div)`
   font-weight: 300;
 `;
 
-
-// 포맷 이미지
 const FormatImg = styled(motion(Format))`
   position: absolute;
   top: 80px;
   right: 160px;
 `;
 
-// 어조 이미지
 const ToneImg = styled(motion(Tone))`
   position: absolute;
   bottom: 80px;

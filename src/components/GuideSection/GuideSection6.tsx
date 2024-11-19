@@ -43,6 +43,6 @@ const Content = styled.div`
         display: inline-block;
     }
     .typewriter-text {
-        margin-left: 10px; // 텍스트와 타이핑 효과 사이의 여백을 조정
+        margin-left: 10px;
     }
 `;

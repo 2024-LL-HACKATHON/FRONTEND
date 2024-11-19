@@ -38,7 +38,6 @@ const GuideSection4 = () => {
         회계 전문 용어로 답변해줄 거예요. <br/>
         페르소나가 구체적일수록 전문영역에 가까운 답을 제공해줘요.
       </AnimatedContentLeft>
-      {/* 페르소나 이미지 */}
       <AnimatedPersonaImg
         initial={{ x: '100vw', opacity: 0 }}
         animate={{ x: inView ? 0 : '100vw', opacity: inView ? 1 : 0 }}
@@ -56,7 +55,6 @@ const GuideSection4 = () => {
         넣어주면 생성형 ai가 예시를 기반으로  <br />
         답변을 작성해요.
       </AnimatedContentRight>
-      {/* 예시 이미지 */}
       <AnimatedExampleImg
         initial={{ x: '-100vw', opacity: 0 }}
         animate={{ x: inView ? 0 : '-100vw', opacity: inView ? 1 : 0 }}
@@ -108,14 +106,12 @@ const AnimatedContentRight = styled(motion.div)`
   font-weight: 300;
 `;
 
-// 페르소나 이미지
 const AnimatedPersonaImg = styled(motion(Persona))`
   position: absolute;
   top: 80px;
   right: 250px;
 `;
 
-// 예시 이미지
 const AnimatedExampleImg = styled(motion(Example))`
   position: absolute;
   bottom: 80px;

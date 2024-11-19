@@ -68,7 +68,7 @@ export default function LandingSection5() {
 }
 
 const LandingSection5Container = styled.div`
-  width: 80rem;
+  max-width: 100%;
   height: 100vh;
   background: linear-gradient(
     180deg,
@@ -76,8 +76,9 @@ const LandingSection5Container = styled.div`
     rgba(217, 217, 217, 0) 80%
   );
   margin: 0 auto;
-  #Section5Box{
-  margin-top: 3.5rem;}
+  #Section5Box {
+    margin-top: 3.5rem;
+  }
 `;
 
 const LandingSection5SubTitle = styled.div`
@@ -87,9 +88,9 @@ const LandingSection5SubTitle = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  margin-left: 12.0625rem;
+  margin-left: 8rem;
   margin-bottom: 1.25rem;
-  padding-top: 10rem;
+  padding-top: 2rem;
 `;
 
 const LandingSection5Title = styled.div`
@@ -100,7 +101,7 @@ const LandingSection5Title = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-left: 12.0625rem;
+  margin-left: 8rem;
   #typewritter {
     display: inline;
   }
@@ -121,7 +122,7 @@ const LandingSection5Box = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin-left: 12.0625rem;
+  margin-left: 8rem;
   margin-bottom: 1.3225rem;
   padding: 1rem;
 `;

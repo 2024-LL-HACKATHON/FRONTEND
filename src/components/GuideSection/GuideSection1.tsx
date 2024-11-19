@@ -17,7 +17,6 @@ const GuideSection1 = () => {
         나의 지적 즐거움을 <br/>
         키워가세요
       </PageTitle>
-      {/* 첫 페이지 오른쪽 이미지 */}
       <StyledIcon />
     </Page1>
   );
@@ -45,7 +44,6 @@ const BigTitle = styled.div`
   font-family: 'Gmarket Sans TTF';
 `;
 
-// Define the bounce animation
 const bounce = keyframes`
   0%, 20%, 50%, 80%, 100% {
     transform: translateY(0);

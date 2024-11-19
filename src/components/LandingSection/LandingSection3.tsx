@@ -92,7 +92,7 @@ export default function LandingSection3() {
                 효율적으로 관리하고 활용하세요.
               </ContentText>
             </ContentTextWrapper>
-            <ContentImgBox height="14rem">
+            <ContentImgBox height="100%">
               <Content1Img />
             </ContentImgBox>
           </ContentWrapper>
@@ -118,7 +118,7 @@ export default function LandingSection3() {
                 받으세요.
               </ContentText>
             </ContentTextWrapper>
-            <ContentImgBox height="21rem">
+            <ContentImgBox height="150%">
               <Content2Img />
             </ContentImgBox>
           </ContentWrapper>
@@ -142,7 +142,7 @@ export default function LandingSection3() {
                 더욱 완성도 높은 프롬프트를 작성할 수<br /> 있습니다.
               </ContentText>
             </ContentTextWrapper>
-            <ContentImgBox height="21rem">
+            <ContentImgBox height="150%">
               <Content3Img />
             </ContentImgBox>
           </ContentWrapper>
@@ -169,7 +169,7 @@ export default function LandingSection3() {
               </ContentText>
             </ContentTextWrapper>
             <ContentImgBox>
-              <Content4Img height="79rem" />
+              <Content4Img height="200%" />
             </ContentImgBox>
           </ContentWrapper>
         );
@@ -219,8 +219,8 @@ export default function LandingSection3() {
 }
 
 const LandingSection3Container = styled.div`
-  max-width: 80rem;
-  height: 100vh;
+  max-width: 100%;
+  max-height: 100vh;
   background: rgba(114, 212, 155, 0.05);
   position: relative;
   margin: 0 auto;
@@ -237,21 +237,23 @@ const MainContent = styled.div`
 
 const LandingSection3SideBox = styled.div`
   width: 21.1875rem;
-  height: 48.9375rem;
+  height: 100%;
   flex-shrink: 0;
   border-radius: 0px 2.875rem 0px 0px;
   background: #fff;
-  box-shadow: 0.4375rem 0.4375rem 1.875rem 0 rgba(66, 208, 159, 0.3); // 7px 7px 30px
+  box-shadow: 0.4375rem 0.4375rem 1.875rem 0 rgba(66, 208, 159, 0.3);
   display: flex;
   flex-direction: column;
   padding: 1.25rem;
   position: relative;
   z-index: 1;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 
   @media (max-width: 768px) {
     width: 100%;
     height: auto;
+    padding: 1rem;
+    margin-top: 0.5rem;
   }
 `;
 
@@ -260,7 +262,7 @@ const LandingSection3SideBoxTitle = styled.div`
   font-family: "Gmarket Sans TTF";
   font-size: 2.5rem;
   font-weight: 700;
-  margin-top: 10rem;
+  margin-top: 6.5rem;
 
   @media (max-width: 768px) {
     font-size: 2.25rem;
@@ -273,7 +275,7 @@ const LandingSection3SideBoxSubTitle = styled.div`
   font-family: "Noto Sans KR";
   font-size: 0.875rem;
   font-weight: 400;
-  margin-top: 0.4375rem;
+  margin-top: 1rem;
   margin-bottom: 5.5625rem;
 
   @media (max-width: 768px) {
@@ -395,7 +397,7 @@ const ContentSubTitle = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
-  margin-top: 2.9375rem;
+  margin-top: 1rem;
 
   @media (max-width: 768px) {
     font-size: 1rem;

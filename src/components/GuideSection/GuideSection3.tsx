@@ -106,14 +106,12 @@ const AnimatedContentRight = styled(motion.div)`
   font-weight: 300;
 `;
 
-// 명령 이미지
 const AnimatedTaskImg = styled(motion(Task))`
   position: absolute;
   top: 80px;
   right: 160px;
 `;
 
-// 맥락 이미지
 const AnimatedContextImg = styled(motion(Context))`
   position: absolute;
   bottom: 80px;

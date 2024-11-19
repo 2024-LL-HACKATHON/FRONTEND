@@ -33,7 +33,7 @@ export default function LandingSection6() {
 }
 
 const LandingSection6Box = styled.div`
-  width: 80rem;
+  max-width: 100%;
   height: 100vh;
   margin: 0 auto;
 `;
@@ -45,12 +45,12 @@ const StyledLink = styled(Link)`
 const LandingSection6Container = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 8.625rem; // 138px
-  margin-left: 13.75rem; // 220px
+  margin-top: 5rem; 
+  margin-left: 13.75rem;
 `;
 
 const LandingSection6LogoLayout = styled.div`
-  margin-right: 2.5rem; // 40px
+  margin-right: 2.5rem;
 `;
 
 const LandingSection6TextContainer = styled.div`
